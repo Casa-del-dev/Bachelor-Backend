@@ -47,6 +47,8 @@ const service: Service = {
 				};
 
 				await env.users.put(username, JSON.stringify(userData));
+
+				return new Response('User created successfully', { status: 201 });
 			}
 			case 'POST login': {
 				const { username, password } = await request.json<SignInPayload>();
@@ -66,6 +68,8 @@ const service: Service = {
 				if (authContext instanceof Response) return authContext;
 				return new Response('Authenticated', { status: 200 });
 			}
+			default:
+				return new Response('Not Found', { status: 404 });
 		}
 	},
 };
@@ -81,7 +85,7 @@ export async function authenticateToken(headers: Headers, env: Env): Promise<JWT
 		return new Response('Invalid token', { status: 401 });
 	}
 
-	return context; // verified is now typed as JWTPayload
+	return context;
 }
 
 export default service;
