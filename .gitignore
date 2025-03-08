@@ -48,6 +48,9 @@ bower_components
 
 build/Release
 
+# Python Virtual Environment
+venv/
+
 # Dependency directories
 
 node_modules/
