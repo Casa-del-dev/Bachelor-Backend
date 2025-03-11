@@ -1,5 +1,21 @@
 import { Service } from '..';
 
+interface Payload {
+	Prompt?: string;
+	Problem?: string;
+	Tree?: object;
+}
+
+interface RequestBody {
+	// If data comes nested: data.requestBody
+	requestBody?: Payload;
+
+	// If data comes top-level: data.Prompt, data.Problem, data.Tree
+	Prompt?: string;
+	Problem?: string;
+	Tree?: object;
+}
+
 const service: Service = {
 	path: '/openai/v1/',
 
@@ -23,13 +39,14 @@ const service: Service = {
 
 		try {
 			// Expect a JSON body with a "textprompt" property.
-			const requestBody = (await request.json()) as { Prompt: string; Problem: string; Tree: object };
-			const Prompt = requestBody.Prompt;
-			const Problem = requestBody.Problem;
-			const Tree = JSON.stringify(requestBody.Tree, null, 2);
-			console.log(Prompt);
-			console.log(Problem);
-			console.log(Tree);
+			// In your fetch function
+			const data: RequestBody = await request.json();
+
+			// If we have a nested `requestBody`, use that; otherwise use the top-level fields
+			const mergedPayload = data.requestBody ?? data;
+
+			// Now TypeScript knows `mergedPayload` has `Prompt`, `Problem`, and `Tree`.
+			const { Prompt, Problem, Tree } = mergedPayload;
 
 			if (!Prompt?.trim() || !Problem || !Tree) {
 				return new Response('Missing Prompt, Problem, or Tree in request body', { status: 400 });
