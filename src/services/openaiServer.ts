@@ -27,11 +27,11 @@ const service: Service = {
 			const Prompt = requestBody.Prompt;
 			const Problem = requestBody.Problem;
 			const Tree = JSON.stringify(requestBody.Tree, null, 2);
+			console.log(Prompt);
+			console.log(Problem);
+			console.log(Tree);
 
 			if (!Prompt?.trim() || !Problem || !Tree) {
-				console.log(!Prompt?.trim());
-				console.log(!Problem);
-				console.log(!Tree);
 				return new Response('Missing Prompt, Problem, or Tree in request body', { status: 400 });
 			}
 
