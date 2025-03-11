@@ -28,8 +28,11 @@ const service: Service = {
 			const Problem = requestBody.Problem;
 			const Tree = JSON.stringify(requestBody.Tree, null, 2);
 
-			if (!Prompt || !Problem) {
-				return new Response('Missing text1 or text2 in request body', { status: 400 });
+			if (!Prompt?.trim() || !Problem || !Tree) {
+				console.log(!Prompt?.trim());
+				console.log(!Problem);
+				console.log(!Tree);
+				return new Response('Missing Prompt, Problem, or Tree in request body', { status: 400 });
 			}
 
 			// Prepare the payload for OpenAI's ChatGPT API
