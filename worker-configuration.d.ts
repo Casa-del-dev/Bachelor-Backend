@@ -3,4 +3,5 @@
 interface Env {
 	users: KVNamespace;
 	JWT_SECRET: string;
+	OPENAI_API_KEY: string;
 }
