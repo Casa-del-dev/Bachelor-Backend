@@ -31,7 +31,7 @@ const service: Service = {
 
 		switch (request.method + ' ' + subPath.split('/')[0]) {
 			case 'POST signup': {
-				//return new Response('Disabled due to development', { status: 503 });
+				return new Response('Disabled due to development', { status: 503 });
 
 				const { email, password, username } = await request.json<SignUpPayload>();
 				const hashedPasswordPromise = hash(password);
