@@ -77,7 +77,6 @@ const service: Service = {
 					### **Return Format:**
 					The output must be a valid JSON object with the following structure:
 
-					- **context** → "Input Text"
 					- **full_code** → "" (empty string)
 					- **tree** → "Same as given"
 					- **steps** → Contains the identified steps from the Content
@@ -86,9 +85,7 @@ const service: Service = {
 						- "correctStep" → Leave as "" (empty string).
 						- "code" → Leave as "" (empty string).
 						- "prompt" → Extract the text portion from Content that describes this step.
-						- "status":
-						- "correctness" → Leave as "" (empty string).
-						- "can_be_further_divided" → Leave as "" (empty string).
+						- "status": → Leave as "bomboclat"
 						- "general_hint" → Leave as "" (empty string).
 						- "detailed_hint" → Leave as "" (empty string).
 						- "subSteps" → If the step naturally contains substeps, structure them the same way.
@@ -96,9 +93,7 @@ const service: Service = {
 					#### **Example JSON Output:**
 
 					{
-					"context": "Input Text",
-					"full_code": "",
-					"tree": "",
+					"code": "",
 					"steps": {
 						"1": {
 						"content": "Extracted step description from the Content.",
@@ -117,13 +112,11 @@ const service: Service = {
 							"correctStep": "",
 							"code": "",
 							"prompt": "Highlighted portion of the text that explains this substep.",
-							"status": {
-								"correctness": "",
-								"can_be_further_divided": ""
-							},
+							"status": "",
 							"general_hint": "",
 							"detailed_hint": ""
-							}
+							},
+							...
 						}
 						},
 						"2": {
@@ -131,14 +124,12 @@ const service: Service = {
 						"correctStep": "",
 						"code": "",
 						"prompt": "Highlighted portion of the text.",
-						"status": {
-							"correctness": "",
-							"can_be_further_divided": ""
-						},
+						"status": "",
 						"general_hint": "",
 						"detailed_hint": "",
 						"subSteps": {}
-						}
+						},
+						...
 					}
 					}
 					---
