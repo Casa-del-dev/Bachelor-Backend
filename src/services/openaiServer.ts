@@ -49,7 +49,7 @@ I want you to interpret the following **Content**, **Problem Description**, and 
 "${Problem}"
 
 **Important:** The steps might be incorrect, and that's okay—we want them either way. **Do not correct anything.** Your task is only to structure the steps into the given JSON format. Additionally, if **tree** is non-empty in the JSON file, then you should adjust that tree to reflect the new prompt (e.g., by adding a new step if that's what the Content suggests).
-**Important:** You MUST extract substeps wherever possible. If the part if the content can be a subset of a step, then make it a substep!
+Important: You MUST extract substeps wherever possible. If a portion of the content logically falls under a larger step, it MUST be placed as a substep. Avoid flattening the structure—use substeps whenever the content suggests a hierarchy. If there is any doubt, favor using substeps.
 
 ---
 
@@ -71,6 +71,11 @@ The output must be a valid JSON object with the following structure:
   - "general_hint" → Leave as "" (empty string).
   - "detailed_hint" → Leave as "" (empty string).
   - "subSteps" → If the part if the content can be a subset of a step, structure them the same way.
+
+What qualifies as a substep?
+A task that is required to complete a larger step.
+A process that naturally depends on the step it is under.
+A breakdown of a broad action into finer details.
 
 #### **Example JSON Output:**
 
@@ -131,11 +136,6 @@ The output must be a valid JSON object with the following structure:
 ### **Warning:**
 **Do not correct or modify any part of the steps**. Even if the steps seem incorrect, simply structure them as described.  
 **Your job is NOT to evaluate correctness**—only to extract steps and format them into the JSON structure.
-
----
-
-### **Context Dump:**
-The purpose of this is to help students understand problems better by structuring them logically. This method supports a structured approach to problem-solving.
 `,
 					},
 				],
