@@ -1,31 +1,32 @@
 import { Service } from '..';
 
 interface Payload {
+	Context?: string;
 	Prompt?: string;
 	Problem?: string;
 	Tree?: object;
+	Code?: string;
 }
 
 interface RequestBody {
-	// If data comes nested: data.requestBody
 	requestBody?: Payload;
 
-	// If data comes top-level: data.Prompt, data.Problem, data.Tree
+	Context: string;
 	Prompt?: string;
-	Problem?: string;
+	Problem: string;
 	Tree?: object;
+	Code?: string;
 }
 
 const service: Service = {
 	path: '/openai/v1/',
 
 	async fetch(request: Request, env: Env, ctx: ExecutionContext, subPath: string): Promise<Response | void> {
-		// Handle CORS preflight requests
 		if (request.method === 'OPTIONS') {
 			return new Response(null, {
 				status: 204,
 				headers: {
-					'Access-Control-Allow-Origin': '*', // Update for production
+					'Access-Control-Allow-Origin': '*',
 					'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
 					'Access-Control-Allow-Headers': 'Content-Type, Authorization',
 					'Access-Control-Max-Age': '86400',
@@ -38,15 +39,11 @@ const service: Service = {
 		}
 
 		try {
-			// Expect a JSON body with a "textprompt" property.
-			// In your fetch function
 			const data: RequestBody = await request.json();
 
-			// If we have a nested `requestBody`, use that; otherwise use the top-level fields
 			const mergedPayload = data.requestBody ?? data;
 
-			// Now TypeScript knows `mergedPayload` has `Prompt`, `Problem`, and `Tree`.
-			const { Prompt, Problem, Tree } = mergedPayload;
+			const { Context, Prompt, Problem, Tree, Code } = mergedPayload;
 
 			if (!Prompt?.trim() || !Problem || !Tree) {
 				return new Response('Missing Prompt, Problem, or Tree in request body', { status: 400 });
@@ -58,90 +55,81 @@ const service: Service = {
 				messages: [
 					{
 						role: 'user',
-						content: `Problem:
-					I want you to interpret the following **Content**, **Problem Description**, and **Existing JSON Structure**. Then, generate a structured JSON file describing all steps and if needed substeps contained in the Content.
+						content: `I want you to interpret the following inputs:
 
-					**Content:**  
-					"${Prompt}"
+1. **Context:**  
+${Context}
 
-					**Problem Description:**  
-					"${Problem}"
+2. **Content:**  
+${Prompt}
 
-					**Existing JSON Steps:**  
-					${Tree}
+3. **Problem Description:**  
+${Problem}
 
-					**Important:** The steps might be incorrect, and that's okay—we want them either way. **Do not correct anything.** Your task is only to structure the steps into the given JSON format. Additionally, if **tree** is non-empty in the JSON file, then you should adjust that tree to reflect the new prompt (e.g., by adding a new step if that's what the Content suggests).
+4. **Existing JSON Steps:**  
+${Tree}
 
-					---
+5. **Existing Code:**  
+${Code}
 
-					### **Return Format:**
-					The output must be a valid JSON object with the following structure:
+---
 
-					- **full_code** → "" (empty string)
-					- **tree** → "Same as given"
-					- **steps** → Contains the identified steps from the Content
-					- Each step includes:
-						- "content" → Description of what is happening at this step.
-						- "correctStep" → Leave as "" (empty string).
-						- "code" → Leave as "" (empty string).
-						- "prompt" → Extract the text portion from Content that describes this step.
-						- "status": → Leave as "bomboclat"
-						- "general_hint" → Leave as "" (empty string).
-						- "detailed_hint" → Leave as "" (empty string).
-						- "subSteps" → If the step naturally contains substeps, structure them the same way.
+### Task
 
-					#### **Example JSON Output:**
+- Generate a **valid JSON** object (and only a JSON object, without additional explanation) that describes all steps mentioned in **Content**, structured according to the template below. 
+- **Do not correct or modify** any step or substep. If the steps appear incorrect, simply include them as they are.
+- If **tree** (Existing JSON Steps) is non-empty, update it to reflect the newly parsed steps from the **Content** (e.g., add new steps if needed). 
+- Follow these rules based on the **Context**:
+- If {Context} is {"To Code"}, populate {"code"} fields with the relevant code plus step-comments. Otherwise, leave those {"code"} fields as {""}.
+- If {Context} is {"Check"}, populate {"correctStep"}, {"status"}, {"general_hint"}, and {"detailed_hint"} fields. Otherwise, leave them empty.
+- If {Context} is {"From Code"}, return the JSON steps based on how the code has changed or needs to change.
 
-					{
-					"code": "",
-					"steps": {
-						"1": {
-						"content": "Extracted step description from the Content.",
-						"correctStep": "",
-						"code": "",
-						"prompt": "Highlighted portion of the text that explains this step.",
-						"status": {
-							"correctness": "",
-							"can_be_further_divided": ""
-						},
-						"general_hint": "",
-						"detailed_hint": "",
-						"subSteps": {
-							"1": {
-							"content": "Extracted substep description.",
-							"correctStep": "",
-							"code": "",
-							"prompt": "Highlighted portion of the text that explains this substep.",
-							"status": "",
-							"general_hint": "",
-							"detailed_hint": ""
-							},
-							...
-						}
-						},
-						"2": {
-						"content": "Another identified step.",
-						"correctStep": "",
-						"code": "",
-						"prompt": "Highlighted portion of the text.",
-						"status": "",
-						"general_hint": "",
-						"detailed_hint": "",
-						"subSteps": {}
-						},
-						...
-					}
-					}
-					---
+---
 
-					### **Warning:**
-					🚨 **Do not correct or modify any part of the steps**. Even if the steps seem incorrect, simply structure them as described.  
-					🚨 **Your job is NOT to evaluate correctness**—only to extract steps and format them into the JSON structure.
+### Required JSON Structure
 
-					---
 
-					### **Context Dump:**
-					The purpose of this is to help students understand problems better by structuring them logically. This method supports a structured approach to problem-solving.
+{
+"code": "...", // Only fill if Context is "To Code", otherwise an empty string
+"steps": {
+ "1": {
+   "content": "Description of what is happening at this step",
+   "correctStep": "",   // If Context is "Check", fill with the correct step, else ""
+   "code": "",          // If Context is "To Code", include code with comments here, else ""
+   "prompt": "Portion of the text from Content describing this step",
+   "status": "",        // If Context is "Check", fill with "Dividable", "Correct", "Incorrect", or "missing"
+   "general_hint": "",  // If Context is "Check", fill with a general hint, else ""
+   "detailed_hint": "", // If Context is "Check", fill with a detailed hint, else ""
+   "subSteps": {
+     "1": {
+       "content": "Description of substep",
+       "correctStep": "",
+       "code": "",
+       "prompt": "Portion of the text from Content describing this substep",
+       "status": "",
+       "general_hint": "",
+       "detailed_hint": ""
+     }
+     // More substeps if needed
+   }
+ },
+ "2": {
+   "content": "...",
+   "correctStep": "",
+   "code": "",
+   "prompt": "...",
+   "status": "",
+   "general_hint": "",
+   "detailed_hint": "",
+   "subSteps": {}
+ }
+ // More steps if needed
+}
+}
+
+Important Notes
+Do not correct the steps or substeps, even if they are wrong.
+Output must be valid JSON with no additional text or explanation outside of the JSON structure.
 					`,
 					},
 				],
