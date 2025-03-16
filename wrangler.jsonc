@@ -15,5 +15,6 @@
 			"binding": "users",
 			"id": "2ac7a785addb4129a4fe64db11d3f47b"
 		}
-	]
+	],
+	"routes": ["https://bachelor-backend.erenhomburg.workers.dev/openai/*"]
 }
