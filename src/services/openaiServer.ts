@@ -12,7 +12,7 @@ interface RequestBody {
 }
 
 const service: Service = {
-	path: '/openai/prompt/v1/',
+	path: '/openai/v1/',
 
 	async fetch(request: Request, env: Env, ctx: ExecutionContext, subPath: string): Promise<Response | void> {
 		// CORS preflight
