@@ -46,7 +46,12 @@ const service: Service = {
 			const { Context, Prompt, Problem, Tree, Code } = mergedPayload;
 
 			if ((!Prompt?.trim() && Context === 'From Prompt') || !Problem || !Tree || !Context || !Code) {
-				return new Response('Missing Prompt, Problem, or Tree in request body', { status: 400 });
+				console.log(!Prompt?.trim() && Context === 'From Prompt');
+				console.log(!Problem);
+				console.log(!Tree);
+				console.log(!Context);
+				console.log(!Code);
+				return new Response('Missing Prompt, Problem, Tree, Context, or Code in request body', { status: 400 });
 			}
 
 			// Prepare the payload for OpenAI's ChatGPT API
