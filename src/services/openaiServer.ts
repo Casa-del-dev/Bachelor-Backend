@@ -49,7 +49,7 @@ I want you to interpret the following **Content**, **Problem Description**, and 
 "${Problem}"
 
 **Important:** The steps might be incorrect, and that's okay—we want them either way. **Do not correct anything.** Your task is only to structure the steps into the given JSON format. Additionally, if **tree** is non-empty in the JSON file, then you should adjust that tree to reflect the new prompt (e.g., by adding a new step if that's what the Content suggests).
-**Important:** You MUST extract substeps wherever possible. If a step can be broken down, add "subSteps" with multiple entries.
+**Important:** You MUST extract substeps wherever possible. If the part if the content can be a subset of a step, then make it a substep!
 
 ---
 
@@ -70,7 +70,7 @@ The output must be a valid JSON object with the following structure:
       },
   - "general_hint" → Leave as "" (empty string).
   - "detailed_hint" → Leave as "" (empty string).
-  - "subSteps" → If the step naturally contains substeps, structure them the same way.
+  - "subSteps" → If the part if the content can be a subset of a step, structure them the same way.
 
 #### **Example JSON Output:**
 
@@ -118,7 +118,9 @@ The output must be a valid JSON object with the following structure:
       },
       "general_hint": "",
       "detailed_hint": "",
-      "subSteps": {...}
+      "subSteps": {
+	  ...
+	  }
     },
     ...
   }
