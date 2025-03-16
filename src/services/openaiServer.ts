@@ -81,14 +81,15 @@ Depending on the context this would be the output. The output must be a valid JS
 
 - **code** → Context: - if "To Code" then give the code - else "" (leave empty string)
 
-Context: - if "From Code" then give the from the Code adjusted JSON tree
+if Context: "From Code" then give the from the Code adjusted JSON tree
+if Context: "Check" then also add any missing steps into the Tree. And mark them as "status": → Missing
 - **steps** → Contains the identified steps from the Content
 - Each step includes:
 	- "content" → Description of what is happening at this step.
 	- "correctStep" → if Context: "Check" then give the correcStep - else Leave as "" (empty string).
 	- "code" → if "To Code" then give the same same Code but add comments that described the step - else Leave as "" (empty string). 
 	- "prompt" → Extract the text portion from Content that describes this step.
-	- "status": → if Context: "Check" give me if the step described is/"Correct"/"Incorrect"/"Dividable"/"Missing" - else leave as "" (empty string)
+	- "status": → if Context: "Check" give me if the step described is/"Correct"/"Incorrect"/"Dividable/Missing" - else leave as "" (empty string)
 	- "general_hint" →  if Context: "Check" give a general hint - else Leave as "" (empty string).
 	- "detailed_hint" → if Context: "Check" give a detailed hint - else Leave as "" (empty string).
 	- "subSteps" → If the step naturally contains substeps, structure them the same way.
