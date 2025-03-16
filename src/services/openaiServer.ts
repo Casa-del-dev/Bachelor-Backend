@@ -63,7 +63,10 @@ The output must be a valid JSON object with the following structure:
   - "correctStep" → Leave as "" (empty string).
   - "code" → Leave as "" (empty string).
   - "prompt" → Extract the text portion from Content that describes this step.
-  - "status": → Leave as "bomboclat"
+  - "status" → {
+        "correctness" → Leave as "" (empty string),
+        "can_be_further_divided"→ Leave as "" (empty string)
+      },
   - "general_hint" → Leave as "" (empty string).
   - "detailed_hint" → Leave as "" (empty string).
   - "subSteps" → If the step naturally contains substeps, structure them the same way.
@@ -92,7 +95,10 @@ The output must be a valid JSON object with the following structure:
           "correctStep": "",
           "code": "",
           "prompt": "Highlighted portion of the text that explains this substep.",
-          "status": "",
+          "status": {
+				"correctness": "",
+				"can_be_further_divided": ""
+			},
           "general_hint": "",
           "detailed_hint": ""
         },
@@ -105,7 +111,10 @@ The output must be a valid JSON object with the following structure:
       "correctStep": "",
       "code": "",
       "prompt": "Highlighted portion of the text.",
-      "status": "",
+      "status": {
+        "correctness": "",
+        "can_be_further_divided": ""
+      },
       "general_hint": "",
       "detailed_hint": "",
       "subSteps": {}
