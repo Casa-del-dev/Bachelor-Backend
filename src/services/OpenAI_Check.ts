@@ -7,17 +7,28 @@ interface Payload {
 
 interface RequestBody {
 	requestBody?: Payload;
-
 	Problem: string;
 	Tree: string;
+}
+
+function withCORS(response: Response): Response {
+	// Clone the original headers, then set the CORS header
+	const headers = new Headers(response.headers);
+	headers.set('Access-Control-Allow-Origin', '*');
+	return new Response(response.body, {
+		status: response.status,
+		headers,
+	});
 }
 
 const service: Service = {
 	path: '/openai/v2/',
 
 	async fetch(request: Request, env: Env, ctx: ExecutionContext, subPath: string): Promise<Response | void> {
+		// 1. Handle CORS Preflight (OPTIONS) requests
 		if (request.method === 'OPTIONS') {
-			return new Response(null, {
+			// Return a 204 with the necessary CORS headers
+			const preflightResponse = new Response(null, {
 				status: 204,
 				headers: {
 					'Access-Control-Allow-Origin': '*',
@@ -26,23 +37,26 @@ const service: Service = {
 					'Access-Control-Max-Age': '86400',
 				},
 			});
+			return preflightResponse;
 		}
 
+		// 2. Allow only POST requests
 		if (request.method !== 'POST') {
-			return new Response('Method Not Allowed', { status: 405 });
+			return withCORS(new Response('Method Not Allowed', { status: 405 }));
 		}
 
 		try {
+			// 3. Parse incoming JSON
 			const data: RequestBody = await request.json();
-
 			const mergedPayload = data.requestBody ?? data;
-
 			const { Problem, Tree } = mergedPayload;
 
+			// 4. Validate required fields
 			if (!Problem || !Tree) {
-				return new Response('Missing Prompt, Problem, Tree, Context, or Code in request body', { status: 400 });
+				return withCORS(new Response('Missing Prompt, Problem, Tree, Context, or Code in request body', { status: 400 }));
 			}
 
+			// 5. Prepare payload for OpenAI
 			const payload = {
 				model: 'gpt-4',
 				messages: [
@@ -76,7 +90,7 @@ JSON format. Please be sure to stick to this format.
 "code": "",
 "steps": {
     "1": {
-    id: step-${Date.now()}-${Math.floor(Math.random() * 10000)}
+    id: step-\${Date.now()}-\${Math.floor(Math.random() * 10000)}
     "content": "what the student currently input
     for this step (it can be '' if no corresponding steps in A)",
     "correctStep": "If this substep is incorrect or
@@ -93,7 +107,7 @@ JSON format. Please be sure to stick to this format.
     guide but without showing the answer",
     "subSteps": {
         "1": {
-        id: step-${Date.now()}-${Math.floor(Math.random() * 10000)}
+        id: step-\${Date.now()}-\${Math.floor(Math.random() * 10000)}
         "content": "what the student currently input
         for this step (it can be '' if no corresponding steps in A)",
         "correctStep": "If this substep is incorrect or
@@ -121,6 +135,7 @@ JSON format. Please be sure to stick to this format.
 				temperature: 0.8,
 			};
 
+			// 6. Call OpenAI API
 			const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
 				method: 'POST',
 				headers: {
@@ -130,23 +145,26 @@ JSON format. Please be sure to stick to this format.
 				body: JSON.stringify(payload),
 			});
 
+			// 7. If OpenAI responds with an error, wrap in CORS
 			if (!openaiResponse.ok) {
 				const errorText = await openaiResponse.text();
-				return new Response(`OpenAI API Error: ${errorText}`, { status: openaiResponse.status });
+				return withCORS(new Response(`OpenAI API Error: ${errorText}`, { status: openaiResponse.status }));
 			}
 
-			// Return the JSON response from OpenAI
+			// 8. Return successful JSON response, wrapped in CORS
 			const result = await openaiResponse.json();
-			return new Response(JSON.stringify(result), {
-				status: 200,
-				headers: {
-					'Content-Type': 'application/json',
-					'Access-Control-Allow-Origin': '*', // Update for production
-				},
-			});
+			return withCORS(
+				new Response(JSON.stringify(result), {
+					status: 200,
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				})
+			);
 		} catch (error) {
 			console.error('Error processing OpenAI request:', error);
-			return new Response('Internal Server Error', { status: 500 });
+			// 9. Wrap any internal server error in CORS
+			return withCORS(new Response('Internal Server Error', { status: 500 }));
 		}
 	},
 };
