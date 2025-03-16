@@ -45,7 +45,7 @@ const service: Service = {
 
 			const { Context, Prompt, Problem, Tree, Code } = mergedPayload;
 
-			if (!Prompt?.trim() || !Problem || !Tree) {
+			if ((!Prompt?.trim() && Context === 'From Prompt') || !Problem || !Tree || !Context || !Code) {
 				return new Response('Missing Prompt, Problem, or Tree in request body', { status: 400 });
 			}
 
