@@ -40,7 +40,7 @@ const service: Service = {
 
 			// 5. Prepare payload for OpenAI
 			const payload = {
-				model: 'gpt-4',
+				model: 'gpt-4o',
 				messages: [
 					{
 						role: 'user',
