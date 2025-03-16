@@ -13,7 +13,7 @@ interface RequestBody {
 }
 
 const service: Service = {
-	path: '/openai/check/v1/',
+	path: '/openai/v2/',
 
 	async fetch(request: Request, env: Env, ctx: ExecutionContext, subPath: string): Promise<Response | void> {
 		if (request.method === 'OPTIONS') {
