@@ -130,8 +130,9 @@ The output must be a valid JSON object with the following structure:
 ---
 
 ### **Warning:**
-🚨 **Do not correct or modify any part of the steps**. Even if the steps seem incorrect, simply structure them as described.  
-🚨 **Your job is NOT to evaluate correctness**—only to extract steps and format them into the JSON structure.
+**Do not correct or modify any part of the steps**. Even if the steps seem incorrect, simply structure them as described.  
+**Your job is NOT to evaluate correctness**—only to extract steps and format them into the JSON structure.
+Extract all possible steps **and substeps** from content. If a step naturally includes smaller actions, structure them as substeps using the provided format.
 
 ---
 
