@@ -103,27 +103,28 @@ ${Code}
    "subSteps": {
      "1": {
        "content": "Description of substep",
-       "correctStep": "",
-       "code": "",
+       "correctStep": "", // If Context is "Check", fill with the correct step, else ""
+       "code": "", // If Context is "To Code", include code with comments here, else ""
        "prompt": "Portion of the text from Content describing this substep",
-       "status": "",
-       "general_hint": "",
-       "detailed_hint": ""
-     }
-     // More substeps if needed
+       "status": "", // If Context is "Check", fill with "Dividable", "Correct", "Incorrect", or "missing"
+       "general_hint": "", // If Context is "Check", fill with a general hint, else ""
+       "detailed_hint": "", // If Context is "Check", fill with a detailed hint, else ""
+	   "subSteps": {...},
+     },
+     ...
    }
  },
  "2": {
-   "content": "...",
-   "correctStep": "",
+   "content": "...", 	
+   "correctStep": "",	
    "code": "",
    "prompt": "...",
    "status": "",
    "general_hint": "",
    "detailed_hint": "",
-   "subSteps": {}
+   "subSteps": {...}
  }
- // More steps if needed
+ ...
 }
 }
 
