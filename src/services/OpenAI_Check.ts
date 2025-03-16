@@ -25,33 +25,15 @@ const service: Service = {
 	path: '/openai/v2/',
 
 	async fetch(request: Request, env: Env, ctx: ExecutionContext, subPath: string): Promise<Response | void> {
-		// 1. Handle CORS Preflight (OPTIONS) requests
-		if (request.method === 'OPTIONS') {
-			// Return a 204 with the necessary CORS headers
-			const preflightResponse = new Response(null, {
-				status: 204,
-				headers: {
-					'Access-Control-Allow-Origin': '*',
-					'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-					'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-					'Access-Control-Max-Age': '86400',
-				},
-			});
-			return preflightResponse;
-		}
-
-		// 2. Allow only POST requests
 		if (request.method !== 'POST') {
 			return withCORS(new Response('Method Not Allowed', { status: 405 }));
 		}
 
 		try {
-			// 3. Parse incoming JSON
 			const data: RequestBody = await request.json();
 			const mergedPayload = data.requestBody ?? data;
 			const { Problem, Tree } = mergedPayload;
 
-			// 4. Validate required fields
 			if (!Problem || !Tree) {
 				return withCORS(new Response('Missing Prompt, Problem, Tree, Context, or Code in request body', { status: 400 }));
 			}
@@ -135,7 +117,6 @@ JSON format. Please be sure to stick to this format.
 				temperature: 0.8,
 			};
 
-			// 6. Call OpenAI API
 			const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
 				method: 'POST',
 				headers: {
@@ -145,13 +126,11 @@ JSON format. Please be sure to stick to this format.
 				body: JSON.stringify(payload),
 			});
 
-			// 7. If OpenAI responds with an error, wrap in CORS
 			if (!openaiResponse.ok) {
 				const errorText = await openaiResponse.text();
 				return withCORS(new Response(`OpenAI API Error: ${errorText}`, { status: openaiResponse.status }));
 			}
 
-			// 8. Return successful JSON response, wrapped in CORS
 			const result = await openaiResponse.json();
 			return withCORS(
 				new Response(JSON.stringify(result), {
@@ -163,7 +142,6 @@ JSON format. Please be sure to stick to this format.
 			);
 		} catch (error) {
 			console.error('Error processing OpenAI request:', error);
-			// 9. Wrap any internal server error in CORS
 			return withCORS(new Response('Internal Server Error', { status: 500 }));
 		}
 	},

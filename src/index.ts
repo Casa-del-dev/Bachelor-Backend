@@ -36,7 +36,7 @@ export default {
 				}
 			}
 
-			return new Response('Service not found', { status: 404 });
+			return new Response('Service not implemented', { status: 501 });
 		} catch (err) {
 			console.error(`Error on request ${request.url}`, err);
 			return new Response('Internal Server Error', { status: 500 });
