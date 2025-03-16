@@ -82,7 +82,7 @@ Depending on the context this would be the output. The output must be a valid JS
 - **code** → Context: - if "To Code" then give the code - else "" (leave empty string)
 
 if Context: "From Code" then give the from the Code adjusted JSON tree
-if Context: "Check" then also add any missing steps into the Tree. And mark them as "status": → Missing
+if Context: "Check" then also add any missing steps or substeps into the Tree. And mark them as "status": → Missing
 - **steps** → Contains the identified steps from the Content
 - Each step includes:
 	- "content" → Description of what is happening at this step.
