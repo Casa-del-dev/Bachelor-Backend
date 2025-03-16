@@ -2,13 +2,13 @@ import { Service } from '..';
 
 interface Payload {
 	Problem: string;
-	Tree: string;
+	Tree: object;
 }
 
 interface RequestBody {
 	requestBody?: Payload;
 	Problem: string;
-	Tree: string;
+	Tree: object;
 }
 
 const service: Service = {
@@ -16,20 +16,26 @@ const service: Service = {
 
 	async fetch(request: Request, env: Env, ctx: ExecutionContext, subPath: string): Promise<Response | void> {
 		if (request.method !== 'POST') {
-			return new Response('Method Not Allowed', { status: 405 });
+			return new Response('Method Not Allowed', {
+				status: 405,
+				headers: { 'Access-Control-Allow-Origin': '*' },
+			});
 		}
 
 		try {
 			const data: RequestBody = await request.json();
 			const mergedPayload = data.requestBody ?? data;
-			const { Problem, Tree } = mergedPayload;
+			const { Tree, Problem } = mergedPayload;
 
-			if (!Problem || !Tree) {
-				return new Response('Missing Prompt, Problem, Tree, Context, or Code in request body', { status: 400 });
+			if (!Tree || !Problem) {
+				return new Response('Missing Prompt, Problem, Tree, Context, or Code in request body', {
+					status: 400,
+					headers: { 'Access-Control-Allow-Origin': '*' },
+				});
 			}
 
 			const payload = {
-				model: 'gpt-4o',
+				model: 'gpt-4',
 				messages: [
 					{
 						role: 'user',
@@ -117,15 +123,26 @@ JSON format. Please be sure to stick to this format.
 
 			if (!openaiResponse.ok) {
 				const errorText = await openaiResponse.text();
-				return new Response(`OpenAI API Error: ${errorText}`, { status: openaiResponse.status });
+				return new Response(`OpenAI API Error: ${errorText}`, {
+					status: openaiResponse.status,
+					headers: { 'Access-Control-Allow-Origin': '*' },
+				});
 			}
 
 			const result = await openaiResponse.json();
-			return;
-			new Response(JSON.stringify(result), { status: 200 });
+			return new Response(JSON.stringify(result), {
+				status: 200,
+				headers: {
+					'Content-Type': 'application/json',
+					'Access-Control-Allow-Origin': '*',
+				},
+			});
 		} catch (error) {
 			console.error('Error processing OpenAI request:', error);
-			return new Response('Internal Server Error', { status: 500 });
+			return new Response('Internal Server Error', {
+				status: 500,
+				headers: { 'Access-Control-Allow-Origin': '*' },
+			});
 		}
 	},
 };
