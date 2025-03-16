@@ -76,7 +76,7 @@ ${Code}
 
 ### Task
 
-- Generate a **valid JSON** object (and only a JSON object, without additional explanation) that describes all steps mentioned in **Content**, structured according to the template below. 
+- Generate a **valid JSON** object (and only a JSON object, without additional explanation) that describes all steps, and if needed substeps which are mentioned in **Content**, structured according to the template below. 
 - **Do not correct or modify** any step or substep. If the steps appear incorrect, simply include them as they are.
 - If **tree** (Existing JSON Steps) is non-empty, update it to reflect the newly parsed steps from the **Content** (e.g., add new steps if needed). 
 - Follow these rules based on the **Context**:
