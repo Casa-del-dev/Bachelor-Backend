@@ -12,6 +12,7 @@
 	"devDependencies": {
 		"@cloudflare/vitest-pool-workers": "^0.6.4",
 		"@cloudflare/workers-types": "^4.20250214.0",
+		"@flydotio/dockerfile": "^0.7.8",
 		"@types/cors": "^2.8.17",
 		"@types/express": "^5.0.0",
 		"typescript": "^5.5.2",
