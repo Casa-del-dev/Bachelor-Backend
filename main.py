@@ -38,15 +38,15 @@ async def websocket_endpoint(websocket: WebSocket):
                 code_obj = compile(code, "<input>", "eval")
                 result = eval(code_obj, console.locals)
                 if result is not None:
-                    print(">>" + repr(result))
+                    print(repr(result))
             except SyntaxError:
                 # If not an expression, try executing as statements.
                 try:
                     exec(code, console.locals)
                 except Exception as e:
-                    print(">>" + f"Error: {str(e)}")
+                    print(f"Error: {str(e)}")
             except Exception as e:
-                print(">>" + f"Error: {str(e)}")
+                print(f"Error: {str(e)}")
 
             # Gather all output.
             output = sys.stdout.getvalue() + sys.stderr.getvalue()
@@ -55,7 +55,7 @@ async def websocket_endpoint(websocket: WebSocket):
             sys.stdout = old_stdout
             sys.stderr = old_stderr
 
-            await websocket.send_text(output)
+            await websocket.send_text(">> " + output)
         except Exception as e:
             await websocket.send_text(f"Error: {str(e)}")
 
