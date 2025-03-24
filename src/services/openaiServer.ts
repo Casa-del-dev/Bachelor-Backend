@@ -41,7 +41,7 @@ const service: Service = {
 						role: 'user',
 						content: `Problem:
 I want you to interpret the following **Content**, **Problem Description**. Then, generate a structured JSON file describing all steps and if needed substeps contained in the Content.
-
+ 
 **Content:**  
 "${Prompt}"
 
