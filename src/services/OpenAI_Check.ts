@@ -41,7 +41,7 @@ const service: Service = {
 						role: 'user',
 						content: `Goal:
 
-Interpret the following Problem and JSON Tree, and generate a new JSON file that is semantically equivalent — meaning it has the same number of steps and substeps unless the Problem context clearly requires adding a step or substep.
+Use the input Tree as a base and revise only the fields specified below., and generate a new JSON file that is semantically equivalent — meaning it has the same number of steps and substeps unless the Problem context clearly requires adding a step or substep.
 
 **Tree:**  
 "${Tree}"
@@ -52,9 +52,10 @@ Interpret the following Problem and JSON Tree, and generate a new JSON file that
 You should update only the following properties based on correctness:
 - status.correctness
 - status.can_be_further_divided
-- correctStep (only if step is incorrect/missing)
-- general_hint (only if step is incorrect/missing)
-- detailed_hint (only if step is incorrect/missing)
+- correctStep (**Give** the correct step only if step is incorrect/missing)
+- general_hint (**Give** a general hint only if step is incorrect/missing)
+- detailed_hint (**Give** a detailed hint only if step is incorrect/missing)
+- add missing steps if the problem context expects still undescribed steps
 
 Return Format:
 
@@ -122,6 +123,9 @@ Example JSON Output:
     }
   }
 }
+
+### **Warning:**
+Only give as output the json file no words before or after!
 `,
 					},
 				],
