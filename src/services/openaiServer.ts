@@ -40,7 +40,7 @@ const service: Service = {
 					{
 						role: 'user',
 						content: `Problem:
-I want you to interpret the following **Content**, **Problem Description**, and **Existing JSON Structure**. Then, generate a structured JSON file describing all steps and if needed substeps contained in the Content.
+I want you to interpret the following **Content**, **Problem Description**. Then, generate a structured JSON file describing all steps and if needed substeps contained in the Content.
 
 **Content:**  
 "${Prompt}"
@@ -56,8 +56,6 @@ Important: You MUST extract substeps wherever possible. If a portion of the cont
 ### **Return Format:**
 The output must be a valid JSON object with the following structure:
 
-- **full_code** → "" (empty string)
-- **tree** → "Same as given"
 - **steps** → Contains the identified steps from the Content
 - Each step includes:
   - "content" → Description of what is happening at this step.
