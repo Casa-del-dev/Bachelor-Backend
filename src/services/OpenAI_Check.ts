@@ -41,7 +41,11 @@ const service: Service = {
 						role: 'user',
 						content: `Goal:
 
-Use the input Tree as a base and revise only the fields specified below., and generate a new JSON file that is semantically equivalent — meaning it has the same number of steps and substeps unless the Problem context clearly requires adding a step or substep.
+Use the input Tree as a base and revise only the fields specified below. However, if the Problem describes steps or substeps that are **missing or unrepresented** in the Tree, you **must add new blank steps or substeps** to capture that logic.
+
+The goal is to produce a new JSON file that is **semantically equivalent to a complete solution** for the Problem — meaning:
+- All required steps and substeps described or implied in the Problem are present,
+- The original structure is preserved **unless** the Problem clearly requires additions.
 
 **Tree:**  
 "${Tree}"
@@ -52,24 +56,24 @@ Use the input Tree as a base and revise only the fields specified below., and ge
 You should update only the following properties based on correctness:
 - status.correctness
 - status.can_be_further_divided
-- correctStep (**Give** the correct step only if step is incorrect/missing)
-- general_hint (**Give** a general hint only if step is incorrect/missing)
-- detailed_hint (**Give** a detailed hint only if step is incorrect/missing)
-- add missing steps if the problem context expects still undescribed steps
+- correctStep (**Give** the correct step only if step is incorrect or missing)
+- general_hint (**Give** a general hint only if step is incorrect or missing)
+- detailed_hint (**Give** a detailed hint only if step is incorrect or missing)
+- **Add missing steps or substeps if the Problem context requires any that are currently not present in the Tree**
 
 Return Format:
 
-- steps → Keep all original steps, unless the Problem clearly calls for adding a blank step.
+- steps → Keep all original steps, unless the Problem clearly requires an additional step (as a blank step).
 - Each step contains:
   - "content" → Keep as input.
   - "correctStep" → Fill only if correctness is "incorrect" or "missing".
   - "prompt" → Keep as input.
   - "status":
-    - "correctness" → "correct" / "incorrect" / "missing" — based on Problem.
-    - "can_be_further_divided" → "can" / "cannot" — based on Problem.
-  - "general_hint" → Fill only if correctness is not "correct".
-  - "detailed_hint" → Fill only if correctness is not "correct".
-  - "subSteps" → Keep as input, unless the Problem requires a new blank substep.
+    - "correctness" → "correct" / "incorrect" / "missing"
+    - "can_be_further_divided" → "can" / "cannot"
+  - "general_hint" → Only if correctness is not "correct".
+  - "detailed_hint" → Only if correctness is not "correct".
+  - "subSteps" → Keep as input, unless the Problem describes or implies new blank substeps that should be added.
 
 What qualifies as a substep?
 
@@ -84,6 +88,8 @@ A step or substep that contains all empty string values ("") except:
 "status": {
   "correctness": "missing"
 }
+
+You **must** add blank steps/substeps if a part of the Problem logic is not accounted for in the Tree.
 
 Example JSON Output:
 
