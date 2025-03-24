@@ -53,13 +53,20 @@ The goal is to produce a new JSON file that is **semantically equivalent to a co
 **Problem:**  
 "${Problem}"
 
-You should update only the following properties based on correctness:
+You should update only the following properties, based on the Problem:
+
 - status.correctness
 - status.can_be_further_divided
-- correctStep (**Give** the correct step only if step is incorrect or missing)
-- general_hint (**Give** a general hint only if step is incorrect or missing)
-- detailed_hint (**Give** a detailed hint only if step is incorrect or missing)
-- **Add missing steps or substeps if the Problem context requires any that are currently not present in the Tree**
+- correctStep (**Provide the correct step only if the existing step is incorrect or missing**)
+- general_hint (**Required if step is incorrect, missing, or can be further divided**)
+- detailed_hint (**Required if step is incorrect, missing, or can be further divided**)
+- Add missing steps or substeps if the Problem context requires any that are not already present in the Tree
+
+Important:
+- If a step exists but has incorrect content, mark it as "incorrect" — do NOT mark it as "missing" or delete its content.
+- Only mark a step as "missing" if it is **entirely absent** from the Tree.
+- When status.can_be_further_divided = "can", you must provide hints explaining how the step could be broken down further.
+
 
 Return Format:
 
@@ -86,10 +93,16 @@ What is a blank step or substep?
 A step or substep that contains all empty string values ("") except:
 
 "status": {
-  "correctness": "missing"
+  "correctness": "missing",
+  "can_be_further_divided": ""
 }
 
 You **must** add blank steps/substeps if a part of the Problem logic is not accounted for in the Tree.
+
+Common mistakes to avoid:
+- Do not overwrite or blank out existing steps marked as "incorrect".
+- Never mark a step as "missing" unless it is truly not present in the input Tree.
+- Always provide general and detailed hints when correctness is not "correct", or when a step can be further divided.
 
 Example JSON Output:
 
