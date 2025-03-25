@@ -106,6 +106,7 @@ Example JSON Output:
 
 ### **Warning:**
 Only give as output the json file no words before or after!
+Output the result as raw JSON (not as a string). Do NOT wrap it in quotes or escape characters.
 `,
 					},
 				],
