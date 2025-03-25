@@ -45,8 +45,9 @@ Using the input **Code** and **Tree**, follow the instructions below:
 For each step (and substep) in the **Tree**, if the described **content** is implemented in the **Code**, extract and insert the corresponding code snippet into the "code" field.  
 If it is **not implemented**, insert "Not implemented" in the "code" field.
 
-Your task is to return the **same Tree structure** (a JSON file), but with each "code" field filled accordingly.
-**Do not change any other part** of the structure. Only fill in the "code" fields.
+**DO NOT modify any other part of the Tree!**  
+Every other field — such as "id", "content", "correctStep", "prompt", "status", "general_hint", "detailed_hint", etc. — must be returned **exactly as they appear** in the input Tree.  
+The **structure**, **keys**, and **values** must remain untouched except for "code" fields.
 
 **Code:**  
 "${Code}"
