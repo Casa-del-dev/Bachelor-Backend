@@ -46,10 +46,8 @@ For each step (and substep) in the **Tree**, if the described **content** is imp
 If it is **not implemented**, insert "Not implemented" in the "code" field.
 
 **DO NOT modify any other part of the Tree!**  
-All steps and subSteps (even if they seem empty or partially filled)
-All keys and values (like "id", "content", "status", etc.)
-All structure, nesting, and order
-
+All steps and subSteps (even if they seem empty or partially filled) must be preserved.
+All keys and values (like "id", "content", "status", etc.) must remain exactly as in the input Tree.
 Do **not** delete steps or subSteps, even if "code" or "content" is missing or empty.
 Do **not** reformat or clean the JSON structure in any way.
 
@@ -57,14 +55,13 @@ Do **not** reformat or clean the JSON structure in any way.
 "${Code}"
 
 **Tree:**  
-"${Tree}"
+"${Tree}"  
+*(Note: In this prompt, the Tree is an array of steps)*
 
-Return Format:
+**Return Format:**
 
-A JSON object where each "step" and "subStep" includes:
-- "code" → either the matching code snippet (from the **Code** input), or "Not implemented"
-
-All other fields **must remain exactly as in the input Tree**.
+Return a JSON object with exactly two keys:
+- "steps" → an object where each step (and subStep) is indexed with a numerical key (as shown in the example below).
 
 Example JSON Output:
 
@@ -78,7 +75,7 @@ Example JSON Output:
       "prompt": "Same as input",
       "status": {
         "correctness": "Same as input",
-        "can_be_further_divided": "Same as input",
+        "can_be_further_divided": "Same as input"
       },
       "general_hint": "Same as input",
       "detailed_hint": "Same as input",
@@ -91,10 +88,10 @@ Example JSON Output:
           "prompt": "Same as input",
           "status": {
             "correctness": "Same as input",
-            "can_be_further_divided": "Same as input",
+            "can_be_further_divided": "Same as input"
           },
           "general_hint": "Same as input",
-          "detailed_hint": "Same as input",
+          "detailed_hint": "Same as input"
         }
       }
     },
@@ -104,9 +101,9 @@ Example JSON Output:
   }
 }
 
-### **Warning:**
-Only give as output the json file no words before or after!
-Output the result as raw JSON (not as a string). Do NOT wrap it in quotes or escape characters.
+**Warning:**
+Only output the raw JSON with no extra words, wrapping, or quotes.
+
 `,
 					},
 				],
