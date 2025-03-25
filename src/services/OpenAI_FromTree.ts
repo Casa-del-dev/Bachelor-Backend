@@ -46,8 +46,12 @@ For each step (and substep) in the **Tree**, if the described **content** is imp
 If it is **not implemented**, insert "Not implemented" in the "code" field.
 
 **DO NOT modify any other part of the Tree!**  
-Every other field — such as "id", "content", "correctStep", "prompt", "status", "general_hint", "detailed_hint", etc. — must be returned **exactly as they appear** in the input Tree.  
-The **structure**, **keys**, and **values** must remain untouched except for "code" fields.
+All steps and subSteps (even if they seem empty or partially filled)
+All keys and values (like "id", "content", "status", etc.)
+All structure, nesting, and order
+
+Do **not** delete steps or subSteps, even if "code" or "content" is missing or empty.
+Do **not** reformat or clean the JSON structure in any way.
 
 **Code:**  
 "${Code}"
