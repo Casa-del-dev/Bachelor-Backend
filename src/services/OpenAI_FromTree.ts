@@ -42,8 +42,8 @@ const service: Service = {
 						content: `Goal: 
 
 Using the input **Code** and **Tree**, follow the instructions below:
-For each step (and substep) in the **Tree**, if the described **content** is implemented in the **Code**, extract and insert the corresponding code snippet into the "code" field.  
-If it is **not implemented**, insert "Not implemented" in the "code" field.
+For each step (and substep) in the **Tree**, if and **only** the described **content** is implemented in the **Code**, extract and insert the corresponding code snippet into the "code" field. 
+If it is **not implemented** or **not implemented correctly**, insert "Not implemented correctly" in the "code" field. And If the status of the step is **incorrect or missing** leave "code": ""  
 
 **DO NOT modify any other part of the Tree!**  
 All steps and subSteps (even if they seem empty or partially filled) must be preserved.
@@ -71,7 +71,7 @@ Example JSON Output:
       "id": "Same as input",
       "content": "Same as input",
       "correctStep": "Same as input",
-      "code": "Corresponding code snippet or 'Not implemented'",
+      "code": "Corresponding code snippet or 'Not implemented correctly'",
       "prompt": "Same as input",
       "status": {
         "correctness": "Same as input",
@@ -84,7 +84,7 @@ Example JSON Output:
           "id": "Same as input",
           "content": "Same as input",
           "correctStep": "Same as input",
-          "code": "Corresponding code snippet or 'Not implemented'",
+          "code": "Corresponding code snippet or 'Not implemented correctly'",
           "prompt": "Same as input",
           "status": {
             "correctness": "Same as input",
