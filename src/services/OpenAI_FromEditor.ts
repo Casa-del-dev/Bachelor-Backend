@@ -39,76 +39,115 @@ const service: Service = {
 				messages: [
 					{
 						role: 'user',
-						content: `'''Given the following problem and a student's current incomplete code:
-Problem: ''' + ${Problem} + '''
-Student code: ''' + ${Code} + '''
-Please perform two tasks.
-Task 1: Output a series of steps. For each step, you need to
-identify its two statuses based on the student's incomplete code. The
-first status contains three dimension: correct, incorrect, or missing.
-The second status is whether this step can be furthered divided into
-detailed steps or cannot be further divided into detailed steps. For
-each step or substep, identify the corresponding lines of code that
-match the step or substep. If no corresponding code lines, set this
-item as empty.
-Task 2: For each step that is incorrect, can be divided into
-detailed steps, or missing, generate a friendly and encouraging hint.
-For incorrect step, generate a hint that skillfully guides the student
-towards the correct answer but without revealing the actual answers.
-For missing step, generate what is the general goal for the missing
-parts and providing a guidance to guide the student towards the
-expected goal, but do not reveal the answers. For steps that can be
-further divided into detailed steps, generate a hint and the detailed
-sub-steps.
-Please output the steps and their corresponding status and hints in
-a JSON format. Please be sure to stick to this format.
+						content: `Goal: 
+
+Use the input Code and Problem decsription that and do what is explained in following sections. if the Problem describes steps or substeps that are **missing or unrepresented** in the Code, you **must add new blank steps or substeps** to capture that logic.
+
+The goal is to produce a new JSON file that is **semantically equivalent to a complete solution** for the Problem — meaning:
+- All required steps and substeps described or implied in the Problem are present,
+- The original structure is preserved **unless** the Problem clearly requires additions.
+
+**Code:**  
+"${Code}"
+
+**Problem:**  
+"${Problem}"
+
+You should update only the following properties, based on the Problem:
+
+- status.correctness
+- status.can_be_further_divided
+- correctStep (**Provide the correct step only if the existing step is incorrect or missing**)
+- general_hint (**Required if step is incorrect, missing, or can be further divided**)
+- detailed_hint (**Required if step is incorrect, missing, or can be further divided**)
+- Add missing steps or substeps if the Problem context requires any that are not already present in the Code
+
+Important:
+- If a step exists but has incorrect content, mark it as "incorrect" — do NOT mark it as "missing" or delete its content.
+- Only mark a step as "missing" if it is **entirely absent** from the Code.
+- When status.can_be_further_divided = "can", you must provide hints explaining how the step could be broken down further.
+
+Return Format:
+
+- steps → Keep all original steps, unless the Problem clearly requires an additional step (as a blank step).
+- Each step contains:
+  - "content" → Keep as input.
+  - "correctStep" → Fill only if correctness is "incorrect" or "missing".
+  - "prompt" → Keep as input.
+  - "status":
+    - "correctness" → "correct" / "incorrect" / "missing"
+    - "can_be_further_divided" → "can" / "cannot"
+  - "general_hint" → Only if correctness is not "correct".
+  - "detailed_hint" → Only if correctness is not "correct".
+  - "subSteps" → Keep as input, unless the Problem describes or implies new blank substeps that should be added.
+
+What qualifies as a substep?
+
+- A task required to complete a larger step.
+- A process dependent on the parent step.
+- A breakdown of a broad action into finer details.
+
+What is a blank step or substep?
+
+A step or substep that contains all empty string values ("") except:
+
+"status": {
+  "correctness": "missing",
+  "can_be_further_divided": ""
+}
+
+You **must** add blank steps/substeps if a part of the Problem logic is not accounted for in the Tree.
+
+Common mistakes to avoid:
+- Do not overwrite or blank out existing steps marked as "incorrect".
+- Never mark a step as "missing" unless it is truly not present in the input Tree.
+- Always provide general and detailed hints when correctness is not "correct", or when a step can be further divided.
+
+Example JSON Output:
+
 {
-"code": "",
-"steps": {
+  "code": "",
+  "steps": {
     "1": {
-    id: step-\${Date.now()}-\${Math.floor(Math.random() * 10000)}
-    "content": "what the student currently input
-    for this step (it can be '' if no corresponding steps in A)",
-    "correctStep": "If this substep is incorrect or
-    missing, what should the correct substep be?",
-    "code": "",
-    "prompt": "Highlighted portion of the text that explains this step.",
-    "status": {
+      "id": "step-${Date.now()}-${Math.floor(Math.random() * 10000)}",
+      "content": "Same as input",
+      "correctStep": "The correct step, only if not correct",
+      "code": "",
+      "prompt": "Same as input",
+      "status": {
         "correctness": "correct / incorrect / missing",
         "can_be_further_divided": "can / cannot"
-    },
-    "general_hint": "a question form hint that provides
-    a general guide to the student",
-    "detailed_hint": "a detailed hint that gives more specific
-    guide but without showing the answer",
-    "subSteps": {
+      },
+      "general_hint": "Only if not correct",
+      "detailed_hint": "Only if not correct",
+      "subSteps": {
         "1": {
-        id: step-\${Date.now()}-\${Math.floor(Math.random() * 10000)}
-        "content": "what the student currently input
-        for this step (it can be '' if no corresponding steps in A)",
-        "correctStep": "If this substep is incorrect or
-        missing, what should the correct substep be?",
-        "code": "",
-        "prompt": "Highlighted portion of the text that explains this substep.",
-        "status": {
+          "id": "step-${Date.now()}-${Math.floor(Math.random() * 10000)}",
+          "content": "Same as input",
+          "correctStep": "Only if not correct",
+          "code": "",
+          "prompt": "Same as input",
+          "status": {
             "correctness": "correct / incorrect / missing",
             "can_be_further_divided": "can / cannot"
-        },
-        "general_hint": "a question form hint that provides
-        a general guide to the student",
-        "detailed_hint": "a detailed hint that gives more specific
-        guide but without showing the answer"
-        },
-        ...
-    }
+          },
+          "general_hint": "Only if not correct",
+          "detailed_hint": "Only if not correct"
+        }
+      }
     },
-    "2": {...},
-    ...
+    "2": {
+      // Same structure as above
+    }
+  }
 }
-}`,
+
+### **Warning:**
+Only give as output the json file no words before or after!
+`,
 					},
 				],
-				temperature: 0.8,
+				temperature: 0,
 			};
 
 			const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
