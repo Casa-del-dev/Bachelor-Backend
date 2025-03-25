@@ -42,14 +42,18 @@ const service: Service = {
 						content: `Goal: 
 
 Using the input **Code** and **Tree**, follow the instructions below:
-For each step (and substep) in the **Tree**, if and **only** the described **content** is implemented in the **Code**, extract and insert the corresponding code snippet into the "code" field. 
-If it is **not implemented** or **not implemented correctly**, insert "Not implemented correctly" in the "code" field. And If the status of the step is **incorrect or missing** leave "code": ""  
 
-**DO NOT modify any other part of the Tree!**  
-All steps and subSteps (even if they seem empty or partially filled) must be preserved.
-All keys and values (like "id", "content", "status", etc.) must remain exactly as in the input Tree.
-Do **not** delete steps or subSteps, even if "code" or "content" is missing or empty.
-Do **not** reformat or clean the JSON structure in any way.
+1. For each step (and substep) in the Tree:
+   - If the step's status is "correct" (i.e., "status.correctness" is "correct"):
+     - If and only if the described **content** is implemented in the **Code**, extract and insert the corresponding code snippet into the "code" field.
+     - Otherwise (if the content is not implemented or is implemented incorrectly), insert "Not implemented correctly" into the "code" field.
+   - If the step's status is not "correct" (i.e., it is "incorrect" or missing), leave the "code" field empty ("").
+
+2. DO NOT modify any other part of the Tree!
+   - All steps and subSteps (even if they seem empty or partially filled) must be preserved.
+   - All keys and values (like "id", "content", "status", etc.) must remain exactly as in the input Tree.
+   - Do not delete steps or subSteps, even if "code" or "content" is missing or empty.
+   - Do not reformat or clean the JSON structure in any way.
 
 **Code:**  
 "${Code}"
@@ -58,9 +62,9 @@ Do **not** reformat or clean the JSON structure in any way.
 "${Tree}"  
 *(Note: In this prompt, the Tree is an array of steps)*
 
-**Return Format:**
+Return Format:
 
-Return a JSON object with exactly two keys:
+Return a JSON object with exactly one key:
 - "steps" → an object where each step (and subStep) is indexed with a numerical key (as shown in the example below).
 
 Example JSON Output:
@@ -71,7 +75,7 @@ Example JSON Output:
       "id": "Same as input",
       "content": "Same as input",
       "correctStep": "Same as input",
-      "code": "Corresponding code snippet or 'Not implemented correctly'",
+      "code": "Corresponding code snippet if implemented correctly, or 'Not implemented correctly' if the step is correct but not implemented correctly, otherwise an empty string",
       "prompt": "Same as input",
       "status": {
         "correctness": "Same as input",
@@ -84,7 +88,7 @@ Example JSON Output:
           "id": "Same as input",
           "content": "Same as input",
           "correctStep": "Same as input",
-          "code": "Corresponding code snippet or 'Not implemented correctly'",
+          "code": "Corresponding code snippet or 'Not implemented correctly' as per the rules above",
           "prompt": "Same as input",
           "status": {
             "correctness": "Same as input",
@@ -101,9 +105,8 @@ Example JSON Output:
   }
 }
 
-**Warning:**
+Warning:
 Only output the raw JSON with no extra words, wrapping, or quotes.
-
 `,
 					},
 				],
