@@ -38,7 +38,7 @@ const service: Service = {
 				model: 'gpt-4',
 				messages: [
 					{
-						role: 'user',
+						role: 'system',
 						content: `Goal: 
 
 Using the input **Code** and **Tree**, follow the instructions below:
@@ -105,7 +105,7 @@ Example JSON Output:
   }
 }
 
-Warning:
+**Warning**:
 Only output the raw JSON with no extra words, wrapping, or quotes.
 `,
 					},
