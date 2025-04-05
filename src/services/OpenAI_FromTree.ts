@@ -25,13 +25,17 @@ const service: Service = {
 		try {
 			const data: RequestBody = await request.json();
 			const mergedPayload = data.requestBody ?? data;
-			const { Tree, Code } = mergedPayload;
+			let { Tree, Code } = mergedPayload;
 
 			if (!Code || !Tree) {
-				return new Response('Missing Prompt, Problem, Tree, Context, or Code in request body', {
-					status: 400,
-					headers: { 'Access-Control-Allow-Origin': '*' },
-				});
+				if (Code === null) {
+					Code = '';
+				} else {
+					return new Response('Missing Prompt, Problem, Tree, Context, or Code in request body', {
+						status: 400,
+						headers: { 'Access-Control-Allow-Origin': '*' },
+					});
+				}
 			}
 
 			const payload = {
