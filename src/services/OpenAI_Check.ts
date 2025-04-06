@@ -73,7 +73,7 @@ Return Format:
 - steps → Keep all original steps, unless the Problem clearly requires an additional step (as a blank step).
 - Each step contains:
   - "content" → Keep as input.
-  - "correctStep" → Fill only if correctness is "incorrect" or "missing".
+  - "correctStep" → Only include if correctness is not "correct".
   - "prompt" → Keep as input.
   - "status":
     - "correctness" → "correct" / "incorrect" / "missing"
