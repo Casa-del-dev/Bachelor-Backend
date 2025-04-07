@@ -15,8 +15,8 @@ def read_root():
 
 def wrap_last_expr_in_print(source: str):
     """
-    If the last statement in the source code is an expression,
-    wrap it with a print() call so its result is printed.
+    If the last statement in the source code is an expression and
+    is not already a print() call, wrap it with a print() call so its result is printed.
     """
     try:
         tree = ast.parse(source, mode='exec')
@@ -26,6 +26,13 @@ def wrap_last_expr_in_print(source: str):
     
     if tree.body and isinstance(tree.body[-1], ast.Expr):
         last_expr = tree.body[-1]
+        # If the last expression is already a call to print, leave it.
+        if (isinstance(last_expr.value, ast.Call) and
+            isinstance(last_expr.value.func, ast.Name) and
+            last_expr.value.func.id == 'print'):
+            return compile(source, filename="<input>", mode="exec")
+        
+        # Wrap the last expression with a print() call.
         print_call = ast.Expr(
             value=ast.Call(
                 func=ast.Name(id='print', ctx=ast.Load()),
