@@ -56,12 +56,11 @@ async def websocket_endpoint(websocket: WebSocket):
     async def websocket_input(prompt: str) -> str:
         nonlocal input_future
         input_future = asyncio.get_event_loop().create_future()
-
+        print(f"[SERVER] Sending input request: {prompt}")
         await websocket.send_text(json.dumps({
             "action": "input_request",
             "prompt": prompt
         }))
-
         return await input_future
 
     def patched_input(prompt=""):
