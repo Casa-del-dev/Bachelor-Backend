@@ -17,7 +17,7 @@ async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     console = InteractiveConsole()
 
-    input_future = None  # ⬅️ Global inside this session
+    input_future = None  # Shared input state
 
     async def websocket_input(prompt: str) -> str:
         nonlocal input_future
@@ -39,47 +39,31 @@ async def websocket_endpoint(websocket: WebSocket):
             request = json.loads(data)
             action = request.get("action")
 
-            # Handle input response
+            # Handle input responses early
             if action == "input_response" and input_future:
                 input_future.set_result(request.get("value", ""))
                 continue
 
+            # Redirect stdout
             old_stdout = sys.stdout
             old_stderr = sys.stderr
             sys.stdout = io.StringIO()
             sys.stderr = io.StringIO()
 
             try:
-
-                if action == "input_response" and input_future:
-                    input_future.set_result(request.get("value", ""))
-                    continue
-
-                elif action == "run":
+                if action == "run":
                     code = request.get("code", "")
 
+                    # Compile check first
                     try:
                         compile(code, "<input>", "exec")
                     except SyntaxError as e:
                         print(f"❌ SyntaxError: {e.msg} on line {e.lineno}")
                     else:
-                        input_future = None
-
-                        async def websocket_input(prompt: str) -> str:
-                            nonlocal input_future
-                            input_future = asyncio.get_event_loop().create_future()
-
-                            await websocket.send_text(json.dumps({
-                                "action": "input_request",
-                                "prompt": prompt
-                            }))
-
-                            return await input_future
-
-                        # Patch built-in input globally during exec()
+                        # Patch input globally
                         import builtins
                         original_input = builtins.input
-                        builtins.input = lambda prompt="": asyncio.get_event_loop().run_until_complete(websocket_input(prompt))
+                        builtins.input = patched_input
 
                         try:
                             exec(code, console.locals)
@@ -91,14 +75,13 @@ async def websocket_endpoint(websocket: WebSocket):
                         except Exception as e:
                             print(f"⚠️ Runtime error: {type(e).__name__}: {str(e)}")
                         finally:
-                            builtins.input = original_input  # Restore the original input
-
+                            builtins.input = original_input  # Restore original input
 
                 elif action == "compile":
                     code = request.get("code", "")
                     try:
                         compile(code, "<input>", "exec")
-                        exec(code, {})  # optional runtime check
+                        exec(code, {})  # Optional runtime check
                         print("✅ Code compiles and passes initial checks.")
                     except SyntaxError as e:
                         print(f"❌ SyntaxError: {e.msg} on line {e.lineno}")
