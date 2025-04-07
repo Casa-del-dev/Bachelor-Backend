@@ -50,7 +50,12 @@ async def websocket_endpoint(websocket: WebSocket):
             sys.stderr = io.StringIO()
 
             try:
-                if action == "run":
+
+                if action == "input_response" and input_future:
+                    input_future.set_result(request.get("value", ""))
+                    continue
+
+                elif action == "run":
                     code = request.get("code", "")
 
                     try:
@@ -58,8 +63,24 @@ async def websocket_endpoint(websocket: WebSocket):
                     except SyntaxError as e:
                         print(f"❌ SyntaxError: {e.msg} on line {e.lineno}")
                     else:
-                        # Patch input and execute
-                        console.locals["input"] = patched_input
+                        input_future = None
+
+                        async def websocket_input(prompt: str) -> str:
+                            nonlocal input_future
+                            input_future = asyncio.get_event_loop().create_future()
+
+                            await websocket.send_text(json.dumps({
+                                "action": "input_request",
+                                "prompt": prompt
+                            }))
+
+                            return await input_future
+
+                        # Patch built-in input globally during exec()
+                        import builtins
+                        original_input = builtins.input
+                        builtins.input = lambda prompt="": asyncio.get_event_loop().run_until_complete(websocket_input(prompt))
+
                         try:
                             exec(code, console.locals)
                             main_fn = console.locals.get("main")
@@ -69,6 +90,9 @@ async def websocket_endpoint(websocket: WebSocket):
                                 print("ℹ️ No main() function found to run.")
                         except Exception as e:
                             print(f"⚠️ Runtime error: {type(e).__name__}: {str(e)}")
+                        finally:
+                            builtins.input = original_input  # Restore the original input
+
 
                 elif action == "compile":
                     code = request.get("code", "")
