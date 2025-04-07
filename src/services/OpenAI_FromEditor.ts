@@ -105,6 +105,10 @@ You **must** add blank steps or substeps if any part of the Code or Problem logi
 
 ---
 
+🚨 Important: You must also return a **code** field that includes the original code with added inline comments that describe the purpose of each step and substep. These comments should clearly map the code logic to the described step structure.
+
+---
+
 Common Mistakes to Avoid:
 
 - Do not delete or clear content of incorrect steps — mark them and add guidance.
@@ -118,13 +122,13 @@ Return Format:
 Return **only** the following JSON — no extra explanation or text.
 
 {
-  "code": "original code with added comments that describe the steps",
+  "code": "// Original code with added comments that describe the steps",
   "steps": {
     "1": {
       "id": "step-${Date.now()}-${Math.floor(Math.random() * 10000)}",
       "content": "Same as input",
       "correctStep": "Only if incorrect or missing",
-      "code": "Relevant code for this step",
+      "code": "// Code segment for this step with a comment",
       "prompt": "Same as input",
       "status": {
         "correctness": "correct / incorrect / missing",
@@ -137,7 +141,7 @@ Return **only** the following JSON — no extra explanation or text.
           "id": "step-${Date.now()}-${Math.floor(Math.random() * 10000)}",
           "content": "Same as input",
           "correctStep": "Only if incorrect or missing",
-          "code": "Relevant code for this substep",
+          "code": "// Code segment for this substep with a comment",
           "prompt": "Same as input",
           "status": {
             "correctness": "correct / incorrect / missing",
