@@ -48,7 +48,13 @@ async def websocket_endpoint(websocket: WebSocket):
             sys.stderr = io.StringIO()
 
             try:
-                if action == "run":
+                if action == "input_response":
+                    # Resume paused input() call
+                    if input_future:
+                        input_future.set_result(request.get("value", ""))
+                    continue
+                
+                elif action == "run":
                     code = request.get("code", "")
 
                     try:
