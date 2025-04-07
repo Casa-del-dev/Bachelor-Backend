@@ -34,6 +34,11 @@ async def websocket_endpoint(websocket: WebSocket):
     while True:
         try:
             data = await websocket.receive_text()
+            # Handle input responses separately
+            if input_future and request.get("action") == "input_response":
+                input_future.set_result(request.get("value", ""))
+                continue
+
             request = json.loads(data)
             action = request.get("action")
 
@@ -47,24 +52,43 @@ async def websocket_endpoint(websocket: WebSocket):
                     code = request.get("code", "")
 
                     try:
-                        # Step 1: Compile check (syntax only)
+                        # Step 1: Compile syntax check
                         compile(code, "<input>", "exec")
                     except SyntaxError as e:
                         print(f"❌ SyntaxError: {e.msg} on line {e.lineno}")
                     else:
-                        # Step 2: Run the code if it compiled cleanly
-                        async def run_code():
-                            console.locals["input"] = lambda prompt="": asyncio.run(websocket_input(prompt))
-                            try:
-                                exec(code, console.locals)
-                                main_fn = console.locals.get("main")
-                                if callable(main_fn):
-                                    main_fn()
-                                else:
-                                    print("ℹ️ No main() function found to run.")
-                            except Exception as e:
-                                print(f"⚠️ Runtime error: {type(e).__name__}: {str(e)}")
-                        await run_code()
+                        # Step 2: Safe input() patching
+                        input_future = None
+
+                        async def websocket_input(prompt: str) -> str:
+                            nonlocal input_future
+                            input_future = asyncio.get_event_loop().create_future()
+
+                            # Ask frontend for input
+                            await websocket.send_text(json.dumps({
+                                "action": "input_request",
+                                "prompt": prompt
+                            }))
+
+                            return await input_future
+
+                        def patched_input(prompt=""):
+                            # Create coroutine to be awaited later
+                            return asyncio.get_event_loop().run_until_complete(websocket_input(prompt))
+
+                        # Patch console input
+                        console.locals["input"] = patched_input
+
+                        try:
+                            # Execute user code
+                            exec(code, console.locals)
+                            main_fn = console.locals.get("main")
+                            if callable(main_fn):
+                                main_fn()
+                            else:
+                                print("ℹ️ No main() function found to run.")
+                        except Exception as e:
+                            print(f"⚠️ Runtime error: {type(e).__name__}: {str(e)}")
 
                     code = request.get("code", "")
 
