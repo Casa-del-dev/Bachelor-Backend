@@ -76,6 +76,8 @@ async def websocket_endpoint(websocket: WebSocket):
 
                         # Step 1: Execute the code to be tested.
                         exec(code_under_test, test_globals)
+
+                        test_globals["unittest"] = unittest
                         # Step 2: Execute the test cases in the same context.
                         exec(test_code, test_globals)
 
