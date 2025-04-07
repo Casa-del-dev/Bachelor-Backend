@@ -40,110 +40,124 @@ const service: Service = {
 					{
 						role: 'user',
 						content: `Goal: 
+Use the provided **Code** to generate a structured step tree, then use the **Problem description** to verify that the steps are complete and correct.
 
-Use the input Code and Problem decsription that and do what is explained in following sections. if the Problem describes steps or substeps that are **missing or unrepresented** in the Code, you **must add new blank steps or substeps** to capture that logic.
+You must analyze the Code to infer its intended logic and structure it as a sequence of steps and substeps. Then, use the Problem description to check whether these steps are sufficient, correct, and complete. If the Problem describes logic that is **missing or unrepresented** in the Code, you **must** add **blank steps or substeps** to the output to reflect what is missing.
 
-The goal is to produce a new JSON file that is **semantically equivalent to a complete solution** for the Problem — meaning:
-- All required steps and substeps described or implied in the Problem are present,
-- The original structure is preserved **unless** the Problem clearly requires additions.
+The resulting JSON must represent a **semantically complete solution** to the Problem. This means:
 
-**Code:**  
-"${Code}"
+- Every step or substep described or implied by either the **Code** or **Problem** must be present.
+- The original structure should be preserved unless additions are required to fully represent the Problem logic.
 
-**Problem:**  
-"${Problem}"
+---
 
-You should update only the following properties, based on the Problem:
+Code:  
+${Code}
+
+Problem:  
+${Problem}
+
+---
+
+Update Only the Following Properties (when needed):
 
 - status.correctness
 - status.can_be_further_divided
-- correctStep (**Provide the correct step only if the existing step is incorrect or missing**)
-- general_hint (**Required if step is incorrect, missing, or can be further divided**)
-- detailed_hint (**Required if step is incorrect, missing, or can be further divided**)
-- Add missing steps or substeps if the Problem context requires any that are not already present in the Code
+- correctStep (Only if the step is incorrect or missing)
+- general_hint (Required if a step is incorrect, missing, or can be further divided)
+- detailed_hint (Required if a step is incorrect, missing, or can be further divided)
+- Add new **blank** steps or substeps only if the Problem introduces logic that is missing from the Code
 
-Important:
-- If a step exists but has incorrect content, mark it as "incorrect" — do NOT mark it as "missing" or delete its content.
-- Only mark a step as "missing" if it is **entirely absent** from the Code.
-- When status.can_be_further_divided = "can", you must provide hints explaining how the step could be broken down further.
+---
+
+Status Rules:
+
+- If a step is present but incorrect, mark it as "incorrect" — do **not** delete or blank it.
+- Mark a step as "missing" only if it is completely absent from the structure.
+- If status.can_be_further_divided = "can", provide general_hint and detailed_hint to guide the breakdown.
+
+---
+
+Definitions:
+
+**What is a substep?**
+- A task required to complete a larger step.
+- A smaller process nested under a parent step.
+- A finer breakdown of a broader action.
+
+**What is a blank step or substep?**
+A placeholder with only the following values:
+
+{
+  "content": "",
+  "correctStep": "",
+  "prompt": "",
+  "code": "",
+  "status": {
+    "correctness": "missing",
+    "can_be_further_divided": ""
+  },
+  "general_hint": "",
+  "detailed_hint": ""
+}
+
+You **must** add blank steps or substeps if any part of the Code or Problem logic is **missing** in the existing structure.
+
+---
+
+Common Mistakes to Avoid:
+
+- Do not delete or clear content of incorrect steps — mark them and add guidance.
+- Do not mark existing steps as "missing".
+- Always provide both general_hint and detailed_hint when a step is "incorrect", "missing", or divisible.
+
+---
 
 Return Format:
 
-- steps → Keep all original steps, unless the Problem clearly requires an additional step (as a blank step).
-- Each step contains:
-  - "content" → Keep as input.
-  - "correctStep" → Fill only if correctness is "incorrect" or "missing".
-  - "prompt" → Keep as input.
-  - "status":
-    - "correctness" → "correct" / "incorrect" / "missing"
-    - "can_be_further_divided" → "can" / "cannot"
-  - "general_hint" → Only if correctness is not "correct".
-  - "detailed_hint" → Only if correctness is not "correct".
-  - "subSteps" → Keep as input, unless the Problem describes or implies new blank substeps that should be added.
-
-What qualifies as a substep?
-
-- A task required to complete a larger step.
-- A process dependent on the parent step.
-- A breakdown of a broad action into finer details.
-
-What is a blank step or substep?
-
-A step or substep that contains all empty string values ("") except:
-
-"status": {
-  "correctness": "missing",
-  "can_be_further_divided": ""
-}
-
-You **must** add blank steps/substeps if a part of the Problem logic is not accounted for in the Tree.
-
-Common mistakes to avoid:
-- Do not overwrite or blank out existing steps marked as "incorrect".
-- Never mark a step as "missing" unless it is truly not present in the input Tree.
-- Always provide general and detailed hints when correctness is not "correct", or when a step can be further divided.
-
-Example JSON Output:
+Return **only** the following JSON — no extra explanation or text.
 
 {
-  "code": "",
+  "code": "original code with added comments that describe the steps",
   "steps": {
     "1": {
       "id": "step-${Date.now()}-${Math.floor(Math.random() * 10000)}",
       "content": "Same as input",
-      "correctStep": "The correct step, only if not correct",
-      "code": "",
+      "correctStep": "Only if incorrect or missing",
+      "code": "Relevant code for this step",
       "prompt": "Same as input",
       "status": {
         "correctness": "correct / incorrect / missing",
         "can_be_further_divided": "can / cannot"
       },
-      "general_hint": "Only if not correct",
-      "detailed_hint": "Only if not correct",
+      "general_hint": "Required if not correct",
+      "detailed_hint": "Required if not correct",
       "subSteps": {
         "1": {
           "id": "step-${Date.now()}-${Math.floor(Math.random() * 10000)}",
           "content": "Same as input",
-          "correctStep": "Only if not correct",
-          "code": "",
+          "correctStep": "Only if incorrect or missing",
+          "code": "Relevant code for this substep",
           "prompt": "Same as input",
           "status": {
             "correctness": "correct / incorrect / missing",
             "can_be_further_divided": "can / cannot"
           },
-          "general_hint": "Only if not correct",
-          "detailed_hint": "Only if not correct"
+          "general_hint": "Required if not correct",
+          "detailed_hint": "Required if not correct"
         }
       }
     },
     "2": {
-      // Same structure as above
+      // Same structure
     }
   }
 }
 
-### **Warning:**
-Only give as output the json file no words before or after!
+---
+
+Final Instruction:  
+**Only return the final JSON file. Do not include any explanation or additional text before or after!**
 `,
 					},
 				],
