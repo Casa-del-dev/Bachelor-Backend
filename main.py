@@ -31,22 +31,20 @@ async def websocket_endpoint(websocket: WebSocket):
 
             try:
                 if action == "run":
-                    # REPL-style persistent execution
                     code = request.get("code", "")
                     try:
-                        # Try evaluating expressions
-                        code_obj = compile(code, "<input>", "eval")
-                        result = eval(code_obj, console.locals)
-                        if result is not None:
-                            print(repr(result))
-                    except SyntaxError:
-                        # Not an expression? Execute as statements.
-                        try:
-                            exec(code, console.locals)
-                        except Exception as e:
-                            print(f"Error: {str(e)}")
+                        # Compile and exec user code
+                        exec(code, console.locals)
+
+                        # If they defined a 'main', run it
+                        if "main" in console.locals and callable(console.locals["main"]):
+                            console.locals["main"]()
+                        else:
+                            print("ℹ️ No main() function found to run.")
+
                     except Exception as e:
-                        print(f"Error: {str(e)}")
+                        print(f"⚠️ Runtime error: {str(e)}")
+
 
                 elif action == "compile":
                     # Syntax check without execution.
