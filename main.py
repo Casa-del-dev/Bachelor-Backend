@@ -54,28 +54,44 @@ async def websocket_endpoint(websocket: WebSocket):
                 if action == "run":
                     code = request.get("code", "")
 
-                    # Compile check first
                     try:
                         compile(code, "<input>", "exec")
                     except SyntaxError as e:
                         print(f"❌ SyntaxError: {e.msg} on line {e.lineno}")
                     else:
-                        # Patch input globally
-                        import builtins
-                        original_input = builtins.input
-                        builtins.input = patched_input
+                        # patch input as an async function
+                        async def websocket_input(prompt: str) -> str:
+                            nonlocal input_future
+                            input_future = asyncio.get_event_loop().create_future()
+                            await websocket.send_text(json.dumps({
+                                "action": "input_request",
+                                "prompt": prompt
+                            }))
+                            return await input_future
 
-                        try:
-                            exec(code, console.locals)
-                            main_fn = console.locals.get("main")
-                            if callable(main_fn):
-                                main_fn()
-                            else:
-                                print("ℹ️ No main() function found to run.")
-                        except Exception as e:
-                            print(f"⚠️ Runtime error: {type(e).__name__}: {str(e)}")
-                        finally:
-                            builtins.input = original_input  # Restore original input
+                        # Create a fake input() that returns an awaitable
+                        async def patched_input(prompt=""):
+                            return await websocket_input(prompt)
+
+                        # Patch the global input inside the locals
+                        console.locals["input"] = patched_input
+
+                        async def run_user_code():
+                            try:
+                                exec(code, console.locals)
+                                main_fn = console.locals.get("main")
+                                if callable(main_fn):
+                                    if asyncio.iscoroutinefunction(main_fn):
+                                        await main_fn()
+                                    else:
+                                        main_fn()
+                                else:
+                                    print("ℹ️ No main() function found to run.")
+                            except Exception as e:
+                                print(f"⚠️ Runtime error: {type(e).__name__}: {str(e)}")
+
+                        await run_user_code()
+
 
                 elif action == "compile":
                     code = request.get("code", "")
