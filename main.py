@@ -4,6 +4,7 @@ import json
 import sys
 import io
 import asyncio
+import ast
 from code import InteractiveConsole
 
 app = FastAPI()
@@ -11,6 +12,32 @@ app = FastAPI()
 @app.get("/")
 def read_root():
     return {"message": "FastAPI is running on Fly.io"}
+
+def wrap_last_expr_in_print(source: str):
+    """
+    If the last statement in the source code is an expression,
+    wrap it with a print() call so its result is printed.
+    """
+    try:
+        tree = ast.parse(source, mode='exec')
+    except SyntaxError:
+        # Return original compiled code if parsing fails.
+        return compile(source, filename="<input>", mode="exec")
+    
+    if tree.body and isinstance(tree.body[-1], ast.Expr):
+        last_expr = tree.body[-1]
+        print_call = ast.Expr(
+            value=ast.Call(
+                func=ast.Name(id='print', ctx=ast.Load()),
+                args=[last_expr.value],
+                keywords=[]
+            )
+        )
+        tree.body[-1] = print_call
+        ast.fix_missing_locations(tree)
+        return compile(tree, filename="<ast>", mode="exec")
+    else:
+        return compile(source, filename="<input>", mode="exec")
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
@@ -44,7 +71,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 input_future.set_result(request.get("value", ""))
                 continue
 
-            # Redirect stdout
+            # Redirect stdout and stderr
             old_stdout = sys.stdout
             old_stderr = sys.stderr
             sys.stdout = io.StringIO()
@@ -55,11 +82,12 @@ async def websocket_endpoint(websocket: WebSocket):
                     code = request.get("code", "")
 
                     try:
+                        # Test compilation of original code (for syntax errors)
                         compile(code, "<input>", "exec")
                     except SyntaxError as e:
                         print(f"❌ SyntaxError: {e.msg} on line {e.lineno}")
                     else:
-                        # patch input as an async function
+                        # Patch input as an async function
                         async def websocket_input(prompt: str) -> str:
                             nonlocal input_future
                             input_future = asyncio.get_event_loop().create_future()
@@ -69,29 +97,28 @@ async def websocket_endpoint(websocket: WebSocket):
                             }))
                             return await input_future
 
-                        # Create a fake input() that returns an awaitable
                         async def patched_input(prompt=""):
                             return await websocket_input(prompt)
 
-                        # Patch the global input inside the locals
+                        # Override input() in the user's local namespace.
                         console.locals["input"] = patched_input
 
                         async def run_user_code():
                             try:
-                                exec(code, console.locals)
+                                # Transform the code to automatically print the last expression
+                                code_obj = wrap_last_expr_in_print(code)
+                                exec(code_obj, console.locals)
+                                # Only call main() if it's defined.
                                 main_fn = console.locals.get("main")
                                 if callable(main_fn):
                                     if asyncio.iscoroutinefunction(main_fn):
                                         await main_fn()
                                     else:
                                         main_fn()
-                                else:
-                                    print("ℹ️ No main() function found to run.")
                             except Exception as e:
                                 print(f"⚠️ Runtime error: {type(e).__name__}: {str(e)}")
 
                         await run_user_code()
-
 
                 elif action == "compile":
                     code = request.get("code", "")
