@@ -3,6 +3,7 @@ from fastapi import FastAPI, WebSocket
 import json
 import sys
 import io
+import asyncio
 from code import InteractiveConsole
 
 app = FastAPI()
@@ -14,8 +15,21 @@ def read_root():
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
-    # Persistent interactive console for run commands
     console = InteractiveConsole()
+
+    async def websocket_input(prompt: str) -> str:
+        # Send a prompt to the frontend
+        await websocket.send_text(json.dumps({
+            "action": "input_request",
+            "prompt": prompt
+        }))
+
+        # Wait for a response from the frontend
+        while True:
+            response = await websocket.receive_text()
+            data = json.loads(response)
+            if data.get("action") == "input_response":
+                return data.get("value", "")
 
     while True:
         try:
@@ -23,7 +37,6 @@ async def websocket_endpoint(websocket: WebSocket):
             request = json.loads(data)
             action = request.get("action")
 
-            # Redirect stdout and stderr to capture all output
             old_stdout = sys.stdout
             old_stderr = sys.stderr
             sys.stdout = io.StringIO()
@@ -32,28 +45,53 @@ async def websocket_endpoint(websocket: WebSocket):
             try:
                 if action == "run":
                     code = request.get("code", "")
+
                     try:
-                        # Compile and exec user code
+                        # Step 1: Compile check (syntax only)
+                        compile(code, "<input>", "exec")
+                    except SyntaxError as e:
+                        print(f"❌ SyntaxError: {e.msg} on line {e.lineno}")
+                    else:
+                        # Step 2: Run the code if it compiled cleanly
+                        async def run_code():
+                            console.locals["input"] = lambda prompt="": asyncio.run(websocket_input(prompt))
+                            try:
+                                exec(code, console.locals)
+                                main_fn = console.locals.get("main")
+                                if callable(main_fn):
+                                    main_fn()
+                                else:
+                                    print("ℹ️ No main() function found to run.")
+                            except Exception as e:
+                                print(f"⚠️ Runtime error: {type(e).__name__}: {str(e)}")
+                        await run_code()
+
+                    code = request.get("code", "")
+
+                    async def run_code():
+                        # Inject async-aware input shim
+                        console.locals["input"] = lambda prompt="": asyncio.run(websocket_input(prompt))
                         exec(code, console.locals)
 
-                        # If they defined a 'main', run it
-                        if "main" in console.locals and callable(console.locals["main"]):
-                            console.locals["main"]()
+                        # Call main() if defined
+                        main_fn = console.locals.get("main")
+                        if callable(main_fn):
+                            main_fn()
                         else:
                             print("ℹ️ No main() function found to run.")
 
-                    except Exception as e:
-                        print(f"⚠️ Runtime error: {str(e)}")
-
+                    await run_code()
 
                 elif action == "compile":
-                    # Syntax check without execution.
                     code = request.get("code", "")
                     try:
                         compile(code, "<input>", "exec")
-                        print("✅ Code compiles with no syntax errors.")
+                        exec(code, {})  # optional runtime check
+                        print("✅ Code compiles and passes initial checks.")
                     except SyntaxError as e:
-                        print(f"❌ SyntaxError: {str(e)}")
+                        print(f"❌ SyntaxError: {e.msg} on line {e.lineno}")
+                    except Exception as e:
+                        print(f"❌ Runtime Error during setup: {type(e).__name__}: {str(e)}")
 
                 elif action == "test":
                     import types
@@ -62,8 +100,6 @@ async def websocket_endpoint(websocket: WebSocket):
 
                     code_under_test = request.get("code", "")
                     test_code = request.get("tests", "")
-
-                    # Create a clean global context for testing.
                     test_globals = {}
 
                     try:
@@ -72,14 +108,10 @@ async def websocket_endpoint(websocket: WebSocket):
                         if not test_code.strip():
                             raise ValueError("No test cases provided.")
 
-                        # Step 1: Execute the code to be tested.
                         exec(code_under_test, test_globals)
-
                         test_globals["unittest"] = unittest
-                        # Step 2: Execute the test cases in the same context.
                         exec(test_code, test_globals)
 
-                        # Step 3: Wrap the globals in a fake module for unittest.
                         test_module = types.ModuleType("__test_module__")
                         test_module.__dict__.update(test_globals)
 
@@ -90,13 +122,11 @@ async def websocket_endpoint(websocket: WebSocket):
                         runner.run(suite)
 
                     except Exception:
-                        # Print full traceback for easier debugging.
                         traceback.print_exc()
 
                 else:
                     print(f"Unsupported action: {action}")
 
-                # Gather output from stdout and stderr.
                 output = sys.stdout.getvalue() + sys.stderr.getvalue()
             finally:
                 sys.stdout = old_stdout
