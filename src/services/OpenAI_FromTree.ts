@@ -54,7 +54,8 @@ Using the input **Code** and **Tree**, follow the instructions below:
    - If the logic is implemented but incorrect, still extract the matching code and put **# NOT IMPLEMENTED CORRECTLY** above the linecode.
    - If the content is not implemented at all, leave the "code" field as an empty string.
 
-With incorrect I mean that the content of the step describes one thing but the programmed line does something else. **NOT** that the content is implemented wrongly and therefore the line is incorrect.
+Clarification on “incorrect”:
+This means the logic described in the step does not match what the line does. Do not infer correctness based on expected behavior. Only judge based on content mismatch.
 
 2. DO NOT modify any other part of the Tree!
    - All steps and subSteps (even if they seem empty or partially filled) must be preserved.
@@ -79,9 +80,17 @@ With incorrect I mean that the content of the step describes one thing but the p
   - **Do not inline the logic on the same line** as the control structure.
   - Break them into multiple lines for clarity so comments can appear directly above individual logical lines.
 
-Function Preservation Rule:
+Function Preservation Requirements:
 
-	- Keep the function names! **def myFunc()** and put the code with the added comments inside the defined function!
+	- You must retain the full function declaration: def function_name(args):.
+	- When inserting step comments, they must go inside the function body, never above or outside the def line.
+	- All extracted logic must appear within the appropriate function, inside its indentation.
+	- Never output loose lines of logic without wrapping them in their original function if they came from within it.
+	- When generating the top-level "code" field:
+	- Start with the original function definitions, such as def myFunc():.
+	- Insert step or substep comments above the corresponding code lines within the function.
+	- The def main() function must appear at the end, completely preserved and never labeled or commented.
+	- Do not extract the body alone without the function declaration.
 
 ---
 
