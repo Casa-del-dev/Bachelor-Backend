@@ -49,7 +49,6 @@ Using the input **Code** and **Tree**, follow the instructions below:
 
 1. For each step (and substep) in the Tree:
    - If and only if the described **content** is implemented in the **Code**, extract and insert the corresponding code snippet into the "code" field.
-   - Otherwise (if the content is not implemented or is implemented incorrectly), insert "" into the "code" field.
 
 2. DO NOT modify any other part of the Tree!
    - All steps and subSteps (even if they seem empty or partially filled) must be preserved.
