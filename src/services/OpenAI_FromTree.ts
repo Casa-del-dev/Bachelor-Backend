@@ -48,7 +48,9 @@ const service: Service = {
 Using the input **Code** and **Tree**, follow the instructions below:
 
 1. For each step (and substep) in the Tree:
-   - If and only if the described **content** is implemented in the **Code**, extract and insert the corresponding code snippet into the "code" field.
+   - If and only if the described **content** is implemented in the **Code**, extract and insert the corresponding code snippet into the "code" field, **even if the step is marked as incorrect**.
+   - If the content is not implemented, leave the code field as "".
+   - When filling the top-level **code** field, mark incorrectly implemented steps with **# NOT IMPLEMENTED CORRECTLY** in the inline comment **above the line**.
 
 2. DO NOT modify any other part of the Tree!
    - All steps and subSteps (even if they seem empty or partially filled) must be preserved.
@@ -78,7 +80,7 @@ The **def main()** function should appear **at the end of the code**, unmodified
 Example JSON Output:
 
 {
-  "code": "// Original code with added comments that describe the steps over the code line",
+  "code": "# Step 1\n# Initialize result variable\nresult = 0\n...\ndef main():\n    print(roman_to_int('X'))",
   "steps": {
     "1": {
       "id": "Same as input",
@@ -121,6 +123,7 @@ Example JSON Output:
 
 Final Instruction:  
 **Only return the final JSON file. Do not include any explanation or additional text before or after!**
+
 `,
 					},
 				],
