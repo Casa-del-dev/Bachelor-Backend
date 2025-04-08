@@ -68,7 +68,16 @@ Using the input **Code** and **Tree**, follow the instructions below:
 - **Every step and substep must have a valid code field.**
 - If the logic is implemented but incorrect, still include the relevant code under "code" and label it **# NOT IMPLEMENTED CORRECTLY** in the top-level "code" field.
 - If the logic is not implemented at all, then the "code" value must be "".
-- This rule applies **recursively**: steps → subSteps → subSteps of subSteps → etc.
+- This rule applies **recursively**: steps → subSteps → SubSubSteps → etc.
+- When generating the final **code** field with inline comments:
+  - You must **break down compound statements** like for, while, if, and else blocks across multiple lines.
+  - For example, a for loop body should **not** be written on the same line as the for header — break it into:
+
+    for i in range(n):
+        # Step description
+        do_something()
+
+  - This is required to properly align comments and substep structure to individual lines of logic.
 
 ---
 
@@ -140,6 +149,7 @@ Example JSON Output:
 
 Final Instruction:  
 **Only return the final JSON file. Do not include any explanation or additional text before or after!**
+
 
 `,
 					},
