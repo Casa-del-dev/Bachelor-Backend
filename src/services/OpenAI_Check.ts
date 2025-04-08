@@ -70,12 +70,12 @@ Important:
 
 Return Format:
 
-- code → "" (leave empty)
+- code → "" (make it empty)
 - steps → Keep all original steps, unless the Problem clearly requires an additional step (as a blank step).
 - Each step contains:
   - "content" → Keep as input.
   - "correctStep" → Only include if correctness is not "correct".
-  - code → "" (leave empty)
+  - code → "" (make it empty)
   - "prompt" → Keep as input.
   - "status":
     - "correctness" → "correct" / "incorrect" / "missing"
@@ -112,7 +112,6 @@ Example JSON Output:
   "code": "",
   "steps": {
     "1": {
-      "id": "step-${Date.now()}-${Math.floor(Math.random() * 10000)}",
       "content": "Same as input",
       "correctStep": "The correct step, only if not correct",
       "code": "",
@@ -125,7 +124,6 @@ Example JSON Output:
       "detailed_hint": "Only if not correct",
       "subSteps": {
         "1": {
-          "id": "step-${Date.now()}-${Math.floor(Math.random() * 10000)}",
           "content": "Same as input",
           "correctStep": "Only if not correct",
           "code": "",
