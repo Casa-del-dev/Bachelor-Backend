@@ -70,10 +70,12 @@ Important:
 
 Return Format:
 
+- code → "" (leave empty)
 - steps → Keep all original steps, unless the Problem clearly requires an additional step (as a blank step).
 - Each step contains:
   - "content" → Keep as input.
   - "correctStep" → Only include if correctness is not "correct".
+  - code → "" (leave empty)
   - "prompt" → Keep as input.
   - "status":
     - "correctness" → "correct" / "incorrect" / "missing"
