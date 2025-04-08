@@ -51,6 +51,14 @@ The resulting JSON must represent a **semantically complete solution** to the Pr
 
 ---
 
+Additional Instructions:
+
+- The code is in **Python**. Use **#** for all inline comments.
+- The **def main()** function is a standard wrapper and should **not** be included in the step tree.
+- Ensure the **comment step numbers** in the code match the **step tree structure**. Fix any misalignments (e.g., if a comment says **# Step 4.1.1** but it corresponds to step **4.2**, update the comment or structure accordingly).
+
+---
+
 Code:  
 ${Code}
 
@@ -72,9 +80,9 @@ Update Only the Following Properties (when needed):
 
 Status Rules:
 
-- If a step is present but incorrect, mark it as "incorrect" — do **not** delete or blank it.
-- Mark a step as "missing" only if it is completely absent from the structure.
-- If status.can_be_further_divided = "can", provide general_hint and detailed_hint to guide the breakdown.
+- If a step is present but incorrect, mark it as **incorrect** — do **not** delete or blank it.
+- Mark a step as **missing** only if it is completely absent from the structure.
+- If status.can_be_further_divided = **can**, provide general_hint and detailed_hint to guide the breakdown.
 
 ---
 
@@ -104,15 +112,15 @@ You **must** add blank steps or substeps if any part of the Code or Problem logi
 
 ---
 
-🚨 Important: You must also return a **code** field that includes the original code with added inline comments that describe the purpose of each step and substep. These comments should clearly map the code logic to the described step structure.
+Important: You must also return a **code** field that includes the original code with added inline comments that describe the purpose of each step and substep. These comments should clearly map the code logic to the described step structure.
 
 ---
 
 Common Mistakes to Avoid:
 
 - Do not delete or clear content of incorrect steps — mark them and add guidance.
-- Do not mark existing steps as "missing".
-- Always provide both general_hint and detailed_hint when a step is "incorrect", "missing", or divisible.
+- Do not mark existing steps as **missing**.
+- Always provide both **general_hint** and **detailed_hint** when a step is **incorrect**, **missing**, or **divisible**.
 
 ---
 
