@@ -49,8 +49,9 @@ Using the input **Code** and **Tree**, follow the instructions below:
 
 1. For each step (and substep) in the Tree:
    - If and only if the described **content** is implemented in the **Code**, extract and insert the corresponding code snippet into the "code" field, **even if the step is marked as incorrect**.
-   - If the content is not implemented, leave the code field as "".
-   - When filling the top-level **code** field, mark incorrectly implemented steps with **# NOT IMPLEMENTED CORRECTLY** in the inline comment **above the line**.
+   - If the described logic is present but implemented incorrectly, still extract the matching code snippet and insert it into the "code" field.
+   - If the content is not implemented at all, leave the "code" field as "".
+   - When filling the top-level **code** field, write **# NOT IMPLEMENTED CORRECTLY** above any line that corresponds to an incorrectly implemented step.
 
 2. DO NOT modify any other part of the Tree!
    - All steps and subSteps (even if they seem empty or partially filled) must be preserved.
@@ -59,6 +60,18 @@ Using the input **Code** and **Tree**, follow the instructions below:
    - Do not reformat or clean the JSON structure in any way.
    - Maintain the exact order and structure of steps and substeps from the input Tree.
 
+---
+
+**Additional Clarification**:
+
+- You must apply the exact same logic to all steps **and substeps**, no matter how deeply nested.
+- **Every step and substep must have a valid code field.**
+- If the logic is implemented but incorrect, still include the relevant code under "code" and label it **# NOT IMPLEMENTED CORRECTLY** in the top-level "code" field.
+- If the logic is not implemented at all, then the "code" value must be "".
+- This rule applies **recursively**: steps → subSteps → subSteps of subSteps → etc.
+
+---
+
 **Code:**  
 "${Code}"
 
@@ -66,9 +79,9 @@ Using the input **Code** and **Tree**, follow the instructions below:
 "${Tree}"  
 *(Note: In this prompt, the Tree is an array of steps)*
 
-Return Format:
+---
 
-Return a JSON like one shown in the example
+Return Format:
 
 Return a JSON object with exactly one key:
 - "steps" → an object where each step (and subStep) is indexed with a numerical key (as shown in the example below).
@@ -76,6 +89,8 @@ Return a JSON object with exactly one key:
 🚨 Important: You must also return a **code** field that includes the original code with added inline **# comments** (using Python syntax) placed **above** the relevant lines. These comments should clearly describe the purpose of each step and substep, and they must align with the Tree structure.  
 If a line corresponds to a step or substep that is **not implemented correctly**, write **# NOT IMPLEMENTED CORRECTLY** above it instead of a descriptive comment.  
 The **def main()** function should appear **at the end of the code**, unmodified and not commented away. Do not label it with a step.
+
+---
 
 Example JSON Output:
 
@@ -120,6 +135,8 @@ Example JSON Output:
     }
   }
 }
+
+---
 
 Final Instruction:  
 **Only return the final JSON file. Do not include any explanation or additional text before or after!**
