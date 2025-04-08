@@ -152,7 +152,9 @@ Return **only** the following JSON — no extra explanation or text.
           "general_hint": "Required if not correct",
           "detailed_hint": "Required if not correct"
 		  "subSteps": { 
-			// Same structure
+			"1": {
+			  // Same structure
+			}
 		  }
         }
       }
