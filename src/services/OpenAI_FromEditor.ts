@@ -51,11 +51,12 @@ The resulting JSON must represent a **semantically complete solution** to the Pr
 
 ---
 
-Additional Instructions:
+**Additional Instructions:**
 
 - The code is in **Python**. Use **#** for all inline comments.
 - The **def main()** function is a standard wrapper. You must **include it in the code output**, but **do not include it in the step tree**.
-- You **must synchronize** comments in the code and steps in the step tree. So if the comment says 3.1.1 you should put the step as a substep of 3.1
+- You **must treat every comment like # Step X, # Step X.Y, or # Step X.Y.Z as defining a step or substep**. These comments are authoritative and must be reflected in the structure of the step tree.
+- If a comment’s step number does **not match** the correct logical structure, **fix both the comment and the step tree to match**. Do **not ignore** or misplace any line with a # Step comment.
 ---
 
 Code:  
