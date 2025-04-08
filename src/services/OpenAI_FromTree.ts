@@ -48,10 +48,13 @@ const service: Service = {
 Using the input **Code** and **Tree**, follow the instructions below:
 
 1. For each step (and substep) in the Tree:
-   - If and only if the described **content** is implemented in the **Code**, extract and insert the corresponding code snippet into the "code" field, **even if the step is marked as incorrect**.
-   - If the described logic is present but implemented incorrectly, still extract the matching code snippet and insert it into the "code" field.
-   - If the content is not implemented at all, leave the "code" field as "".
-   - When filling the top-level **code** field, write **# NOT IMPLEMENTED CORRECTLY** above any line that corresponds to an incorrectly implemented step.
+   - Compare the step’s **content** with the logic found in the **Code** to determine whether it is implemented.
+   - Do **not** use the general_hint or detailed_hint to decide if something is implemented — only use the **content** field.
+   - If the described content is implemented in the Code, insert the corresponding code snippet into the "code" field, **even if the step is marked as incorrect**.
+   - If the logic is implemented but incorrect, still extract the matching code and put **# NOT IMPLEMENTED CORRECTLY** above the linecode.
+   - If the content is not implemented at all, leave the "code" field as an empty string.
+
+With incorrect I mean that the content of the step describes one thing but the programmed line does something else. **NOT** that the content is implemented wrongly and therefore the line is incorrect.
 
 2. DO NOT modify any other part of the Tree!
    - All steps and subSteps (even if they seem empty or partially filled) must be preserved.
@@ -64,20 +67,17 @@ Using the input **Code** and **Tree**, follow the instructions below:
 
 **Additional Clarification**:
 
-- You must apply the exact same logic to all steps **and substeps**, no matter how deeply nested.
-- **Every step and substep must have a valid code field.**
-- If the logic is implemented but incorrect, still include the relevant code under "code" and label it **# NOT IMPLEMENTED CORRECTLY** in the top-level "code" field.
-- If the logic is not implemented at all, then the "code" value must be "".
-- This rule applies **recursively**: steps → subSteps → SubSubSteps → etc.
-- When generating the final **code** field with inline comments:
-  - You must **break down compound statements** like for, while, if, and else blocks across multiple lines.
-  - For example, a for loop body should **not** be written on the same line as the for header — break it into:
+- You must apply this logic to all steps and substeps, no matter how deeply nested.
+- **Every step and substep must contain a "code" field.**
+- Do not remove or rewrite Python function definitions. If the logic is inside a function like def foo(x: str) -> str:, the function must remain and contain the commented lines inside.
+- When generating the top-level code field:
+  - Insert all comments **above** the corresponding code lines.
+  - Always preserve the original function structure (do not extract just parts of the body outside the function).
+  - For any incorrectly implemented logic, comment it with **# NOT IMPLEMENTED CORRECTLY** above the line.
 
-    for i in range(n):
-        # Step description
-        do_something()
-
-  - This is required to properly align comments and substep structure to individual lines of logic.
+- When working with for, while, if, else, etc.:
+  - **Do not inline the logic on the same line** as the control structure.
+  - Break them into multiple lines for clarity so comments can appear directly above individual logical lines.
 
 ---
 
@@ -95,8 +95,7 @@ Return Format:
 Return a JSON object with exactly one key:
 - "steps" → an object where each step (and subStep) is indexed with a numerical key (as shown in the example below).
 
-🚨 Important: You must also return a **code** field that includes the original code with added inline **# comments** (using Python syntax) placed **above** the relevant lines. These comments should clearly describe the purpose of each step and substep, and they must align with the Tree structure.  
-If a line corresponds to a step or substep that is **not implemented correctly**, write **# NOT IMPLEMENTED CORRECTLY** above it instead of a descriptive comment.  
+🚨 Important: You must also return a **code** field that includes the full original code with inline **# comments** (using Python syntax) placed **above** the relevant lines. These comments must describe the purpose of each step or substep.  
 The **def main()** function should appear **at the end of the code**, unmodified and not commented away. Do not label it with a step.
 
 ---
@@ -149,8 +148,6 @@ Example JSON Output:
 
 Final Instruction:  
 **Only return the final JSON file. Do not include any explanation or additional text before or after!**
-
-
 `,
 					},
 				],

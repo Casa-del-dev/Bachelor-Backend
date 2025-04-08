@@ -113,7 +113,7 @@ You **must** add blank steps or substeps if any part of the Code or Problem logi
 
 ---
 
-🚨 Important: You must also return a **code** field that includes the original code with added inline comments that describe the purpose of each step and substep. These comments should clearly map the code logic to the described step structure. The **def main()** function should appear **at the end of the code**, commented and preserved, but not step-labeled.
+🚨 Important: You must also return a **code** field that includes the original code with added inline comments that describe the purpose of each step and substep. These comments should clearly map the code logic to the described step structure. The **def main()** function should appear **at the end of the code**, preserved and not commented away, but not step-labeled.
 
 ---
 
