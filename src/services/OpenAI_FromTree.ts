@@ -79,6 +79,13 @@ With incorrect I mean that the content of the step describes one thing but the p
   - **Do not inline the logic on the same line** as the control structure.
   - Break them into multiple lines for clarity so comments can appear directly above individual logical lines.
 
+Function Preservation Rule:
+
+	- If a described step or substep exists inside a function, you must include the entire function in the top-level "code" field — including its def line.
+	- Do not extract just the inner lines or remove the function declaration.
+	- This applies to all function definitions (not just main()), e.g. def roman_to_int(...).
+	- Steps and substeps must still be annotated inside the function using # comments above the relevant lines.
+
 ---
 
 **Code:**  
