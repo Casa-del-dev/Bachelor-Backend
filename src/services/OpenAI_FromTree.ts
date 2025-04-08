@@ -42,16 +42,14 @@ const service: Service = {
 				model: 'gpt-4',
 				messages: [
 					{
-						role: 'system',
+						role: 'user',
 						content: `Goal: 
 
 Using the input **Code** and **Tree**, follow the instructions below:
 
 1. For each step (and substep) in the Tree:
-   - If the step's status is "correct" (i.e., "status.correctness" is "correct"):
-     - If and only if the described **content** is implemented in the **Code**, extract and insert the corresponding code snippet into the "code" field.
-     - Otherwise (if the content is not implemented or is implemented incorrectly), insert "Not implemented correctly" into the "code" field.
-   - If the step's status is not "correct" (i.e., it is "incorrect" or missing), leave the "code" field empty ("").
+   - If and only if the described **content** is implemented in the **Code**, extract and insert the corresponding code snippet into the "code" field.
+   - Otherwise (if the content is not implemented or is implemented incorrectly), insert "Not implemented correctly" into the "code" field.
 
 2. DO NOT modify any other part of the Tree!
    - All steps and subSteps (even if they seem empty or partially filled) must be preserved.
@@ -71,9 +69,12 @@ Return Format:
 Return a JSON object with exactly one key:
 - "steps" → an object where each step (and subStep) is indexed with a numerical key (as shown in the example below).
 
+🚨 Important: You must also return a **code** field that includes the original code with added inline comments that describe the purpose of each step and substep. These comments should clearly map the code logic to the described step structure. The **def main()** function should appear **at the end of the code**, commented and preserved, but not step-labeled.
+
 Example JSON Output:
 
 {
+  "code": "// Original code with added comments that describe the steps",
   "steps": {
     "1": {
       "id": "Same as input",
@@ -100,6 +101,11 @@ Example JSON Output:
           },
           "general_hint": "Same as input",
           "detailed_hint": "Same as input"
+	  "subSteps": {
+            "1": {
+              // Same structure
+            }
+          }
         }
       }
     },
