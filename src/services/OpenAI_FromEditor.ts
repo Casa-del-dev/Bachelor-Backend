@@ -54,7 +54,7 @@ The resulting JSON must represent a **semantically complete solution** to the Pr
 Additional Instructions:
 
 - The code is in **Python**. Use **#** for all inline comments.
-- The **def main()** function is a standard wrapper and should **not** be included in the step tree.
+- The **def main()** function is a standard wrapper. You must **include it in the code output**, but **do not include it in the step tree**.
 - Ensure the **comment step numbers** in the code match the **step tree structure**. Fix any misalignments (e.g., if a comment says **# Step 4.1.1** but it corresponds to step **4.2**, update the comment or structure accordingly).
 
 ---
