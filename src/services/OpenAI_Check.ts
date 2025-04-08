@@ -49,7 +49,12 @@ The goal is to produce a new JSON file that is **semantically equivalent to a co
 
 **Tree:**  
 "${Tree}"
-*(Note: In this prompt, the Tree is an array of steps)*
+
+⚠️ Input Tree Note:
+- The input is a flat list of steps, each with optional "children" arrays. You must transform this into the nested "steps" → "subSteps" format shown below.
+- If a step in the input has children, those must appear inside "subSteps" in the output.
+- Each substep (child) should have its own status, correctness, and hints, and must be preserved exactly unless the Problem requires changes.
+- Do not remove any existing children — all must appear in "subSteps" in the final output.
 
 **Problem:**  
 "${Problem}"
