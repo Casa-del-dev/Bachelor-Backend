@@ -116,7 +116,7 @@ The **def main()** function should appear **at the end of the code**, unmodified
 Example JSON Output:
 
 {
-  "code": "# Step 1\n# Initialize result variable\nresult = 0\n...\ndef main():\n    print(roman_to_int('X'))",
+  "code": "// Original code with added comments that describe the steps",
   "steps": {
     "1": {
       "id": "Same as input",
