@@ -63,6 +63,7 @@ You should update only the following properties, based on the Problem:
 - Add missing steps or substeps if the Problem context requires any that are not already present in the Tree
 
 Important:
+- **Always** keep the steps and substeps given in the input! Only add **if necessary** missing steps.
 - If a step exists but has incorrect content, mark it as "incorrect" — do NOT mark it as "missing" or delete its content.
 - Only mark a step as "missing" if it is **entirely absent** from the Tree.
 - When status.can_be_further_divided = "can", you must provide hints explaining how the step could be broken down further.
