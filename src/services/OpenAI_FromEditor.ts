@@ -71,7 +71,7 @@ Update Only the Following Properties (when needed):
 
 - status.correctness
 - status.can_be_further_divided
-- correctStep (Only if the step is incorrect or missing)
+- correctStep (Required if a step is incorrect, or missing)
 - general_hint (Required if a step is incorrect, missing, or can be further divided)
 - detailed_hint (Required if a step is incorrect, missing, or can be further divided)
 - Add new **blank** steps or substeps only if the Problem introduces logic that is missing from the Code
