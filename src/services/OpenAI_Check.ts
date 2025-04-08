@@ -67,7 +67,8 @@ Important:
 - If a step exists but has incorrect content, mark it as "incorrect" — do NOT mark it as "missing" or delete its content.
 - Only mark a step as "missing" if it is **entirely absent** from the Tree.
 - When status.can_be_further_divided = "can", you must provide hints explaining how the step could be broken down further.
-
+- Do not remove any existing substeps. All children in the input Tree must be preserved in the output, even if unchanged.
+- If a step contains substeps (children), include those in the output exactly as provided, updating only the fields if needed.
 
 Return Format:
 
