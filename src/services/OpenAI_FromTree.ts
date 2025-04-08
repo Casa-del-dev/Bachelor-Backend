@@ -120,8 +120,8 @@ Example JSON Output:
   }
 }
 
-**Warning**:
-Only output the raw JSON with no extra words, wrapping, or quotes.
+Final Instruction:  
+**Only return the final JSON file. Do not include any explanation or additional text before or after!**
 `,
 					},
 				],
