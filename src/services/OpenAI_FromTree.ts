@@ -60,8 +60,8 @@ This means the logic described in the step does not match what the line does. Do
 2. DO NOT modify any other part of the Tree!
    - All steps and subSteps (even if they seem empty or partially filled) must be preserved.
    - All keys and values (like "id", "content", "status", etc.) must remain exactly as in the input Tree.
-   - Do not delete steps or subSteps, even if "code" or "content" is missing or empty.
-   - Do not reformat or clean the JSON structure in any way.
+   - **Do not** delete steps or subSteps, even if "code" or "content" is missing or empty.
+   - **Do not** reformat or clean the JSON structure in any way.
    - Maintain the exact order and structure of steps and substeps from the input Tree.
 
 ---

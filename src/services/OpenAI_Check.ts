@@ -70,12 +70,11 @@ Important:
 
 Return Format:
 
-- code → "" (make it empty)
 - steps → Keep all original steps, unless the Problem clearly requires an additional step (as a blank step).
 - Each step contains:
   - "content" → Keep as input.
   - "correctStep" → Only include if correctness is not "correct".
-  - code → "" (make it empty)
+  - code → "Same as input" (//keep as input)
   - "status":
     - "correctness" → "correct" / "incorrect" / "missing"
     - "can_be_further_divided" → "can" / "cannot"
@@ -108,12 +107,11 @@ Common mistakes to avoid:
 Example JSON Output:
 
 {
-  "code": "",
   "steps": {
     "1": {
       "content": "Same as input",
       "correctStep": "The correct step, only if not correct",
-      "code": "",
+      "code": "// keep as input",
       "status": {
         "correctness": "correct / incorrect / missing",
         "can_be_further_divided": "can / cannot"
@@ -124,7 +122,7 @@ Example JSON Output:
         "1": {
           "content": "Same as input",
           "correctStep": "Only if not correct",
-          "code": "",
+          "code": "// keep as input",
           "status": {
             "correctness": "correct / incorrect / missing",
             "can_be_further_divided": "can / cannot"
