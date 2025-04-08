@@ -76,7 +76,6 @@ Return Format:
   - "content" → Keep as input.
   - "correctStep" → Only include if correctness is not "correct".
   - code → "" (make it empty)
-  - "prompt" → Keep as input.
   - "status":
     - "correctness" → "correct" / "incorrect" / "missing"
     - "can_be_further_divided" → "can" / "cannot"
@@ -115,7 +114,6 @@ Example JSON Output:
       "content": "Same as input",
       "correctStep": "The correct step, only if not correct",
       "code": "",
-      "prompt": "Same as input",
       "status": {
         "correctness": "correct / incorrect / missing",
         "can_be_further_divided": "can / cannot"
@@ -127,7 +125,6 @@ Example JSON Output:
           "content": "Same as input",
           "correctStep": "Only if not correct",
           "code": "",
-          "prompt": "Same as input",
           "status": {
             "correctness": "correct / incorrect / missing",
             "can_be_further_divided": "can / cannot"

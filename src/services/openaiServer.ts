@@ -61,7 +61,6 @@ The output must be a valid JSON object with the following structure:
   - "content" → Description of what is happening at this step.
   - "correctStep" → Leave as "" (empty string).
   - "code" → Leave as "" (empty string).
-  - "prompt" → Extract the text portion from Content that describes this step.
   - "status" → {
         "correctness" → Leave as "" (empty string),
         "can_be_further_divided"→ Leave as "" (empty string)
@@ -85,7 +84,6 @@ A breakdown of a broad action into finer details.
       "content": "Extracted step description from the Content.",
       "correctStep": "",
       "code": "",
-      "prompt": "Highlighted portion of the text that explains this step.",
       "status": {
         "correctness": "",
         "can_be_further_divided": ""
@@ -98,7 +96,6 @@ A breakdown of a broad action into finer details.
           "content": "Extracted substep description.",
           "correctStep": "",
           "code": "",
-          "prompt": "Highlighted portion of the text that explains this substep.",
           "status": {
 				"correctness": "",
 				"can_be_further_divided": ""
@@ -114,7 +111,6 @@ A breakdown of a broad action into finer details.
       "content": "Another identified step.",
       "correctStep": "",
       "code": "",
-      "prompt": "Highlighted portion of the text.",
       "status": {
         "correctness": "",
         "can_be_further_divided": ""

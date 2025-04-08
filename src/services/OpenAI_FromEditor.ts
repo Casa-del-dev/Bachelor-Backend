@@ -91,7 +91,6 @@ A placeholder with only the following values:
 {
   "content": "",
   "correctStep": "",
-  "prompt": "",
   "code": "",
   "status": {
     "correctness": "missing",
@@ -125,11 +124,9 @@ Return **only** the following JSON — no extra explanation or text.
   "code": "// Original code with added comments that describe the steps",
   "steps": {
     "1": {
-      "id": "step-${Date.now()}-${Math.floor(Math.random() * 10000)}",
       "content": "Same as input",
       "correctStep": "Only if incorrect or missing",
       "code": "// Code segment for this step with a comment",
-      "prompt": "Same as input",
       "status": {
         "correctness": "correct / incorrect / missing",
         "can_be_further_divided": "can / cannot"
@@ -138,11 +135,9 @@ Return **only** the following JSON — no extra explanation or text.
       "detailed_hint": "Required if not correct",
       "subSteps": {
         "1": {
-          "id": "step-${Date.now()}-${Math.floor(Math.random() * 10000)}",
           "content": "Same as input",
           "correctStep": "Only if incorrect or missing",
           "code": "// Code segment for this substep with a comment",
-          "prompt": "Same as input",
           "status": {
             "correctness": "correct / incorrect / missing",
             "can_be_further_divided": "can / cannot"
