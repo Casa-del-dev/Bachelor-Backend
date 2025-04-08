@@ -49,6 +49,7 @@ The goal is to produce a new JSON file that is **semantically equivalent to a co
 
 **Tree:**  
 "${Tree}"
+*(Note: In this prompt, the Tree is an array of steps)*
 
 **Problem:**  
 "${Problem}"
