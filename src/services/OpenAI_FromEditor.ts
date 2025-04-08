@@ -57,6 +57,7 @@ The resulting JSON must represent a **semantically complete solution** to the Pr
 - The **def main()** function is a standard wrapper. You must **include it in the code output**, but **do not include it in the step tree**.
 - You **must treat every comment like # Step X, # Step X.Y, or # Step X.Y.Z as defining a step or substep**. These comments are authoritative and must be reflected in the structure of the step tree.
 - If a comment’s step number does **not match** the correct logical structure, **fix both the comment and the step tree to match**. Do **not ignore** or misplace any line with a # Step comment.
+
 ---
 
 Code:  
@@ -71,10 +72,10 @@ Update Only the Following Properties (when needed):
 
 - status.correctness
 - status.can_be_further_divided
-- correctStep (Required if a step is incorrect, or missing)
-- general_hint (Required if a step is incorrect, missing, or can be further divided)
-- detailed_hint (Required if a step is incorrect, missing, or can be further divided)
-- Add new **blank** steps or substeps only if the Problem introduces logic that is missing from the Code
+- correctStep (**Mandatory if a step is incorrect or missing**)
+- general_hint (**Required if a step is incorrect, missing, or can be further divided**)
+- detailed_hint (**Required if a step is incorrect, missing, or can be further divided**)
+- Add new **blank steps or substeps only if the Problem introduces logic that is missing from the Code**
 
 ---
 
@@ -112,7 +113,7 @@ You **must** add blank steps or substeps if any part of the Code or Problem logi
 
 ---
 
-Important: You must also return a **code** field that includes the original code with added inline comments that describe the purpose of each step and substep. These comments should clearly map the code logic to the described step structure.
+🚨 Important: You must also return a **code** field that includes the original code with added inline comments that describe the purpose of each step and substep. These comments should clearly map the code logic to the described step structure. The **def main()** function should appear **at the end of the code**, commented and preserved, but not step-labeled.
 
 ---
 
@@ -121,6 +122,7 @@ Common Mistakes to Avoid:
 - Do not delete or clear content of incorrect steps — mark them and add guidance.
 - Do not mark existing steps as **missing**.
 - Always provide both **general_hint** and **detailed_hint** when a step is **incorrect**, **missing**, or **divisible**.
+- Always provide **correctStep** when a step or substep is marked **incorrect** or **missing**.
 
 ---
 
@@ -133,7 +135,7 @@ Return **only** the following JSON — no extra explanation or text.
   "steps": {
     "1": {
       "content": "Same as input",
-      "correctStep": "Only if incorrect or missing",
+      "correctStep": "**Mandatory if incorrect or missing**",
       "code": "// Code segment for this step with a comment",
       "status": {
         "correctness": "correct / incorrect / missing",
@@ -144,19 +146,19 @@ Return **only** the following JSON — no extra explanation or text.
       "subSteps": {
         "1": {
           "content": "Same as input",
-          "correctStep": "Only if incorrect or missing",
+          "correctStep": "**Mandatory if incorrect or missing**",
           "code": "// Code segment for this substep with a comment",
           "status": {
             "correctness": "correct / incorrect / missing",
             "can_be_further_divided": "can / cannot"
           },
           "general_hint": "Required if not correct",
-          "detailed_hint": "Required if not correct"
-		  "subSteps": { 
-			"1": {
-			  // Same structure
-			}
-		  }
+          "detailed_hint": "Required if not correct",
+          "subSteps": {
+            "1": {
+              // Same structure
+            }
+          }
         }
       }
     },
@@ -170,6 +172,7 @@ Return **only** the following JSON — no extra explanation or text.
 
 Final Instruction:  
 **Only return the final JSON file. Do not include any explanation or additional text before or after!**
+
 `,
 					},
 				],
