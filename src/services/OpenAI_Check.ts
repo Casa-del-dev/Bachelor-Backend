@@ -82,7 +82,7 @@ Return Format:
     - "can_be_further_divided" → "can" / "cannot"
   - "general_hint" → Only if correctness is not "correct".
   - "detailed_hint" → Only if correctness is not "correct".
-  - "subSteps" → Keep as input, unless the Problem describes or implies new blank substeps that should be added.
+  - "subSteps" → **Same as input**, but if the Problem describes or implies new blank substeps that should be added.
 
 What qualifies as a substep?
 
