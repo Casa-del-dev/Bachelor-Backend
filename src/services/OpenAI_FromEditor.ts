@@ -55,8 +55,7 @@ Additional Instructions:
 
 - The code is in **Python**. Use **#** for all inline comments.
 - The **def main()** function is a standard wrapper. You must **include it in the code output**, but **do not include it in the step tree**.
-- Ensure the **comment step numbers** in the code match the **step tree structure**. Fix any misalignments (e.g., if a comment says **# Step 4.1.1** but it corresponds to step **4.2**, update the comment or structure accordingly).
-
+- You **must synchronize** comments in the code and steps in the step tree. So if the comment says 3.1.1 you should put the step as a substep of 3.1
 ---
 
 Code:  
@@ -152,6 +151,9 @@ Return **only** the following JSON — no extra explanation or text.
           },
           "general_hint": "Required if not correct",
           "detailed_hint": "Required if not correct"
+		  "subSteps": { 
+			// Same structure
+		  }
         }
       }
     },
