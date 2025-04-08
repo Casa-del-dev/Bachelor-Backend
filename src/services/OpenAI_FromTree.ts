@@ -81,10 +81,7 @@ With incorrect I mean that the content of the step describes one thing but the p
 
 Function Preservation Rule:
 
-	- If a described step or substep exists inside a function, you must include the entire function in the top-level "code" field — including its def line.
-	- Do not extract just the inner lines or remove the function declaration.
-	- This applies to all function definitions (not just main()), e.g. def roman_to_int(...).
-	- Steps and substeps must still be annotated inside the function using # comments above the relevant lines.
+	- Keep the function names! **def myFunc()** and put the code with the added comments inside the defined function!
 
 ---
 
