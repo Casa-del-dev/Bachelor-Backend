@@ -67,6 +67,8 @@ Using the input **Code** and **Tree**, follow the instructions below:
 
 Return Format:
 
+Return a JSON like one shown in the example
+
 Return a JSON object with exactly one key:
 - "steps" → an object where each step (and subStep) is indexed with a numerical key (as shown in the example below).
 
@@ -77,7 +79,7 @@ The **def main()** function should appear **at the end of the code**, unmodified
 Example JSON Output:
 
 {
-  "code": "# Step 1\n# Initialize result variable\nresult = 0\n...\ndef main():\n    print(roman_to_int('X'))",
+  "code": "// Original code with added comments that describe the steps over the code line",
   "steps": {
     "1": {
       "id": "Same as input",
