@@ -114,17 +114,22 @@ If the steps and context allow it you put the new blank steps as a substep of al
 
 ---
 
-Important:
+	🚨 Code Editing Restrictions — Read Carefully:
 
-	- You must also return a "code" field that includes the original code exactly as provided, with no modifications, corrections, or additions to the code itself.
-	- You are strictly forbidden from adding new lines of code — not even to "fix" or "initialize" variables or improve logic.
-	- The only thing you are allowed and required to add are # Step comments above the relevant lines.
-	- You must preserve syntax errors, broken lines, and unused variables exactly as in the original code.
-	- If the code contains logic that is unreachable, broken, or not referenced, do not analyze or include it in the step tree.
-	- The def main() function must be preserved at the end of the code but must not be labeled, annotated, or described in the step tree.
-	- If any logic required by the Problem is not implemented in the Code, you must add a blank step or substep in the correct semantic location, based on its logical position in the process.
+	- You must return a "code" field that is **byte-for-byte identical** to the input Code, except for the addition of **# Step comments above existing lines**.
+	- ⚠️ **Do not add, modify, rearrange, or fix** any line of code. No logic, declarations, or corrections are allowed — only comments.
+	- The output "code" must:
+	- Retain all original whitespace, line breaks, indentation, and structure.
+	- Preserve any syntax errors or undefined behavior exactly as they appear.
+	- **Not include any new code lines**, even if a step is marked as "missing".
+	- If the Problem requires a step that is not implemented in the Code, you must:
+	- Add a **blank step or substep** in the tree.
+	- **Do not add a corresponding comment or line in the code field.**
+
+	- def main() must remain at the end of the code exactly as provided, with no # Step labels and no structural changes.
 
 ---
+
 
 Common Mistakes to Avoid:
 
