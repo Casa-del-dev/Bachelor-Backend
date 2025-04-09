@@ -131,15 +131,12 @@ If the steps and context allow it you put the new blank steps as a substep of al
 
 	An example on how the Code should look like:
 	/*
-	
+
 	def roman_to_int(s: str) -> int:
 		# Step 1: Define a dictionary to map Roman numerals to their corresponding integer values.
 		roman_values = {
 			'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000
 		}
-
-		# Step 2: Initialize a variable to store the total.
-		# NOT IMPLEMENTED
 
 		# Step 3: Iterate over the characters in the reversed string 's'.
 		for char in reversed(s):
@@ -154,6 +151,8 @@ If the steps and context allow it you put the new blank steps as a substep of al
 		print(roman_to_int('MCMXCIV'))
 	
 	*/
+
+	**Notice** The section that is not implemented correctly has a comment # NOT IMPLEMENTED CORRECTLY
 
 ---
 
