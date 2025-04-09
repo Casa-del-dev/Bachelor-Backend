@@ -137,6 +137,8 @@ If the steps and context allow it you put the new blank steps as a substep of al
 		roman_values = {
 			'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000
 		}
+		
+		# MISSSING STEP
 
 		# Step 3: Iterate over the characters in the reversed string 's'.
 		for char in reversed(s):
@@ -152,7 +154,7 @@ If the steps and context allow it you put the new blank steps as a substep of al
 	
 	*/
 
-	**Notice** The section that is not implemented correctly has a comment # NOT IMPLEMENTED CORRECTLY
+	**Notice** The section that is not implemented correctly has a comment # NOT IMPLEMENTED CORRECTLY and if missing there is a # MISSING STEP
 
 ---
 
