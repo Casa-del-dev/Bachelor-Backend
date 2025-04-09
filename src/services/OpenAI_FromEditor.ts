@@ -161,7 +161,7 @@ If the steps and context allow it you put the new blank steps as a substep of al
 	🔁 You must insert any missing step or substep in the exact correct position within the Tree.
 	- Do not append missing steps to the end of the "steps" object.
 	- If a blank step or substep belongs logically before another, place it before.
-	- If a substep is missing under step "3", add it as "steps": { "3": { "subSteps": { "1": { ... } } } } — never as step "3.1" or as a new top-level step.
+	- If a substep is missing under step "3", add it as "steps": { "3": { "subSteps": { "1": { ... } } } } — never as step "3.1" or as a new top-level step. (Consider highly to add it as a substep)
 	- The entire "steps" object must maintain a semantically and logically correct execution order.
 
 ---
@@ -174,7 +174,7 @@ Common Mistakes to Avoid:
 - Always provide both **general_hint** and **detailed_hint** when a step is **incorrect**, **missing**, or **can_be_further_divided**.
 - Always provide **correctStep** when a step or substep is marked **incorrect** or **missing**.
 - Add **missing** step in the correct order place in the step tree
-- Do not add missing steps to the end — always insert them in logical order.
+- Do not add missing steps to the end — always insert them in logical order especially considering into substeps.
 
 ---
 
