@@ -98,6 +98,18 @@ Function Preservation Requirements:
 		- If a substep logically occurs before an existing line, insert the comment and code snippet above that line within the correct function body.
 		- Preserve the semantic structure and control flow — never rearrange steps or substeps out of order.
 
+
+What is a missing step or substep?		
+
+A step or substep that contains all empty string values ("") except:
+
+"status": {
+  "correctness": "missing",
+  "can_be_further_divided": ""
+}
+
+You **must** add missing steps/substeps if a part of the Problem logic is not accounted for in the Tree.
+
 ---
 
 **Code:**  
