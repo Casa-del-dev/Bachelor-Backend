@@ -39,50 +39,62 @@ const service: Service = {
 				messages: [
 					{
 						role: 'user',
-						content: `Goal:
-Use the provided Code to generate a structured step tree, then use the Problem description to verify that the steps are complete and correct.
-You must analyze the Code to infer its intended logic and structure it as a sequence of steps and substeps. Then, use the Problem description to check whether these steps are sufficient, correct, and complete. If the Problem describes logic that is missing or unrepresented in the Code, you must add blank steps or substeps to the output to reflect what is missing.
-The resulting JSON must represent a semantically complete solution to the Problem. This means:
-Every step or substep described or implied by either the Code or Problem must be present.
-The original structure should be preserved unless additions are required to fully represent the Problem logic.
+						content: `Goal: 
+Use the provided **Code** to generate a structured step tree, then use the **Problem description** to verify that the steps are complete and correct.
 
-Additional Instructions:
+You must analyze the Code to infer its intended logic and structure it as a sequence of steps and substeps. Then, use the Problem description to check whether these steps are sufficient, correct, and complete. If the Problem describes logic that is **missing or unrepresented** in the Code, you **must** add **blank steps or substeps** to the output to reflect what is missing.
 
-	- The code is in Python. Use # for all inline comments.
-	- The def main() function is a standard wrapper. You must include it in the code output, but do not include it in the step tree.
-	- You must treat every comment like # Step X, # Step X.Y, or # Step X.Y.Z as defining a step or substep. These comments are authoritative and must be reflected in the structure of the step tree.
-	- If a comment’s step number does not match the correct logical structure, fix both the comment and the step tree to match. Do not ignore or misplace any line with a # Step comment.
+The resulting JSON must represent a **semantically complete solution** to the Problem. This means:
 
-Code:
+- Every step or substep described or implied by either the **Code** or **Problem** must be present.
+- The original structure should be preserved unless additions are required to fully represent the Problem logic.
+
+---
+
+**Additional Instructions:**
+
+- The code is in **Python**. Use **#** for all inline comments.
+- The **def main()** function is a standard wrapper. You must **include it in the code output**, but **do not include it in the step tree**.
+- You **must treat every comment like # Step X, # Step X.Y, or # Step X.Y.Z as defining a step or substep**. These comments are authoritative and must be reflected in the structure of the step tree.
+- If a comment’s step number does **not match** the correct logical structure, **fix both the comment and the step tree to match**. Do **not ignore** or misplace any line with a # Step comment.
+
+---
+
+Code:  
 ${Code}
 
-Problem:
+Problem:  
 ${Problem}
+
+---
 
 Update Only the Following Properties (when needed):
 
-	- status.correctness
-	- status.can_be_further_divided
-	- correctStep (Mandatory if a step is incorrect or missing)
-	- general_hint (Required if a step is incorrect, missing, or can be further divided)
-	- detailed_hint (Required if a step is incorrect, missing, or can be further divided)
-	- Add new blank steps or substeps only if the Problem introduces logic that is missing from the Code
+- status.correctness
+- status.can_be_further_divided
+- correctStep (**Mandatory if a step is incorrect or missing**)
+- general_hint (**Required if a step is incorrect, missing, or can be further divided**)
+- detailed_hint (**Required if a step is incorrect, missing, or can be further divided**)
+- Add new **blank steps or substeps only if the Problem introduces logic that is missing from the Code**
+
+---
 
 Status Rules:
 
-	- If a step is present but incorrect, mark it as "incorrect" — do not delete or blank it.
-	- Mark a step as "missing" only if it is completely absent from the structure.
-	- If status.can_be_further_divided = "can", provide general_hint and detailed_hint to guide the breakdown.
+- If a step is present but incorrect, mark it as **incorrect** — do **not** delete or blank it.
+- Mark a step as **missing** only if it is completely absent from the structure.
+- If status.can_be_further_divided = **can**, provide general_hint and detailed_hint to guide the breakdown.
+
+---
 
 Definitions:
 
-What is a substep?
+**What is a substep?**
+- A task required to complete a larger step.
+- A smaller process nested under a parent step.
+- A finer breakdown of a broader action.
 
-	- A task required to complete a larger step.
-	- A smaller process nested under a parent step.
-	- A finer breakdown of a broader action.
-
-What is a blank step or substep?
+**What is a blank step or substep?**
 A placeholder with only the following values:
 
 {
@@ -96,45 +108,29 @@ A placeholder with only the following values:
   "general_hint": "",
   "detailed_hint": ""
 }
-You must add blank steps or substeps if any part of the Code or Problem logic is missing in the existing structure.
 
-📌 Placement of Missing Logic:
+You **must** add blank steps or blank substeps if any part of the Code or Problem logic is **missing** in the existing structure.
+If the steps and context allow it you put the new blank steps as a substep of already existing steps.
 
-	- If the Problem describes logic that is missing from the Code, you must add a blank step or substep in the correct semantic position.
-	- If the missing logic clearly fits within an existing step, insert it as a substep inside the appropriate parent step — do not add it as a top-level step.
-	- Only add top-level steps when the missing logic represents a major phase of the solution not otherwise covered.
+---
 
-🚨 Important:
+🚨 Important: You must also return a **code** field that includes the original code with added inline comments that describe the purpose of each step and substep. These comments should clearly map the code logic to the described step structure. The **def main()** function should appear **at the end of the code**, preserved and not commented away, but not step-labeled.
+The **code** also should not be edited. the lines of code programm should remain syntactically equivalent to the original code lines. Only thing you are allowed and must change is the added comments.
 
-	- You must also return a "code" field that includes the original code only — with added inline comments that describe the purpose of each step and substep.
-	⚠️ Do not add, modify, correct, or invent any code. Only insert # Step ... comments above the existing lines. If the line is incorrect or broken, still preserve it — only annotate it.
-	- If the code contains syntax errors, broken logic, or invalid structure, you must not include any broken or unreachable logic in the step tree.
-	- If a block of code cannot be parsed or executed safely, omit it from the step tree and do not treat it as an implemented step.
-	- The def main() function must be preserved at the end of the code but must not be labeled, annotated, or described in the step tree.
-	- You must not try to improve, rewrite, or fix any broken logic.
-	- Do not infer correct logic if the implementation is broken. Instead, mark the corresponding step as "missing" or "incorrect".
+---
 
 Common Mistakes to Avoid:
 
-	❌ Do not delete or clear content of incorrect steps — mark them and add guidance.
-	❌ Do not mark existing steps as "missing".
-	✅ Always provide both general_hint and detailed_hint when a step is "incorrect", "missing", or "divisible".
-	✅ Always provide correctStep when a step or substep is marked "incorrect" or "missing".
+- Do not delete or clear content of incorrect steps — mark them and add guidance.
+- Do not mark existing steps as **missing**.
+- Always provide both **general_hint** and **detailed_hint** when a step is **incorrect**, **missing**, or **divisible**.
+- Always provide **correctStep** when a step or substep is marked **incorrect** or **missing**.
 
-🧱 Structure Preservation Rule:
-
-	- Substeps must always be nested inside their logical parent step.
-	- You must preserve and extend the tree hierarchy as needed — never flatten or misplace substeps as top-level steps.
-	- If a comment like # Step 2.1 appears, its structure must reflect that it's a substep of Step 2.
-
-🔢 Tree Ordering Rule:
-
-	- When adding any missing step or substep, it must appear in the correct logical order in the tree, consistent with the Problem’s flow.
-	- Never place a missing step at the end unless the logic clearly belongs there (e.g., return, cleanup).
-	- When in doubt, infer the position by matching problem intent to existing code structure.
+---
 
 Return Format:
-Return only the following JSON — no extra explanation or text.
+
+Return **only** the following JSON — no extra explanation or text.
 
 {
   "code": "// Original code with added comments that describe the steps",
@@ -173,8 +169,12 @@ Return only the following JSON — no extra explanation or text.
     }
   }
 }
-Final Instruction:
-Only return the final JSON file. Do not include any explanation or additional text before or after!
+
+---
+
+Final Instruction:  
+**Only return the final JSON file. Do not include any explanation or additional text before or after!**
+
 `,
 					},
 				],
