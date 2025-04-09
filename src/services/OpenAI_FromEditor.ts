@@ -93,6 +93,7 @@ Definitions:
 - A task required to complete a larger step.
 - A smaller process nested under a parent step.
 - A finer breakdown of a broader action.
+- Put a Substep under a Step: Step has a substeps section, in there you can put substeps 1,2,3, etc.
 
 **What is a blank step or substep?**
 A placeholder with only the following values:
