@@ -48,7 +48,8 @@ const service: Service = {
 Using the input **Code** and **Tree**, follow the instructions below:
 
 1. For each step (and substep) in the Tree:
-   - Compare the step’s **content** with the logic found in the **Code** to determine whether it is implemented.
+   - Compare the step’s **content** with the logic found in the **Code** to determine whether it is implemented. If any logic in the Code is not accounted for by any step or substep in the Tree, you must insert a missing substep (see definition below).
+   - If the Code contains logic that is not described in any step or substep in the Tree, you must insert a new missing substep (with empty content, empty code, and status.correctness = "missing") into the correct parent.
    - Do **not** use the general_hint or detailed_hint to decide if something is implemented — only use the **content** field.
    - If the described content is implemented in the Code, insert the corresponding code snippet into the "code" field, **even if the step is marked as incorrect**.
    - If the logic is implemented but incorrect, still extract the matching code and put **# NOT IMPLEMENTED CORRECTLY** above the linecode.
@@ -91,6 +92,7 @@ Function Preservation Requirements:
 	- Insert step or substep comments above the corresponding code lines within the function.
 	- The def main() function must appear at the end, completely preserved and never labeled or commented.
 	- Do not extract the body alone without the function declaration.
+	- **IMPORTANT** Do NOT add any Code lines!
 
 Tree Ordering Rule
 	- When inserting missing steps or substeps, they must appear in the correct logical order that matches the structure and intent of the input Tree.
