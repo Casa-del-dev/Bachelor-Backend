@@ -92,6 +92,12 @@ Function Preservation Requirements:
 	- The def main() function must appear at the end, completely preserved and never labeled or commented.
 	- Do not extract the body alone without the function declaration.
 
+	🔢 Code Ordering Rule
+		- When inserting code or comments corresponding to steps or substeps, they must appear in the correct logical order that matches the structure and intent of the input Tree.
+		- Do not place code for a missing or incorrect step at the end of the function unless the original logic belongs there.
+		- If a substep logically occurs before an existing line, insert the comment and code snippet above that line within the correct function body.
+		- Preserve the semantic structure and control flow — never rearrange steps or substeps out of order.
+
 ---
 
 **Code:**  
