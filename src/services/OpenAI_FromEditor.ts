@@ -161,7 +161,7 @@ Common Mistakes to Avoid:
 
 - Do not delete or clear content of incorrect steps — mark them and add guidance.
 - Do not mark existing steps as **missing**.
-- Always provide both **general_hint** and **detailed_hint** when a step is **incorrect**, **missing**, or **divisible**.
+- Always provide both **general_hint** and **detailed_hint** when a step is **incorrect**, **missing**, or **can_be_further_divided**.
 - Always provide **correctStep** when a step or substep is marked **incorrect** or **missing**.
 - Add **missing** step in the correct order place in the step tree
 
