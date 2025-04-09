@@ -114,8 +114,15 @@ If the steps and context allow it you put the new blank steps as a substep of al
 
 ---
 
-🚨 Important: You must also return a **code** field that includes the original code with added inline comments that describe the purpose of each step and substep. These comments should clearly map the code logic to the described step structure. The **def main()** function should appear **at the end of the code**, preserved and not commented away, but not step-labeled.
-The **code** also should not be edited. the lines of code programm should remain syntactically equivalent to the original code lines. Only thing you are allowed and must change is the added comments.
+Important:
+
+	- You must also return a "code" field that includes the original code exactly as provided, with no modifications, corrections, or additions to the code itself.
+	- You are strictly forbidden from adding new lines of code — not even to "fix" or "initialize" variables or improve logic.
+	- The only thing you are allowed and required to add are # Step comments above the relevant lines.
+	- You must preserve syntax errors, broken lines, and unused variables exactly as in the original code.
+	- If the code contains logic that is unreachable, broken, or not referenced, do not analyze or include it in the step tree.
+	- The def main() function must be preserved at the end of the code but must not be labeled, annotated, or described in the step tree.
+	- If any logic required by the Problem is not implemented in the Code, you must add a blank step or substep in the correct semantic location, based on its logical position in the process.
 
 ---
 
