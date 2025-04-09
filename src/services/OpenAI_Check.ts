@@ -68,6 +68,12 @@ You should update only the following properties, based on the Problem:
 - detailed_hint (**Required if step is incorrect, missing, or can be further divided**)
 - Add missing steps or substeps if the Problem context requires any that are not already present in the Tree
 
+	🧭 Ordering Rule:
+	
+	- If you add a missing step or substep, you must place it in the correct logical and semantic order based on the Problem and the surrounding context.
+	- Do not add missing steps at the end unless the logic clearly belongs there (e.g., cleanup, return, summary).
+	- When in doubt, insert the missing step before the next related step (e.g., setup before usage, loop before total update, etc.).
+
 Important:
 - **Always** keep the steps and substeps given in the input! Only add **if necessary** missing steps.
 - If a step exists but has incorrect content, mark it as "incorrect" — do NOT mark it as "missing" or delete its content.
