@@ -129,6 +129,32 @@ If the steps and context allow it you put the new blank steps as a substep of al
 
 	- def main() must remain at the end of the code exactly as provided, with no # Step labels and no structural changes.
 
+	An example on how the Code should look like:
+	/*
+	
+	def roman_to_int(s: str) -> int:
+		# Step 1: Define a dictionary to map Roman numerals to their corresponding integer values.
+		roman_values = {
+			'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000
+		}
+
+		# Step 2: Initialize a variable to store the total.
+		# NOT IMPLEMENTED
+
+		# Step 3: Iterate over the characters in the reversed string 's'.
+		for char in reversed(s):
+			# Step 3.1: Add the integer value of the current Roman numeral to 'total'.
+			# NOT IMPLEMENTED CORRECTLY
+			total += roman_values[char]
+
+		# Step 4: Return the total.
+		return total
+
+	def main():
+		print(roman_to_int('MCMXCIV'))
+	
+	*/
+
 ---
 
 
