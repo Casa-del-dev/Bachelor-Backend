@@ -30,9 +30,23 @@ export default {
 				const serviceResponse = await foundService.fetch(request, env, ctx, subPath);
 
 				if (serviceResponse) {
-					serviceResponse.headers.set('Access-Control-Allow-Origin', '*'); // TODO: update in production
+					const corsHeaders = {
+						'Access-Control-Allow-Origin': '*', // TODO: set your real frontend origin for production
+						'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+						'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+						'Access-Control-Max-Age': '86400',
+					};
 
-					return serviceResponse;
+					// Create a new response with merged headers
+					const newHeaders = new Headers(serviceResponse.headers);
+					Object.entries(corsHeaders).forEach(([key, value]) => newHeaders.set(key, value));
+
+					const modifiedResponse = new Response(await serviceResponse.text(), {
+						status: serviceResponse.status,
+						headers: newHeaders,
+					});
+
+					return modifiedResponse;
 				}
 			}
 
