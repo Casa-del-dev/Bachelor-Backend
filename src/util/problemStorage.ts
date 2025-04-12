@@ -41,6 +41,12 @@ export async function saveProblem(env: Env, userId: string, problemId: string, t
 				});
 
 				await setLatestVersion(env, userId, problemId, node.id, newVersion);
+
+				const deleteBefore = newVersion - 10;
+				if (deleteBefore > 0) {
+					const oldKey = `${userId}/${problemId}/files/${node.id}/v${deleteBefore}.code`;
+					await env.problemTree.delete(oldKey);
+				}
 			}
 		} else if (node.type === 'folder' && node.children) {
 			for (const child of node.children) {
@@ -82,4 +88,20 @@ export async function loadProblem(env: Env, userId: string, problemId: string): 
 		tree,
 		codeMap,
 	};
+}
+
+// CTRL + Z
+
+async function getCodeHistory(env: Env, userId: string, problemId: string, nodeId: string): Promise<string[]> {
+	const latest = await getLatestVersion(env, userId, problemId, nodeId);
+	const versions: string[] = [];
+
+	for (let v = Math.max(1, latest - 9); v <= latest; v++) {
+		const file = await env.problemTree.get(`${userId}/${problemId}/files/${nodeId}/v${v}.code`);
+		if (file) {
+			versions.push(await file.text());
+		}
+	}
+
+	return versions;
 }
