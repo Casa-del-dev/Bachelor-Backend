@@ -15,5 +15,11 @@
 			"binding": "users",
 			"id": "2ac7a785addb4129a4fe64db11d3f47b"
 		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "problemTree",
+			"bucket_name": "problem-tree"
+		}
 	]
 }
