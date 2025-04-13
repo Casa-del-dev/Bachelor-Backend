@@ -24,38 +24,56 @@ async function setLatestVersion(env: Env, userId: string, problemId: string, nod
 	});
 }
 
-export async function saveProblem(env: Env, userId: string, problemId: string, tree: Tree, codeMap: Record<string, string>) {
+export async function saveProblem(
+	env: Env,
+	userId: string,
+	problemId: string,
+	tree: Tree,
+	codeMap: Record<string, string>,
+	deletedFiles?: string[]
+) {
+	// Save updated file tree
 	await env.problemTree.put(`${userId}/${problemId}/tree.json`, JSON.stringify(tree), {
 		httpMetadata: { contentType: 'application/json' },
 	});
 
-	async function walkAndSave(node: TreeNode) {
-		if (node.type === 'file') {
-			const code = codeMap[node.id];
-			if (code !== undefined) {
-				const currentVersion = await getLatestVersion(env, userId, problemId, node.id);
-				const newVersion = currentVersion + 1;
-
-				await env.problemTree.put(`${userId}/${problemId}/files/${node.id}/v${newVersion}.code`, code, {
-					httpMetadata: { contentType: 'text/plain' },
-				});
-
-				await setLatestVersion(env, userId, problemId, node.id, newVersion);
-
-				const deleteBefore = newVersion - 10;
-				if (deleteBefore > 0) {
-					const oldKey = `${userId}/${problemId}/files/${node.id}/v${deleteBefore}.code`;
-					await env.problemTree.delete(oldKey);
-				}
-			}
-		} else if (node.type === 'folder' && node.children) {
-			for (const child of node.children) {
-				await walkAndSave(child);
-			}
+	// Delete files that have been removed
+	if (deletedFiles && deletedFiles.length > 0) {
+		for (const fileId of deletedFiles) {
+			await deleteFile(env, userId, problemId, fileId);
 		}
 	}
 
-	await walkAndSave(tree.rootNode);
+	// Save the new/updated files
+	await saveCodeRecursively(env, userId, problemId, tree.rootNode, codeMap);
+}
+
+// Recursive file walker
+async function saveCodeRecursively(env: Env, userId: string, problemId: string, node: TreeNode, codeMap: Record<string, string>) {
+	if (node.type === 'file') {
+		const code = codeMap[node.id];
+		if (code !== undefined) {
+			const currentVersion = await getLatestVersion(env, userId, problemId, node.id);
+			const newVersion = currentVersion + 1;
+
+			await env.problemTree.put(`${userId}/${problemId}/files/${node.id}/v${newVersion}.code`, code, {
+				httpMetadata: { contentType: 'text/plain' },
+			});
+
+			await setLatestVersion(env, userId, problemId, node.id, newVersion);
+
+			// Keep max 10 versions
+			const deleteBefore = newVersion - 10;
+			if (deleteBefore > 0) {
+				const oldKey = `${userId}/${problemId}/files/${node.id}/v${deleteBefore}.code`;
+				await env.problemTree.delete(oldKey);
+			}
+		}
+	} else if (node.children) {
+		for (const child of node.children) {
+			await saveCodeRecursively(env, userId, problemId, child, codeMap);
+		}
+	}
 }
 
 export async function loadProblem(env: Env, userId: string, problemId: string): Promise<{ tree: Tree; codeMap: Record<string, string> }> {
@@ -104,4 +122,14 @@ async function getCodeHistory(env: Env, userId: string, problemId: string, nodeI
 	}
 
 	return versions;
+}
+
+async function deleteFile(env: Env, userId: string, problemId: string, fileId: string) {
+	const latest = await getLatestVersion(env, userId, problemId, fileId);
+	// Delete all versions
+	for (let version = 1; version <= latest; version++) {
+		await env.problemTree.delete(`${userId}/${problemId}/files/${fileId}/v${version}.code`);
+	}
+	// Delete the latest version pointer
+	await env.problemTree.delete(`${userId}/${problemId}/files/${fileId}/latest`);
 }

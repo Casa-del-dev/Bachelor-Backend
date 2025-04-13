@@ -14,13 +14,14 @@ const service: Service = {
 			case 'POST save': {
 				if (authContext instanceof Response) return authContext;
 
-				const { problemId, tree, codeMap } = (await request.json()) as {
+				const { problemId, tree, codeMap, deletedFiles } = (await request.json()) as {
 					problemId: string;
 					tree: Tree;
 					codeMap: Record<string, string>;
+					deletedFiles?: string[];
 				};
 
-				await saveProblem(env, authContext.username, problemId, tree, codeMap);
+				await saveProblem(env, authContext.username, problemId, tree, codeMap, deletedFiles);
 
 				return new Response('Problem saved', { status: 201 });
 			}
