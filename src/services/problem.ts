@@ -1,42 +1,40 @@
 import { Service } from '..';
 import { authenticateToken } from './auth';
-import { saveStepTree, loadStepTree } from '../util/stepTreeStorage';
-import { Step } from '../types';
+import { saveProblem, loadProblem } from '../util/problemStorage';
+import { Tree } from '../types';
 
 const service: Service = {
-	path: '/problem/v2/',
+	path: '/problem/v1/',
 
 	fetch: async (request: Request, env: Env, ctx: ExecutionContext, subPath: string): Promise<Response | void> => {
 		const authContext = await authenticateToken(request.headers, env);
 		const url = new URL(request.url);
 
 		switch (request.method + ' ' + subPath.split('/')[0]) {
-			case 'POST saveStepTree': {
+			case 'POST save': {
 				if (authContext instanceof Response) return authContext;
 
-				const { problemId, stepTree } = (await request.json()) as {
+				const { problemId, tree, codeMap, deletedFiles } = (await request.json()) as {
 					problemId: string;
-					stepTree: Step[];
+					tree: Tree;
+					codeMap: Record<string, string>;
+					deletedFiles?: string[];
 				};
 
-				if (!problemId) return new Response('Missing problemId', { status: 400 });
+				await saveProblem(env, authContext.username, problemId, tree, codeMap, deletedFiles);
 
-				await saveStepTree(env, authContext.username, problemId, stepTree);
-
-				return new Response('Step tree saved', { status: 201 });
+				return new Response('Problem saved', { status: 201 });
 			}
 
-			case 'GET loadStepTree': {
+			case 'GET load': {
 				if (authContext instanceof Response) return authContext;
 
 				const problemId = url.searchParams.get('id');
-				if (!problemId) return new Response('Missing problemId', { status: 400 });
+				if (!problemId) return new Response('Missing problem ID', { status: 400 });
 
-				const stepTree = await loadStepTree(env, authContext.username, problemId);
+				const problem = await loadProblem(env, authContext.username, problemId);
 
-				if (!stepTree) return new Response('Not found', { status: 404 });
-
-				return new Response(JSON.stringify(stepTree), {
+				return new Response(JSON.stringify(problem), {
 					status: 200,
 					headers: { 'Content-Type': 'application/json' },
 				});
