@@ -13,8 +13,8 @@ const service: Service = {
 		const username = auth.username;
 
 		// subPath: e.g. "123/stepTree"
-		const [problemId, segment] = subPath.replace(/\/$/, '').split('/');
-
+		const [rawProblemId, segment] = subPath.replace(/\/$/, '').split('/');
+		const problemId = decodeURIComponent(rawProblemId);
 		try {
 			if (req.method === 'POST' && segment === 'stepTree') {
 				// POST /problem/v2/:problemId/stepTree
