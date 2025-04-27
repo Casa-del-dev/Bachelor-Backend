@@ -34,6 +34,13 @@ const service: Service = {
 
 				const stepTree = await loadStepTree(env, authContext.username, problemId);
 
+				if (!stepTree) {
+					return new Response(JSON.stringify({ root: [] }), {
+						status: 200,
+						headers: { 'Content-Type': 'application/json' },
+					});
+				}
+
 				if (!stepTree) return new Response('Not found', { status: 404 });
 
 				return new Response(JSON.stringify(stepTree), {
