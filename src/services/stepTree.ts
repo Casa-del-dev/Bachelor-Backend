@@ -1,46 +1,43 @@
-// services/problemV2.ts
 import { Service } from '..';
 import { authenticateToken } from './auth';
 import { saveStepTree, loadStepTree } from '../util/stepTreeStorage';
 import { Step } from '../types';
 
-interface SavePayload {
-	problemId: string;
-	stepTree: Step[];
-}
-
 const service: Service = {
 	path: '/problem/v2/',
 
 	fetch: async (req, env, _ctx, subPath) => {
+		// 1) auth
 		const auth = await authenticateToken(req.headers, env);
 		if (auth instanceof Response) return auth;
+		const username = auth.username;
 
-		const url = new URL(req.url);
+		// subPath: e.g. "123/stepTree"
+		const [problemId, segment] = subPath.replace(/\/$/, '').split('/');
 
-		switch (`${req.method} ${subPath.split('/')[0]}`) {
-			/* POST /problem/v2/saveStepTree */
-			case 'POST saveStepTree': {
-				const { problemId, stepTree } = (await req.json()) as SavePayload;
+		try {
+			if (req.method === 'POST' && segment === 'stepTree') {
+				// POST /problem/v2/:problemId/stepTree
+				const { stepTree } = (await req.json()) as { stepTree: Step[] };
+				if (!problemId) return Response.json({ error: 'Missing problemId' }, { status: 400 });
 
-				await saveStepTree(env, auth.username, problemId, stepTree);
-				return new Response('Step tree saved', { status: 201 });
+				await saveStepTree(env, username, problemId, stepTree);
+				return new Response(null, { status: 201 });
 			}
 
-			/* GET  /problem/v2/loadStepTree?id=<problemId> */
-			case 'GET loadStepTree': {
-				const problemId = url.searchParams.get('id');
-				if (!problemId) return new Response('Missing problem ID', { status: 400 });
+			if (req.method === 'GET' && segment === 'stepTree') {
+				// GET /problem/v2/:problemId/stepTree
+				if (!problemId) return Response.json({ error: 'Missing problemId' }, { status: 400 });
 
-				const tree = await loadStepTree(env, auth.username, problemId);
-				return new Response(JSON.stringify(tree), {
-					status: 200,
-					headers: { 'Content-Type': 'application/json' },
-				});
+				const tree = await loadStepTree(env, username, problemId);
+				if (!tree) return Response.json({ error: 'Not found' }, { status: 404 });
+				return Response.json(tree);
 			}
 
-			default:
-				return new Response('Not Found', { status: 404 });
+			return new Response('Not Found', { status: 404 });
+		} catch (err: any) {
+			// catch any unexpected errors
+			return Response.json({ error: err.message }, { status: 500 });
 		}
 	},
 };
