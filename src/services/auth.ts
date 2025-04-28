@@ -21,6 +21,7 @@ export type JWTPayload = {
 	iat: number;
 	jti: string;
 	username: string;
+	email: string;
 };
 
 const service: Service = {
@@ -60,7 +61,7 @@ const service: Service = {
 
 				if (userData.password !== (await hash(password))) return new Response('Invalid password', { status: 400 });
 
-				const payload: JWTPayload = { iat: Date.now(), jti: crypto.randomUUID(), username };
+				const payload: JWTPayload = { iat: Date.now(), jti: crypto.randomUUID(), username, email: userData.email };
 				const token = await signJWT(payload, env.JWT_SECRET, 24 * 60 * 60);
 
 				const response: AuthTokenResponse = { token };
