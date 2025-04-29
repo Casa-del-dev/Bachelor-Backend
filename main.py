@@ -175,7 +175,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 sys.stdout = old_stdout
                 sys.stderr = old_stderr
 
-            formatted_output = "\n".join(f">> {line}" for line in output.splitlines())
+            formatted_output = "\n".join(f"{line}" for line in output.splitlines())
             await websocket.send_text(formatted_output)
 
         except Exception as e:
