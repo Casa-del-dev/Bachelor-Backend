@@ -39,93 +39,34 @@ const service: Service = {
 				messages: [
 					{
 						role: 'user',
-						content: `Goal:
+						content: `You are given a JSON File and a Problem Description. Your task is to look through the JSON file and understand where there might be mistakes. And output the analyzed JSON File. Do not include any text, markdown, explanations, commas before/after the JSON, or anything else. Only output the raw JSON.
 
-Use the input Tree as a base and revise only the fields specified below. However, if the Problem describes steps or substeps that are **missing or unrepresented** in the Tree, you **must add new blank steps or substeps** to capture that logic.
-
-The goal is to produce a new JSON file that is **semantically equivalent to a complete solution** for the Problem — meaning:
-- All required steps and substeps described or implied in the Problem are present,
-- The original structure is preserved **unless** the Problem clearly requires additions.
-
-**Tree:**  
+**JSON File:**  
 "${Tree}"
 
-⚠️ Input Tree Note:
-- The input is a flat list of steps, each with optional "children" arrays. You must transform this into the nested "steps" → "subSteps" format shown below.
-- If a step in the input has children, those must appear inside "subSteps" in the output.
-- Each substep (child) should have its own status, correctness, and hints, and must be preserved exactly unless the Problem requires changes.
-- Do not remove any existing children — all must appear in "subSteps" in the final output.
-
-**Problem:**  
+**Problem Description:**  
 "${Problem}"
 
-You should update only the following properties, based on the Problem:
+### **Warning:**
+Only give as output the json file no words before or after!
+In status.correctness you first check if the step is correct, incorrect, or missing. And in status.can_be_further_divided you check if it can, or not.
 
-- status.correctness
-- status.can_be_further_divided
-- correctStep (**Provide the correct step only if the existing step is incorrect or missing**)
-- general_hint (**Required if step is incorrect, missing, or can be further divided**)
-- detailed_hint (**Required if step is incorrect, missing, or can be further divided**)
-- Add missing steps or substeps if the Problem context requires any that are not already present in the Tree
+If a step is correct and cannot be further divided you set the status and leave it like you received it!
+If a step is correct but can be further divided you additionally give it a general_hint, detailed_hint, and a correctStep
+If a step is incorrect or missing you mark the status as such and additionally give it a general, detailed, and correctStep.
 
-	🧭 Ordering Rule:
-	
-	- If you add a missing step or substep, you must place it in the correct logical and semantic order based on the Problem and the surrounding context.
-	- Do not add missing steps at the end unless the logic clearly belongs there (e.g., cleanup, return, summary).
-	- When in doubt, insert the missing step before the next related step (e.g., setup before usage, loop before total update, etc.).
+Missing steps:
+	- Missing steps are those steps that haven't been described yet in the tree and Need to be added.
+	- When adding a missing step make sure to give it both general and detailed hint, and a correct step. The Content must be kept empty.
 
-Important:
-- **Always** keep the steps and substeps given in the input! Only add **if necessary** missing steps.
-- If a step exists but has incorrect content, mark it as "incorrect" — do NOT mark it as "missing" or delete its content.
-- Only mark a step as "missing" if it is **entirely absent** from the Tree.
-- When status.can_be_further_divided = "can", you must provide hints explaining how the step could be broken down further.
-- Do not remove any existing substeps. All children in the input Tree must be preserved in the output, even if unchanged.
-- If a step contains substeps (children), include those in the output exactly as provided, updating only the fields if needed.
-
-Return Format:
-
-- steps → Keep all original steps, unless the Problem clearly requires an additional step (as a blank step).
-- Each step contains:
-  - "content" → Keep as input.
-  - "correctStep" → Only include if correctness is not "correct".
-  - code → "Same as input" (//keep as input)
-  - "status":
-    - "correctness" → "correct" / "incorrect" / "missing"
-    - "can_be_further_divided" → "can" / "cannot"
-  - "general_hint" → Only if correctness is not "correct".
-  - "detailed_hint" → Only if correctness is not "correct".
-  - "subSteps" → **Same as input**, but if the Problem describes or implies new blank substeps that should be added.
-
-What qualifies as a substep?
-
-- A task required to complete a larger step.
-- A process dependent on the parent step.
-- A breakdown of a broad action into finer details.
-
-What is a blank step or substep?
-
-A step or substep that contains all empty string values ("") except:
-
-"status": {
-  "correctness": "missing",
-  "can_be_further_divided": ""
-}
-
-You **must** add blank steps/substeps if a part of the Problem logic is not accounted for in the Tree.
-
-Common mistakes to avoid:
-- Do not overwrite or blank out existing steps marked as "incorrect".
-- Never mark a step as "missing" unless it is truly not present in the input Tree.
-- Always provide general and detailed hints when correctness is not "correct", or when a step can be further divided.
-
-Example JSON Output:
+### **JSON Output:** ###
 
 {
   "steps": {
     "1": {
       "content": "Same as input",
-      "correctStep": "The correct step, only if not correct",
-      "code": "// keep as input",
+      "correctStep": "Only if not correct",
+      "code": "//keep as input",
       "status": {
         "correctness": "correct / incorrect / missing",
         "can_be_further_divided": "can / cannot"
@@ -143,17 +84,16 @@ Example JSON Output:
           },
           "general_hint": "Only if not correct",
           "detailed_hint": "Only if not correct"
-        }
+        },
+	...
       }
     },
     "2": {
-      // Same structure as above
-    }
+      ...
+    },
+   ...
   }
 }
-
-### **Warning:**
-Only give as output the json file no words before or after!
 `,
 					},
 				],
