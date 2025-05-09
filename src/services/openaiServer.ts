@@ -68,6 +68,7 @@ You **must** analyze the logical dependencies between steps:
 	- If a step is part of or depends on another, it is REQUIRED to be placed as a subStep inside the parent step.
 	- Do NOT list dependent steps as separate top-level steps.
 	- Only independent steps should be top-level.
+	- Do not assume that adding a subStep prevents you from adding other independent top-level steps.
 
 In the return format you will see a lot of empty fields, those are required to stay empty.
 
