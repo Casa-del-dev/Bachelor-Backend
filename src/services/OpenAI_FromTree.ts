@@ -246,6 +246,24 @@ Return a JSON object with exactly one key:
 🚨 Important: You must also return a **code** field that includes the full original code with inline **# comments** (using Python syntax) placed **above** the relevant lines. These comments must describe the purpose of each step or substep.  
 The **def main()** function should appear **at the end of the code**, unmodified and not commented away. Do not label it with a step.
 
+Additional Enforcement Rules:
+
+1. Do **not** consider general_hint or detailed_hint when judging correctness.
+   - Only compare the step's "content" with the code implementation.
+
+2. For **missing steps**:
+   - In the **steps object**, leave the "code" field **empty**.
+   - In the **top-level "code" field**, insert **# MISSING STEP** **at the correct position**.
+     Example:
+     '''
+     def my_function():
+         # MISSING STEP
+         for i in range(10):
+             print(i)
+     '''
+
+3. Do **not** comment or label 'def main()''. Leave it **untouched and unannotated**, placed at the **end**.
+
 ---
 
 Example JSON Output:
