@@ -47,6 +47,11 @@ const service: Service = {
 **Problem Description:**  
 "${Problem}"
 
+### **Process** ###
+
+First, divide the Prompt into steps. Each step should be a single action or task that needs to be performed to solve the Problem Description. The steps should be numbered sequentially and can have substeps if necessary.
+
+
 ### **Warning** ###
 
 If the prompt is not trying to solve the Problem Description you just return 1 step with empty content.
