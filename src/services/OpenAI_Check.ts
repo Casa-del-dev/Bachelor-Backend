@@ -34,6 +34,87 @@ const service: Service = {
 				});
 			}
 
+			const TreeTest = {
+				root: [
+					{
+						id: 1,
+						code: '',
+						content: "Create a dictionary to transform single chart's into their respective decimal numbers.",
+						correctStep: '',
+						prompt: '',
+						status: {
+							correctness: '',
+							can_be_further_divided: '',
+						},
+						general_hint: '',
+						detailed_hint: '',
+						hasparent: false,
+						children: [],
+						isDeleting: false,
+						showGeneralHint1: false,
+						showDetailedHint1: false,
+						showCorrectStep1: false,
+						showGeneralHint2: false,
+						showDetailedHint2: false,
+						isNewlyInserted: false,
+						isexpanded: true,
+						isHyperExpanded: false,
+						selected: false,
+					},
+					{
+						id: 2,
+						code: '',
+						content: 'Create a loop that cycles over the input.',
+						correctStep: '',
+						prompt: '',
+						status: {
+							correctness: '',
+							can_be_further_divided: '',
+						},
+						general_hint: '',
+						detailed_hint: '',
+						hasparent: false,
+						children: [
+							{
+								id: 3,
+								code: '',
+								content: 'Transform the input using the dictionary and store the sum in a return variable.',
+								correctStep: '',
+								prompt: '',
+								status: {
+									correctness: '',
+									can_be_further_divided: '',
+								},
+								general_hint: '',
+								detailed_hint: '',
+								hasparent: true,
+								children: [],
+								isDeleting: false,
+								showGeneralHint1: false,
+								showDetailedHint1: false,
+								showCorrectStep1: false,
+								showGeneralHint2: false,
+								showDetailedHint2: false,
+								isNewlyInserted: false,
+								isexpanded: true,
+								isHyperExpanded: false,
+								selected: false,
+							},
+						],
+						isDeleting: false,
+						showGeneralHint1: false,
+						showDetailedHint1: false,
+						showCorrectStep1: false,
+						showGeneralHint2: false,
+						showDetailedHint2: false,
+						isNewlyInserted: false,
+						isexpanded: true,
+						isHyperExpanded: false,
+						selected: false,
+					},
+				],
+			};
+
 			const payload = {
 				model: 'gpt-4',
 				messages: [
@@ -42,7 +123,7 @@ const service: Service = {
 						content: `You are given a JSON File and a Problem Description. Your task is to look through the JSON file and understand where there might be mistakes. And output the analyzed JSON File. Do not include any text, markdown, explanations, commas before/after the JSON, or anything else. Only output the raw JSON.
 
 **JSON File:**  
-"${Tree}"
+"${TreeTest}"
 
 **Problem Description:**  
 "${Problem}"
