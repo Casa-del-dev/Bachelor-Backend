@@ -146,7 +146,7 @@ Missing Steps:
 	- When adding a missing step, you must provide both a general_hint, a detailed_hint, and a correctStep.
 	- The content field must remain empty.
 	- You must analyze the logical dependencies between steps to correctly place missing steps.
-	- For example, if an initialization is required before a loop or a condition, the missing step must be inserted before that loop or condition step.
+	- For example, if an initialization is required before a loop or a condition, the missing step must be inserted before that loop or condition step. Eg. step 1: loop -> step 1: initialize -> step 2: loop.
 
 Always aim to create a balanced and meaningful substep structure, avoiding unnecessary flattening or over-nesting.
 
