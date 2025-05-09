@@ -35,7 +35,7 @@ const service: Service = {
 			}
 
 			const payload = {
-				model: 'gpt-4',
+				model: 'gpt-4o',
 				messages: [
 					{
 						role: 'user',
@@ -63,7 +63,7 @@ The resulting JSON must represent a **semantically complete solution** to the Pr
 Code:  
 ${Code}
 
-Problem:  
+Problem Descrition:  
 ${Problem}
 
 ---
@@ -72,7 +72,7 @@ Update Only the Following Properties (when needed):
 
 - status.correctness
 - status.can_be_further_divided
-- correctStep (**Mandatory if a step is incorrect or missing**)
+- correctStep (**Mandatory if a step is incorrect, missing, or can be further divided**)
 - general_hint (**Required if a step is incorrect, missing, or can be further divided**)
 - detailed_hint (**Required if a step is incorrect, missing, or can be further divided**)
 - Add new **blank steps or substeps only if the Problem introduces logic that is missing from the Code**
