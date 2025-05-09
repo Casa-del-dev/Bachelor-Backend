@@ -122,59 +122,93 @@ const service: Service = {
 				messages: [
 					{
 						role: 'user',
-						content: `You are given a JSON File and a Problem Description. Your task is to look through the JSON file and understand where there might be mistakes solving the Problem. And output the analyzed JSON File. Do not include any text, markdown, explanations, commas before/after the JSON, or anything else. Only output the raw JSON.
+						content: `Goal:
 
-**JSON File:**  
+Use the input Tree as a base and revise only the fields specified below. However, if the Problem describes steps or substeps that are **missing or unrepresented** in the Tree, you **must add new blank steps or substeps** to capture that logic.
+
+The goal is to produce a new JSON file that is **semantically equivalent to a complete solution** for the Problem — meaning:
+- All required steps and substeps described or implied in the Problem are present,
+- The original structure is preserved **unless** the Problem clearly requires additions.
+
+**Tree:**  
 "${TreeTestString}"
 
-**Problem Description:**  
+⚠️ Input Tree Note:
+- The input is a flat list of steps, each with optional "children" arrays. You must transform this into the nested "steps" → "subSteps" format shown below.
+- If a step in the input has children, those must appear inside "subSteps" in the output.
+- Each substep (child) should have its own status, correctness, and hints, and must be preserved exactly unless the Problem requires changes.
+- Do not remove any existing children — all must appear in "subSteps" in the final output.
+
+**Problem:**  
 "${Problem}"
 
-### **Warning:**
-Only give as output the json file no words before or after!
-In status.correctness you first check if the step is correct, incorrect, or missing. And in status.can_be_further_divided you check if it can, or not.
+You should update only the following properties, based on the Problem:
 
-If the step is 'correctness: correct' and 'can_be_further_divided: cannot', **keep** its content as is, **do not** add hints, and **do not** add correctStep. 
-If a step is 'correctness:  correct' but 'can_be_further_divided: can' you additionally give it a general_hint, detailed_hint, and a correctStep
-If a step is 'correctness:  incorrect' you mark the status as such and **keep** the content as is, additionally **give it** a correctStep, general_hint, and detailed_hint.
-If a step is 'correctness: missing' you mark the status as such and additionally **give it** a general, detailed, and correctStep.
+- status.correctness
+- status.can_be_further_divided
+- correctStep (**Provide the correct step only if the existing step is incorrect or missing**)
+- general_hint (**Required if step is incorrect, missing, or can be further divided**)
+- detailed_hint (**Required if step is incorrect, missing, or can be further divided**)
+- Add missing steps or substeps if the Problem context requires any that are not already present in the Tree
 
-
-Missing Steps:
-
-	- Missing steps are actions that are required to solve the problem but are not yet described in the provided tree and must be added.
-	- When adding a missing step, you must provide both a general_hint, a detailed_hint, and a correctStep.
-	- The content field must remain empty.
-	- You must analyze the logical dependencies between steps to correctly place missing steps.
-	- For example, if an initialization is required before a loop or a condition, the missing step must be inserted before that loop or condition step.
-
-When adding a missing step, you are allowed and required to reorder or renumber the existing steps if this makes the overall execution logically correct.
+	🧭 Ordering Rule:
 	
-	Do not simply insert the missing step after its dependent step.
-	You must insert the missing step before the step that uses its result or depends on it.
-	This may require you to shift the numbering of the existing steps (e.g., move step 2 to step 3).
-	
-	Example correction:
-		Incorrect Order:
-			1. Loop over list and sum to tot
-			2. Initialize tot
+	- If you add a missing step or substep, you must place it in the correct logical and semantic order based on the Problem and the surrounding context.
+	- Do not add missing steps at the end unless the logic clearly belongs there (e.g., cleanup, return, summary).
+	- When in doubt, insert the missing step before the next related step (e.g., setup before usage, loop before total update, etc.).
 
-		Required Corrected Order:
-			1. Initialize tot
-			2. Loop over list and sum to tot
+Important:
+- **Always** keep the steps and substeps given in the input! Only add **if necessary** missing steps.
+- If a step exists but has incorrect content, mark it as "incorrect" — do NOT mark it as "missing" or delete its content.
+- Only mark a step as "missing" if it is **entirely absent** from the Tree.
+- When status.can_be_further_divided = "can", you must provide hints explaining how the step could be broken down further.
+- Do not remove any existing substeps. All children in the input Tree must be preserved in the output, even if unchanged.
+- If a step contains substeps (children), include those in the output exactly as provided, updating only the fields if needed.
 
-	You are explicitly authorized and required to reorder the step numbers to maintain logical execution.
+Return Format:
 
-While the code section should remain as given by the input.
+- steps → Keep all original steps, unless the Problem clearly requires an additional step (as a blank step).
+- Each step contains:
+  - "content" → Keep as input.
+  - "correctStep" → Only include if correctness is not "correct".
+  - code → "Same as input" (//keep as input)
+  - "status":
+    - "correctness" → "correct" / "incorrect" / "missing"
+    - "can_be_further_divided" → "can" / "cannot"
+  - "general_hint" → Only if correctness is not "correct".
+  - "detailed_hint" → Only if correctness is not "correct".
+  - "subSteps" → **Same as input**, but if the Problem describes or implies new blank substeps that should be added.
 
-### **JSON Output:** ###
+What qualifies as a substep?
+
+- A task required to complete a larger step.
+- A process dependent on the parent step.
+- A breakdown of a broad action into finer details.
+
+What is a blank step or substep?
+
+A step or substep that contains all empty string values ("") except:
+
+"status": {
+  "correctness": "missing",
+  "can_be_further_divided": ""
+}
+
+You **must** add blank steps/substeps if a part of the Problem logic is not accounted for in the Tree.
+
+Common mistakes to avoid:
+- Do not overwrite or blank out existing steps marked as "incorrect".
+- Never mark a step as "missing" unless it is truly not present in the input Tree.
+- Always provide general and detailed hints when correctness is not "correct", or when a step can be further divided.
+
+Example JSON Output:
 
 {
   "steps": {
     "1": {
       "content": "Same as input",
-      "correctStep": "Only if not correct",
-      "code": "Same as input",
+      "correctStep": "The correct step, only if not correct",
+      "code": "// keep as input",
       "status": {
         "correctness": "correct / incorrect / missing",
         "can_be_further_divided": "can / cannot"
@@ -185,23 +219,24 @@ While the code section should remain as given by the input.
         "1": {
           "content": "Same as input",
           "correctStep": "Only if not correct",
-          "code": "Same as input",
+          "code": "// keep as input",
           "status": {
             "correctness": "correct / incorrect / missing",
             "can_be_further_divided": "can / cannot"
           },
           "general_hint": "Only if not correct",
           "detailed_hint": "Only if not correct"
-        },
-	   ...
+        }
       }
     },
     "2": {
-      ...
-    },
-   ...
+      // Same structure as above
+    }
   }
 }
+
+### **Warning:**
+Only give as output the json file no words before or after!
 `,
 					},
 				],
