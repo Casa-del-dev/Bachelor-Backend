@@ -51,7 +51,7 @@ const service: Service = {
 
 If the prompt is not trying to solve the Problem Description you just return 1 step with empty content.
 If the prompt is solving the Problem Description wrongly you **DO NOT** Change the intended solution and Output the wrong JSON as intended by the Prompt.
-If the prompt contains a process that naturally depends on the step it is under or a breakdown of a broad action into finer Details you put it as a substep of the depended step!
+If the prompt contains a process that naturally depends on the step it is under or a breakdown of a broad action into finer Details you **must** put it as a substep of the depended step!
 
 ### **Return Format:** ###
 
