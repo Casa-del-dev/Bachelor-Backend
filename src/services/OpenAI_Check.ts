@@ -139,6 +139,7 @@ If a step is incorrect or missing you mark the status as such and additionally g
 Missing steps:
 	- Missing steps are those steps that haven't been described yet in the tree and Need to be added.
 	- When adding a missing step make sure to give it both general and detailed hint, and a correct step. The Content must be kept empty.
+	- When adding missing steps, You **must** analyze the logical dependencies between steps: such that substeps are created. Always go for substeps!
 
 While the code section should remain as given by the input.
 
