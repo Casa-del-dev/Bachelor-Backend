@@ -1,3 +1,5 @@
+import { stringify } from 'openai/internal/qs/stringify.mjs';
+import { stepTree } from '.';
 import { Service } from '..';
 
 interface Payload {
@@ -37,6 +39,139 @@ const service: Service = {
 					});
 				}
 			}
+
+			const stepTreeTest = {
+				root: [
+					{
+						id: 1,
+						code: '',
+						content: 'Create a dictionary that maps Roman numeral symbols to their respective decimal numbers.',
+						correctStep: '',
+						prompt: '',
+						status: {
+							correctness: '',
+							can_be_further_divided: '',
+						},
+						general_hint: '',
+						detailed_hint: '',
+						hasparent: false,
+						children: [],
+						isDeleting: false,
+						showGeneralHint1: false,
+						showDetailedHint1: false,
+						showCorrectStep1: false,
+						showGeneralHint2: false,
+						showDetailedHint2: false,
+						isNewlyInserted: false,
+						isexpanded: true,
+						isHyperExpanded: false,
+						selected: false,
+					},
+					{
+						id: 2,
+						code: '',
+						content: 'Create a loop that cycles over the input Roman numeral.',
+						correctStep: '',
+						prompt: '',
+						status: {
+							correctness: '',
+							can_be_further_divided: '',
+						},
+						general_hint: '',
+						detailed_hint: '',
+						hasparent: false,
+						children: [
+							{
+								id: 3,
+								code: '',
+								content: 'Transform each Roman numeral symbol to its decimal number using the dictionary.',
+								correctStep: '',
+								prompt: '',
+								status: {
+									correctness: '',
+									can_be_further_divided: '',
+								},
+								general_hint: '',
+								detailed_hint: '',
+								hasparent: true,
+								children: [],
+								isDeleting: false,
+								showGeneralHint1: false,
+								showDetailedHint1: false,
+								showCorrectStep1: false,
+								showGeneralHint2: false,
+								showDetailedHint2: false,
+								isNewlyInserted: false,
+								isexpanded: true,
+								isHyperExpanded: false,
+								selected: false,
+							},
+							{
+								id: 4,
+								code: '',
+								content: 'Store the sum of the transformed numbers in a return variable.',
+								correctStep: '',
+								prompt: '',
+								status: {
+									correctness: '',
+									can_be_further_divided: '',
+								},
+								general_hint: '',
+								detailed_hint: '',
+								hasparent: true,
+								children: [],
+								isDeleting: false,
+								showGeneralHint1: false,
+								showDetailedHint1: false,
+								showCorrectStep1: false,
+								showGeneralHint2: false,
+								showDetailedHint2: false,
+								isNewlyInserted: false,
+								isexpanded: true,
+								isHyperExpanded: false,
+								selected: false,
+							},
+						],
+						isDeleting: false,
+						showGeneralHint1: false,
+						showDetailedHint1: false,
+						showCorrectStep1: false,
+						showGeneralHint2: false,
+						showDetailedHint2: false,
+						isNewlyInserted: false,
+						isexpanded: true,
+						isHyperExpanded: false,
+						selected: false,
+					},
+					{
+						id: 5,
+						code: '',
+						content: 'Return the return variable.',
+						correctStep: '',
+						prompt: '',
+						status: {
+							correctness: '',
+							can_be_further_divided: '',
+						},
+						general_hint: '',
+						detailed_hint: '',
+						hasparent: false,
+						children: [],
+						isDeleting: false,
+						showGeneralHint1: false,
+						showDetailedHint1: false,
+						showCorrectStep1: false,
+						showGeneralHint2: false,
+						showDetailedHint2: false,
+						isNewlyInserted: false,
+						isexpanded: true,
+						isHyperExpanded: false,
+						selected: false,
+					},
+				],
+			};
+
+			const stepTreeTest2 = stringify(stepTreeTest);
 
 			const payload = {
 				model: 'gpt-4o',
@@ -98,7 +233,7 @@ Function Preservation Requirements:
 "${Code}"
 
 **Tree:**  
-"${Tree}"  
+"${stepTreeTest2}"  
 *(Note: In this prompt, the Tree is an array of steps)*
 
 ---
