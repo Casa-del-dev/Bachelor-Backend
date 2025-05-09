@@ -144,6 +144,12 @@ Missing steps:
 	- When adding missing steps, You **must** analyze the logical dependencies between steps: such that substeps are created. If something needs initialization before a certain loop or if condition, put a missing step before and one level higher as the needed step.
 	- Always go for substeps in a balanced way!
 
+	exmaple of a missing step:
+	Original Tree:
+		{"steps":{"1":{"content":"Loop over the numbers in the list","subSteps":{"1":{"content":"Add the number to tot"}}}}}
+	Correction with Missing Step:
+		{"steps":{"1":{"content":"Initialize tot to 0","status":{"correctness":"missing","can_be_further_divided":"cannot"},"general_hint":"...","detailed_hint":"...","correctStep":"tot = 0","subSteps":{}},"2":{"content":"Loop over the numbers in the list","subSteps":{"1":{"content":"Add the number to tot"}}}}}
+
 While the code section should remain as given by the input.
 
 ### **JSON Output:** ###
