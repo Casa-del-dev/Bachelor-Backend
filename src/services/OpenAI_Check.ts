@@ -111,7 +111,7 @@ A step or substep that contains all empty string values ("") except:
   "can_be_further_divided": ""
 }
 
-**note**: The missing step have the same substeps rules as normal steps, but with empty values for all fields except "status". **Double check if to put it REALLY into a substep, and always provide general and detailed hints, and the correctStep.**
+**note**: The missing step have the same substeps rules as normal steps, but with empty values for all fields except "status". Double check if really a substep, and always provide general and detailed hints, and the correctStep..
 
 You **must** add blank steps/substeps if a part of the Problem logic is not accounted for in the Tree. When adding a blank step/substep, you must also provide the following fields: general_hint, detailed_hint, and the correctStep.
 
