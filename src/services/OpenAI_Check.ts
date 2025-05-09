@@ -194,7 +194,7 @@ A step or substep that contains all empty string values ("") except:
   "can_be_further_divided": ""
 }
 
-You **must** add blank steps/substeps if a part of the Problem logic is not accounted for in the Tree.
+You **must** add blank steps/substeps if a part of the Problem logic is not accounted for in the Tree. When adding a blank step/substep, you must also provide the following fields: general_hint, detailed_hint, and the correctStep.
 
 Common mistakes to avoid:
 - Do not overwrite or blank out existing steps marked as "incorrect".
