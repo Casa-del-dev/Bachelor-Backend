@@ -54,8 +54,16 @@ First, divide the Prompt into steps. Each step should be a single action or task
 
 ### **Warning** ###
 
-If the prompt is not trying to solve the Problem Description you just return 1 step with empty content.
-If the prompt is solving the Problem Description wrongly you **DO NOT** Change the intended solution and Output the wrong JSON as intended by the Prompt.
+You **must** extract steps from the Prompt unless the Prompt is completely irrelevant, nonsense, or unrelated to programming.
+A Prompt is considered related if:
+	It describes any action toward solving the Problem Description, even incomplete or vague.
+	It contains a partial plan, intuition, or attempt toward the task.
+	It mentions operations, data structures, algorithms, or processing steps.
+	You should never return an empty step just because the Prompt is vague or partially incorrect. Extract what is there.
+	Only return a single empty step if the Prompt is completely unrelated to the Problem Description, such as:
+	Descriptions of unrelated domains (e.g., cooking, sports, etc.).
+	Nonsense or non-programming content.If the prompt is solving the Problem Description wrongly you **DO NOT** Change the intended solution and Output the wrong JSON as intended by the Prompt.
+
 You **must** analyze the logical dependencies between steps:
 	- If a step is part of or depends on another, it is REQUIRED to be placed as a subStep inside the parent step.
 	- Do NOT list dependent steps as separate top-level steps.
