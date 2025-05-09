@@ -65,6 +65,7 @@ A Prompt is considered related if:
 	Nonsense or non-programming content.If the prompt is solving the Problem Description wrongly you **DO NOT** Change the intended solution and Output the wrong JSON as intended by the Prompt.
 
 You **must** analyze the logical dependencies between steps:
+	- Phrases like "First", "Next", and "Finally" do NOT imply all steps are independent.
 	- If a step is part of or depends on another, it is REQUIRED to be placed as a subStep inside the parent step.
 	- Do NOT list dependent steps as separate top-level steps.
 	- Only independent steps should be top-level.
