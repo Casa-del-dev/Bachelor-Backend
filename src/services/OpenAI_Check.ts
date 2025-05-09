@@ -116,7 +116,7 @@ const service: Service = {
 			};
 
 			const payload = {
-				model: 'gpt-4',
+				model: 'gpt-4o',
 				messages: [
 					{
 						role: 'user',
