@@ -136,7 +136,9 @@ In status.correctness you first check if the step is correct, incorrect, or miss
 
 If the step is 'correctness: correct' and 'can_be_further_divided: cannot', **keep** its content as is, **do not** add hints, and **do not** add correctStep. 
 If a step is 'correctness:  correct' but 'can_be_further_divided: can' you additionally give it a general_hint, detailed_hint, and a correctStep
-If a step is 'correctness:  incorrect or missing' you mark the status as such and additionally give it a general, detailed, and correctStep.
+If a step is 'correctness:  incorrect' you mark the status as such and **keep** the content as is, additionally **give it** a correctStep, general_hint, and detailed_hint.
+If a step is 'correctness: missing' you mark the status as such and additionally **give it** a general, detailed, and correctStep.
+
 
 Missing steps:
 	- Missing steps are those steps that haven't been described yet in the tree and Need to be added.
