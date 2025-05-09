@@ -140,17 +140,15 @@ If a step is 'correctness:  incorrect' you mark the status as such and **keep** 
 If a step is 'correctness: missing' you mark the status as such and additionally **give it** a general, detailed, and correctStep.
 
 
-Missing steps:
-	- Missing steps are those steps that haven't been described yet in the tree and Need to be added.
-	- When adding a missing step make sure to give it both general and detailed hint, and a correct step. The Content must be kept empty.
-	- When adding missing steps, You **must** analyze the logical dependencies between steps: such that substeps are created. If something needs initialization before a certain loop or if condition, put a missing step before and one level higher as the needed step.
-	- Always go for substeps in a balanced way!
+Missing Steps:
 
-	exmaple of a missing step:
-	Original Tree:
-		{"steps":{"1":{"content":"Loop over the numbers in the list","subSteps":{"1":{"content":"Add the number to tot"}}}}}
-	Correction with Missing Step:
-		{"steps":{"1":{"content":"Initialize tot to 0","status":{"correctness":"missing","can_be_further_divided":"cannot"},"general_hint":"...","detailed_hint":"...","correctStep":"tot = 0","subSteps":{}},"2":{"content":"Loop over the numbers in the list","subSteps":{"1":{"content":"Add the number to tot"}}}}}
+	Missing steps are actions that are required to solve the problem but are not yet described in the provided tree and must be added.
+	When adding a missing step, you must provide both a general_hint, a detailed_hint, and a correctStep.
+	The content field must remain empty.
+	You must analyze the logical dependencies between steps to correctly place missing steps.
+	For example, if an initialization is required before a loop or a condition, the missing step must be inserted before that step and placed at one level higher in the hierarchy.
+
+Always aim to create a balanced and meaningful substep structure, avoiding unnecessary flattening or over-nesting.
 
 While the code section should remain as given by the input.
 
