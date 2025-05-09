@@ -52,10 +52,11 @@ const service: Service = {
 If the prompt is not trying to solve the Problem Description you just return 1 step with empty content.
 If the prompt is solving the Problem Description wrongly you **DO NOT** Change the intended solution and Output the wrong JSON as intended by the Prompt.
 You must analyze the logical dependencies between steps:
-
 	- If a step is part of or depends on another, it is REQUIRED to be placed as a subStep inside the parent step.
 	- Do NOT list dependent steps as separate top-level steps.
 	- Only independent steps should be top-level.
+
+In the return format you will see a lot of empty fields, those are required to stay empty.
 
 ### **Return Format:** ###
 
