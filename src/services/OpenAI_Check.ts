@@ -120,7 +120,7 @@ const service: Service = {
 				messages: [
 					{
 						role: 'user',
-						content: `You are given a JSON File and a Problem Description. Your task is to look through the JSON file and understand where there might be mistakes. And output the analyzed JSON File. Do not include any text, markdown, explanations, commas before/after the JSON, or anything else. Only output the raw JSON.
+						content: `You are given a JSON File and a Problem Description. Your task is to look through the JSON file and understand where there might be mistakes solving the Problem. And output the analyzed JSON File. Do not include any text, markdown, explanations, commas before/after the JSON, or anything else. Only output the raw JSON.
 
 **JSON File:**  
 "${TreeTest}"
@@ -132,13 +132,15 @@ const service: Service = {
 Only give as output the json file no words before or after!
 In status.correctness you first check if the step is correct, incorrect, or missing. And in status.can_be_further_divided you check if it can, or not.
 
-If a step is correct and cannot be further divided you set the status and leave it like you received it!
+If the step is correct and cannot be divided, do not modify any of its content, do not add hints, and do not add correctStep. 
 If a step is correct but can be further divided you additionally give it a general_hint, detailed_hint, and a correctStep
 If a step is incorrect or missing you mark the status as such and additionally give it a general, detailed, and correctStep.
 
 Missing steps:
 	- Missing steps are those steps that haven't been described yet in the tree and Need to be added.
 	- When adding a missing step make sure to give it both general and detailed hint, and a correct step. The Content must be kept empty.
+
+While the code section should remain as given by the input.
 
 ### **JSON Output:** ###
 
@@ -147,7 +149,7 @@ Missing steps:
     "1": {
       "content": "Same as input",
       "correctStep": "Only if not correct",
-      "code": "//keep as input",
+      "code": "Same as input",
       "status": {
         "correctness": "correct / incorrect / missing",
         "can_be_further_divided": "can / cannot"
@@ -158,7 +160,7 @@ Missing steps:
         "1": {
           "content": "Same as input",
           "correctStep": "Only if not correct",
-          "code": "// keep as input",
+          "code": "Same as input",
           "status": {
             "correctness": "correct / incorrect / missing",
             "can_be_further_divided": "can / cannot"
@@ -166,7 +168,7 @@ Missing steps:
           "general_hint": "Only if not correct",
           "detailed_hint": "Only if not correct"
         },
-	...
+	   ...
       }
     },
     "2": {
