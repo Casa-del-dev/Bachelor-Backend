@@ -134,7 +134,7 @@ const service: Service = {
 Only give as output the json file no words before or after!
 In status.correctness you first check if the step is correct, incorrect, or missing. And in status.can_be_further_divided you check if it can, or not.
 
-If the step is correct and cannot be divided, do not modify any of its content, do not add hints, and do not add correctStep. 
+If the step is correct and cannot be divided, do not modify any of its content, **do not** add hints, and **do not** add correctStep. 
 If a step is correct but can be further divided you additionally give it a general_hint, detailed_hint, and a correctStep
 If a step is incorrect or missing you mark the status as such and additionally give it a general, detailed, and correctStep.
 
