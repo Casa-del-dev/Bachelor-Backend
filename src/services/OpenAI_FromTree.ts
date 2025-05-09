@@ -198,6 +198,9 @@ This means the logic described in the step does not match what the line does. Do
    - **Do not** reformat or clean the JSON structure in any way.
    - Maintain the exact order and structure of steps and substeps from the input Tree.
 
+3. If there are missing steps present. Add them into the tree, and label them in the "code" field as **# MISSING STEP**.
+   - If a step is missing, leave the "code" field empty in the Tree.
+
 ---
 
 **Additional Clarification**:
@@ -206,7 +209,7 @@ This means the logic described in the step does not match what the line does. Do
 - **Every step and substep must contain a "code" field.**
 - Do not remove or rewrite Python function definitions. If the logic is inside a function like def foo(x: str) -> str:, the function must remain and contain the commented lines inside.
 - When generating the top-level code field:
-  - Insert all comments **above** the corresponding code lines **if and only if** they are present in the Tree, eg. #Step 1, Step 1.1, etc.
+  - Insert all comments **above** the corresponding code lines **if and only if they are present in the Tree as well **, eg. #Step 1, Step 1.1, etc.
   - Always preserve the original function structure (do not extract just parts of the body outside the function).
   - For any incorrectly implemented logic, comment it with **# NOT IMPLEMENTED CORRECTLY** above the line and for any missing implementation **## MISSING STEP**.
 
