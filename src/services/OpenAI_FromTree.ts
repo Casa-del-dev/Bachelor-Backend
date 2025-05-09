@@ -186,7 +186,6 @@ Using the input **Code** and **Tree**, follow the instructions below:
    - Compare the step’s **content** with the logic found in the **Code** to determine whether it is implemented.
    - Do **not** use the general_hint or detailed_hint to decide if something is implemented — only use the **content** field.
    - If the described content is implemented in the Code, insert the corresponding code snippet into the "code" field, **even if the step is marked as incorrect**.
-   - If the logic is implemented but incorrect, still extract the matching code and put **# NOT IMPLEMENTED CORRECTLY** above the linecode.
    - If the content is not implemented at all, leave the "code" field as an empty string.
 
 Clarification on “incorrect”:
@@ -207,9 +206,9 @@ This means the logic described in the step does not match what the line does. Do
 - **Every step and substep must contain a "code" field.**
 - Do not remove or rewrite Python function definitions. If the logic is inside a function like def foo(x: str) -> str:, the function must remain and contain the commented lines inside.
 - When generating the top-level code field:
-  - Insert all comments **above** the corresponding code lines, eg. #Step 1, Step 1.1, etc.
+  - Insert all comments **above** the corresponding code lines **if and only if** they are present in the Tree, eg. #Step 1, Step 1.1, etc.
   - Always preserve the original function structure (do not extract just parts of the body outside the function).
-  - For any missing implementation comment it with **## MISSING STEP**  above the line, and for any incorrectly implemented logic, comment it with **# NOT IMPLEMENTED CORRECTLY**.
+  - For any incorrectly implemented logic, comment it with **# NOT IMPLEMENTED CORRECTLY** above the line and for any missing implementation **## MISSING STEP**.
 
 - When working with for, while, if, else, etc.:
   - **Do not inline the logic on the same line** as the control structure.
