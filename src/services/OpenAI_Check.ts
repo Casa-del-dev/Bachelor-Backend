@@ -99,7 +99,7 @@ Return Format:
 What qualifies as a substep?
 
 - A task required to complete a larger step.
-- A process that is logically inside a larger step.
+- A process dependent on the parent step.
 - A breakdown of a broad action into finer details.
 
 What is a blank step or substep?
@@ -111,7 +111,7 @@ A step or substep that contains all empty string values ("") except:
   "can_be_further_divided": ""
 }
 
-Empty steps are used to indicate that the Problem requires a step or substep that is not present in the input Tree. They should be added only when the Problem context clearly indicates that a step or substep is missing.
+**note**: The missing step follow the same structure as the other steps, but with empty values for all fields except "status".
 
 You **must** add blank steps/substeps if a part of the Problem logic is not accounted for in the Tree. When adding a blank step/substep, you must also provide the following fields: general_hint, detailed_hint, and the correctStep.
 
