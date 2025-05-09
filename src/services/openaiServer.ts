@@ -38,7 +38,7 @@ const service: Service = {
 				model: 'gpt-4o',
 				messages: [
 					{
-						role: 'user',
+						role: 'system',
 						content: `Given a Prompt and a Problem Description I want you to give me **only** a JSON file. Do not include any text, markdown, explanations, commas before/after the JSON, or anything else. Only output the raw JSON.
 
 **Prompt:**  
