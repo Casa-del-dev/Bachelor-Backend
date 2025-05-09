@@ -70,6 +70,8 @@ You **must** analyze the logical dependencies between steps:
 	- Only independent steps should be top-level.
 	- Do not assume that adding a subStep prevents you from adding other independent top-level steps.
 
+	** Do not treat all steps as flat unless they are truly independent. **
+
 In the return format you will see a lot of empty fields, those are required to stay empty.
 
 ### **Return Format:** ###
