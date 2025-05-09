@@ -115,6 +115,8 @@ const service: Service = {
 				],
 			};
 
+			const TreeTestString = JSON.stringify(TreeTest, null, 2).replace(/"/g, '\\"');
+
 			const payload = {
 				model: 'gpt-4o',
 				messages: [
@@ -123,7 +125,7 @@ const service: Service = {
 						content: `You are given a JSON File and a Problem Description. Your task is to look through the JSON file and understand where there might be mistakes solving the Problem. And output the analyzed JSON File. Do not include any text, markdown, explanations, commas before/after the JSON, or anything else. Only output the raw JSON.
 
 **JSON File:**  
-"${TreeTest}"
+"${TreeTestString}"
 
 **Problem Description:**  
 "${Problem}"
