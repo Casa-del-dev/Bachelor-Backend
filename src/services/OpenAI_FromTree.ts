@@ -295,7 +295,7 @@ Example JSON Output:
 ---
 
 Final Instruction:  
-**Only return the final JSON file. Do not include any explanation or additional text before or after!**
+Only give as output the json file no words before or after! **Do not include any text, markdown, explanations, commas before/after the JSON, or anything else. Only output the raw JSON.**
 `,
 					},
 				],
