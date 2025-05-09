@@ -39,68 +39,38 @@ const service: Service = {
 				messages: [
 					{
 						role: 'user',
-						content: `You are a JSON formatter. Your task is to process a Prompt and a Problem Description and return ONLY a valid JSON object, without any surrounding text, markdown, explanations, or additional characters. Output ONLY the raw JSON.
+						content: `Given a Prompt and a Problem Description I want you to give me **only** a JSON file. Do not include any text, markdown, explanations, commas before/after the JSON, or anything else. Only output the raw JSON.
 
----
-
-Prompt:
+**Prompt:**  
 "${Prompt}"
 
-Problem Description:
+**Problem Description:**  
 "${Problem}"
 
----
+### **Process** ###
 
-### Process ###
+First, divide the Prompt into steps. Each step should be a single action or task that needs to be performed to solve the Problem Description. The steps should be numbered sequentially and can have substeps if necessary.
 
-1. Divide the Prompt into steps. Each step should represent a single action or task needed to solve the Problem Description.
-2. Number the steps sequentially starting from "1".
-3. If a step **depends on** or **is part of** another step, you **MUST** nest it as a **subStep** of that step.
 
----
+### **Warning** ###
 
-### Warning and Nesting Rules ###
+If the prompt is not trying to solve the Problem Description you just return 1 step with empty content.
+If the prompt is solving the Problem Description wrongly you **DO NOT** Change the intended solution and Output the wrong JSON as intended by the Prompt.
+You **must** analyze the logical dependencies between steps:
+	- If a step is part of or depends on another, it is REQUIRED to be placed as a subStep inside the parent step.
+	- Do NOT list dependent steps as separate top-level steps.
+	- Only independent steps should be top-level.
 
-1. If the Prompt is **not related** to the Problem Description, return **one step with empty content**.
-2. If the Prompt is **wrong**, **DO NOT** correct it. Output the wrong JSON **as expressed** in the Prompt.
-3. You **must** analyze the logical dependencies between steps:
-   - If a step **depends on** or **is part of** another, you are **REQUIRED** to nest it as a **subStep** of the parent step.
-   - **Do NOT list dependent steps as top-level steps.**
-   - Only **independent** steps should appear as top-level steps.
-4. **Keep all empty fields as shown**, do **not** remove or fill them with extra information.
+In the return format you will see a lot of empty fields, those are required to stay empty.
 
----
+### **Return Format:** ###
 
-### Nesting Enforcement Example ###
-
-**Correct Nesting**:
-
-- Step 1: Sort the list.
-  - SubStep 1.1: Compare adjacent elements.
-  - SubStep 1.2: Swap if they are in the wrong order.
-- Step 2: Print the sorted list.
-
-**Incorrect Nesting (Do Not Do This)**:
-
-- Step 1: Sort the list.
-- Step 2: Compare adjacent elements.
-- Step 3: Swap if they are in the wrong order.
-- Step 4: Print the sorted list.
-
-**Reminder**:  
-Dependent or detailed actions **must** be nested as subSteps of their parent step.  
-Only **independent** actions should be top-level steps.  
-**Do not** list dependent steps as separate top-level steps.
-
----
-
-### Return Format Example ###
 {
   "code": "",
   "steps": {
     "1": {
-      "id": "unique-step-id",
-      "content": "Extracted step description.",
+      id: unique ID},
+      "content": Extracted step description from the Prompt.,
       "correctStep": "",
       "code": "",
       "status": {
@@ -111,22 +81,38 @@ Only **independent** actions should be top-level steps.
       "detailed_hint": "",
       "subSteps": {
         "1": {
-          "id": "unique-substep-id",
-          "content": "Extracted substep description.",
+          id: unique ID},
+          "content": Extracted substep Prompt.,
           "correctStep": "",
           "code": "",
           "status": {
-            "correctness": "",
-            "can_be_further_divided": ""
-          },
+				"correctness": "",
+				"can_be_further_divided": ""
+			},
           "general_hint": "",
           "detailed_hint": ""
-        }
+        },
+        ...
       }
-    }
+    },
+    "2": {
+      id: unique ID},
+      "content": Extracted substep Prompt.,
+      "correctStep": "",
+      "code": "",
+      "status": {
+        "correctness": "",
+        "can_be_further_divided": ""
+      },
+      "general_hint": "",
+      "detailed_hint": "",
+      "subSteps": {
+	  ...
+	  }
+    },
+    ...
   }
 }
-
 
 `,
 					},
