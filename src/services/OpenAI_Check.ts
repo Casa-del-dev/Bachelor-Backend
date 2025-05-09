@@ -146,18 +146,11 @@ Missing Steps:
 	- When adding a missing step, you must provide both a general_hint, a detailed_hint, and a correctStep.
 	- The content field must remain empty.
 	- You must analyze the logical dependencies between steps to correctly place missing steps.
-	- For example, if an initialization is required before a loop or a condition, the missing step must be inserted before that step and placed at one level higher in the hierarchy.
+	- For example, if an initialization is required before a loop or a condition, the missing step must be inserted before that loop or condition step and placed at one level higher in the hierarchy.
 
 Always aim to create a balanced and meaningful substep structure, avoiding unnecessary flattening or over-nesting.
 
 While the code section should remain as given by the input.
-
-Reordering Steps is Allowed and Required When Needed:
-
-	- You are allowed to change the order of steps in the tree if doing so better reflects the correct logical sequence of solving the Problem Description.
-	- Do NOT simply add missing steps at the end if they should logically appear earlier in the sequence.
-	- For example, if an initialization is missing before a loop, insert it before the loop, not after it, even if this requires reordering the existing steps.
-	- Reordering is required when it makes the solution more logically correct.
 
 ### **JSON Output:** ###
 
