@@ -146,9 +146,24 @@ Missing Steps:
 	- When adding a missing step, you must provide both a general_hint, a detailed_hint, and a correctStep.
 	- The content field must remain empty.
 	- You must analyze the logical dependencies between steps to correctly place missing steps.
-	- For example, if an initialization is required before a loop or a condition, the missing step must be inserted before that loop or condition step. Eg. step 1: loop -> step 1: initialize -> step 2: loop.
+	- For example, if an initialization is required before a loop or a condition, the missing step must be inserted before that loop or condition step.
 
-Always aim to create a balanced and meaningful substep structure, avoiding unnecessary flattening or over-nesting.
+When adding a missing step, you are allowed and required to reorder or renumber the existing steps if this makes the overall execution logically correct.
+	
+	Do not simply insert the missing step after its dependent step.
+	You must insert the missing step before the step that uses its result or depends on it.
+	This may require you to shift the numbering of the existing steps (e.g., move step 2 to step 3).
+	
+	Example correction:
+		Incorrect Order:
+			1. Loop over list and sum to tot
+			2. Initialize tot
+
+		Required Corrected Order:
+			1. Initialize tot
+			2. Loop over list and sum to tot
+
+	You are explicitly authorized and required to reorder the step numbers to maintain logical execution.
 
 While the code section should remain as given by the input.
 
