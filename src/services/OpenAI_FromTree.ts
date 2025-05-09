@@ -178,78 +178,142 @@ const service: Service = {
 				messages: [
 					{
 						role: 'user',
-						content: `Goal:
+						content: `Goal: 
 
 Using the input **Code** and **Tree**, follow the instructions below:
 
-Step Processing Logic:
-
 1. For each step (and substep) in the Tree:
-   - Compare the step’s **content** with the **Code** to check if it is implemented.
-   - Do **not** consider **general_hint** or **detailed_hint** when judging implementation.
-     - **Only** compare the **content** field with the **Code**.
-   - If **implemented correctly**, insert the matching **code snippet** into the "code" field.
-   - In the **top-level "code" field**, add **# Step N** (where N is the step number, like # Step 1, # Step 1.1, etc.) **above the code line**, not a description of the action.
-   - If **implemented but incorrect**, still include the matching code, but add **# Step N - NOT IMPLEMENTED CORRECTLY** above the code line in the **top-level "code" field**.
-   - If **not implemented at all**:
-     - Leave the step’s **"code"** field **empty**.
-     - Add **# Step N - MISSING STEP** in the **top-level "code" field** at the correct logical position.
-     - **Also add the missing step as an empty step in the Tree** with its status marked as **"missing"**.
+   - Compare the step’s **content** with the logic found in the **Code** to determine whether it is implemented.
+   - Do **not** use the general_hint or detailed_hint to decide if something is implemented — only use the **content** field.
+   - If the described content is implemented in the Code, insert the corresponding code snippet into the "code" field, **even if the step is marked as incorrect**.
+   - If the logic is implemented but incorrect, still extract the matching code and put **# NOT IMPLEMENTED CORRECTLY** above the linecode.
+   - If the content is not implemented at all, leave the "code" field as an empty string.
 
-Structure Preservation Rules:
+Clarification on “incorrect”:
+This means the logic described in the step does not match what the line does. Do not infer correctness based on expected behavior. Only judge based on content mismatch.
 
-2. Do not modify any other part of the Tree:
-   - Keep **all steps and substeps**, even if empty or partially filled.
-   - Retain all keys (id, status, etc.) as-is.
-   - **Do not** reformat, delete, or clean the JSON.
-   - Maintain the **original order and structure**.
+2. DO NOT modify any other part of the Tree!
+   - All steps and subSteps (even if they seem empty or partially filled) must be preserved.
+   - All keys and values (like "id", "content", "status", etc.) must remain exactly as in the input Tree.
+   - **Do not** delete steps or subSteps, even if "code" or "content" is missing or empty.
+   - **Do not** reformat or clean the JSON structure in any way.
+   - Maintain the exact order and structure of steps and substeps from the input Tree.
 
-Function and Code Preservation Rules:
+---
 
-- Retain full **function declarations** (e.g., def myFunc():).
-- Insert **step comments inside** the function body, never above or outside the def line.
-- Keep the **original function structure** in the **top-level "code" field**, inserting **# Step N** comments above the corresponding code lines.
-- **def main()**:
-  - Must **remain untouched**, **unannotated**, and **at the end**.
+**Additional Clarification**:
 
-When Dealing with Control Structures (for, while, if, etc.):
+- You must apply this logic to all steps and substeps, no matter how deeply nested.
+- **Every step and substep must contain a "code" field.**
+- Do not remove or rewrite Python function definitions. If the logic is inside a function like def foo(x: str) -> str:, the function must remain and contain the commented lines inside.
+- When generating the top-level code field:
+  - Insert all comments **above** the corresponding code lines, eg. #Step 1, Step 1.1, etc.
+  - Always preserve the original function structure (do not extract just parts of the body outside the function).
+  - For any missing implementation comment it with **## MISSING STEP**  above the line, and for any incorrectly implemented logic, comment it with **# NOT IMPLEMENTED CORRECTLY**.
 
-- **Do not inline comments on the same line** as control structures.
-- **Break into multiple lines** to place **step comments directly above** individual logical lines.
+- When working with for, while, if, else, etc.:
+  - **Do not inline the logic on the same line** as the control structure.
+  - Break them into multiple lines for clarity so comments can appear directly above individual logical lines.
 
-Example Correction in Top-Level Code Field:
+Function Preservation Requirements:
 
+	- You must retain the full function declaration: def function_name(args):.
+	- When inserting step comments, they must go inside the function body, never above or outside the def line.
+	- All extracted logic must appear within the appropriate function, inside its indentation.
+	- Never output loose lines of logic without wrapping them in their original function if they came from within it.
+	- When generating the top-level "code" field:
+	- Start with the original function definitions, such as def myFunc():.
+	- Insert step or substep comments above the corresponding code lines within the function.
+	- The def main() function must appear at the end, completely preserved and never labeled or commented.
+	- Do not extract the body alone without the function declaration.
 
-def my_function():
-    # Step 1 - MISSING STEP
-    # Step 2
-    for i in range(10):
-        # Step 2.1
-        print(i)
+---
 
-def main():
-    print("Done")
+**Code:**  
+"${Code}"
 
+**Tree:**  
+"${stepTreeTest2}"  
+*(Note: In this prompt, the Tree is an array of steps)*
 
 ---
 
 Return Format:
 
-Return a single JSON object with:
+Return a JSON object with exactly one key:
+- "steps" → an object where each step (and subStep) is indexed with a numerical key (as shown in the example below).
 
-"code": Full original code with # Step N comments as described.
+🚨 Important: You must also return a **code** field that includes the full original code with inline **# comments** (using Python syntax) placed **above** the relevant lines. These comments must describe the purpose of each step or substep.  
+The **def main()** function should appear **at the end of the code**, unmodified and not commented away. Do not label it with a step.
 
-"steps": The entire original Tree, updated with code snippets or empty strings as described.
+Additional Enforcement Rules:
 
-Output Requirement:
+1. Do **not** consider general_hint or detailed_hint when judging correctness.
+   - Only compare the step's "content" with the code implementation.
 
-Only output the raw JSON.
-Do not include any text, markdown, or extra characters.
-Output only the JSON object.
+2. For **missing steps**:
+   - In the **steps object**, leave the "code" field **empty**.
+   - In the **top-level "code" field**, insert **# MISSING STEP** **at the correct position**.
+     Example:
+     '''
+     def my_function():
+         # MISSING STEP
+         for i in range(10):
+             print(i)
+     '''
+
+3. Do **not** comment or label 'def main()''. Leave it **untouched and unannotated**, placed at the **end**.
 
 ---
 
-Would you like me to append the "Code" and "Tree" placeholders, or are you already managing that part?
+Example JSON Output:
+
+{
+  "code": "// Original code with added comments that describe the steps",
+  "steps": {
+    "1": {
+      "id": "Same as input",
+      "content": "Same as input",
+      "correctStep": "Same as input",
+      "code": "Extracted code line or empty string",
+      "prompt": "Same as input",
+      "status": {
+        "correctness": "Same as input",
+        "can_be_further_divided": "Same as input"
+      },
+      "general_hint": "Same as input",
+      "detailed_hint": "Same as input",
+      "subSteps": {
+        "1": {
+          "id": "Same as input",
+          "content": "Same as input",
+          "correctStep": "Same as input",
+          "code": "Extracted code line or empty string",
+          "prompt": "Same as input",
+          "status": {
+            "correctness": "Same as input",
+            "can_be_further_divided": "Same as input"
+          },
+          "general_hint": "Same as input",
+          "detailed_hint": "Same as input",
+          "subSteps": {
+            "1": {
+              // Same structure
+            }
+          }
+        }
+      }
+    },
+    "2": {
+      // Same structure as above
+    }
+  }
+}
+
+---
+
+Final Instruction:  
+Only give as output the json file no words before or after! **Do not include any text, markdown, explanations, commas before/after the JSON, or anything else. Only output the raw JSON.**
 `,
 					},
 				],
