@@ -34,89 +34,6 @@ const service: Service = {
 				});
 			}
 
-			const TreeTest = {
-				root: [
-					{
-						id: 1,
-						code: '',
-						content: "Create a dictionary to transform single chart's into their respective decimal numbers.",
-						correctStep: '',
-						prompt: '',
-						status: {
-							correctness: '',
-							can_be_further_divided: '',
-						},
-						general_hint: '',
-						detailed_hint: '',
-						hasparent: false,
-						children: [],
-						isDeleting: false,
-						showGeneralHint1: false,
-						showDetailedHint1: false,
-						showCorrectStep1: false,
-						showGeneralHint2: false,
-						showDetailedHint2: false,
-						isNewlyInserted: false,
-						isexpanded: true,
-						isHyperExpanded: false,
-						selected: false,
-					},
-					{
-						id: 2,
-						code: '',
-						content: 'Create a loop that cycles over the input.',
-						correctStep: '',
-						prompt: '',
-						status: {
-							correctness: '',
-							can_be_further_divided: '',
-						},
-						general_hint: '',
-						detailed_hint: '',
-						hasparent: false,
-						children: [
-							{
-								id: 3,
-								code: '',
-								content: 'Transform the input using the dictionary and store the sum in a return variable.',
-								correctStep: '',
-								prompt: '',
-								status: {
-									correctness: '',
-									can_be_further_divided: '',
-								},
-								general_hint: '',
-								detailed_hint: '',
-								hasparent: true,
-								children: [],
-								isDeleting: false,
-								showGeneralHint1: false,
-								showDetailedHint1: false,
-								showCorrectStep1: false,
-								showGeneralHint2: false,
-								showDetailedHint2: false,
-								isNewlyInserted: false,
-								isexpanded: true,
-								isHyperExpanded: false,
-								selected: false,
-							},
-						],
-						isDeleting: false,
-						showGeneralHint1: false,
-						showDetailedHint1: false,
-						showCorrectStep1: false,
-						showGeneralHint2: false,
-						showDetailedHint2: false,
-						isNewlyInserted: false,
-						isexpanded: true,
-						isHyperExpanded: false,
-						selected: false,
-					},
-				],
-			};
-
-			const TreeTestString = JSON.stringify(TreeTest, null, 2).replace(/"/g, '\\"');
-
 			const payload = {
 				model: 'gpt-4o',
 				messages: [
@@ -131,7 +48,7 @@ The goal is to produce a new JSON file that is **semantically equivalent to a co
 - The original structure is preserved **unless** the Problem clearly requires additions.
 
 **Tree:**  
-"${TreeTestString}"
+"${Tree}"
 
 ⚠️ Input Tree Note:
 - The input is a flat list of steps, each with optional "children" arrays. You must transform this into the nested "steps" → "subSteps" format shown below.
