@@ -209,7 +209,7 @@ This means the logic described in the step does not match what the line does. Do
 - When generating the top-level code field:
   - Insert all comments **above** the corresponding code lines.
   - Always preserve the original function structure (do not extract just parts of the body outside the function).
-  - For any incorrectly implemented logic, comment it with **# NOT IMPLEMENTED CORRECTLY** above the line.
+  - For any incorrectly implemented logic, comment it with **# NOT IMPLEMENTED CORRECTLY** above the line and for any missing implementation **## MISSING STEP**.
 
 - When working with for, while, if, else, etc.:
   - **Do not inline the logic on the same line** as the control structure.
