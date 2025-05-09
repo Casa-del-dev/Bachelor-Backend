@@ -39,49 +39,22 @@ const service: Service = {
 				messages: [
 					{
 						role: 'user',
-						content: `Problem:
-I want you to interpret the following **Content**, **Problem Description**. Then, generate a structured JSON file describing all steps and if needed substeps contained in the Content.
- 
-**Content:**  
+						content: `Given a Prompt and a Problem Description I want you to give me **only** a JSON file. Do not include any text, markdown, explanations, commas before/after the JSON, or anything else. Only output the raw JSON.
+
+**Prompt:**  
 "${Prompt}"
 
 **Problem Description:**  
 "${Problem}"
 
-**Important:** The steps might be incorrect, and that's okay—we want them either way. **Do not correct anything.** Your task is only to structure the steps into the given JSON format. Additionally, if **tree** is non-empty in the JSON file, then you should adjust that tree to reflect the new prompt (e.g., by adding a new step if that's what the Content suggests).
-Important: You MUST extract substeps wherever possible. If a portion of the content logically falls under a larger step, it MUST be placed as a substep. Avoid flattening the structure—use substeps whenever the content suggests a hierarchy. If there is any doubt, favor using substeps.
-
----
-
-### **Return Format:**
-The output must be a valid JSON object with the following structure:
-
-- **steps** → Contains the identified steps from the Content
-- Each step includes:
-  - "content" → Description of what is happening at this step.
-  - "correctStep" → Leave as "" (empty string).
-  - "code" → Leave as "" (empty string).
-  - "status" → {
-        "correctness" → Leave as "" (empty string),
-        "can_be_further_divided"→ Leave as "" (empty string)
-      },
-  - "general_hint" → Leave as "" (empty string).
-  - "detailed_hint" → Leave as "" (empty string).
-  - "subSteps" → If the part if the content can be a subset of a step, structure them the same way.
-
-What qualifies as a substep?
-A task that is required to complete a larger step.
-A process that naturally depends on the step it is under.
-A breakdown of a broad action into finer details.
-
-#### **Example JSON Output:**
+### **Return Format:** ###
 
 {
   "code": "",
   "steps": {
     "1": {
-      id: step-${Date.now()}-${Math.floor(Math.random() * 10000)},
-      "content": "Extracted step description from the Content.",
+      id: unique ID},
+      "content": Extracted step description from the Prompt.,
       "correctStep": "",
       "code": "",
       "status": {
@@ -92,8 +65,8 @@ A breakdown of a broad action into finer details.
       "detailed_hint": "",
       "subSteps": {
         "1": {
-          id: step-${Date.now()}-${Math.floor(Math.random() * 10000)},
-          "content": "Extracted substep description.",
+          id: unique ID},
+          "content": Extracted substep Prompt.,
           "correctStep": "",
           "code": "",
           "status": {
@@ -107,8 +80,8 @@ A breakdown of a broad action into finer details.
       }
     },
     "2": {
-      id: step-${Date.now()}-${Math.floor(Math.random() * 10000)},
-      "content": "Another identified step.",
+      id: unique ID},
+      "content": Extracted substep Prompt.,
       "correctStep": "",
       "code": "",
       "status": {
@@ -125,11 +98,12 @@ A breakdown of a broad action into finer details.
   }
 }
 
----
 
-### **Warning:**
-**Do not correct or modify any part of the steps**. Even if the steps seem incorrect, simply structure them as described.  
-**Your job is NOT to evaluate correctness**—only to extract steps and format them into the JSON structure.
+### **Warning** ###
+
+If the prompt is not trying to solve the Problem Description you just return 1 step with empty content.
+If the prompt is solving the Problem Description wrongly you **DO NOT** Change the intended solution.
+If the prompt contains a process that naturally depends on the step it is under or a breakdown of a broad action into finer Details you put it as a substep of the depended step!
 `,
 					},
 				],
