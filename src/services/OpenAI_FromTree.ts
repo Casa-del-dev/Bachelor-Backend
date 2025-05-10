@@ -130,6 +130,20 @@ Additional Enforcement Rules:
 
 4. Do **not** comment or label 'def main()'. Leave it **untouched and unannotated**, placed at the **end**.
 
+⚠️ Important Clarification About Handling "missing" Steps in the Tree:
+
+  Only newly added steps by you (not already present in the input Tree)
+  must have:
+  "content": ""
+  "code": ""
+  status.correctness: "missing"
+  status.can_be_further_divided: ""
+  general_hint, detailed_hint, and correctStep (all required)
+  If a step already exists in the Tree with "correctness": "missing", but you find matching code in the provided Code:
+  Do NOT empty its "code" field.
+  You MUST insert the matched code snippet in the "code" field, exactly like any other step.
+  You MUST still add the corresponding comment in the top-level "code" field.
+
 ---
 
 Example JSON Output:
