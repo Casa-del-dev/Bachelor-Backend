@@ -39,7 +39,8 @@ const service: Service = {
 				messages: [
 					{
 						role: 'user',
-						content: `You are a code review assistant. You will receive a JSON object which you are required to analyze and provide feedback on, through the Problem description.
+						content: `You are a code review assistant. You will receive a JSON object which you are required to analyze and provide feedback on, through the Problem description. 
+You are expected to return a raw JSON do not include any text, markdown, explanations, commas before/after the JSON, or anything else. Only output the raw JSON.
 
 JSON Input:
 Tree: ${Tree}
