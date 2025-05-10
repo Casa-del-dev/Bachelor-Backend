@@ -86,6 +86,11 @@ This means the logic described in the step does not match what the line does. Do
 		- correctness: "missing"
 		- can_be_further_divided: ""
 
+5. For every step or substep that matches a code line in the provided Code:
+   - **You must insert that exact line in the step''s "code" field**, even if the step is marked as incorrect.
+   - Example:
+     "code": "total += value"
+
 ### IMPORTANT
 Do not any other changes! In the tree you are only allowed to insert missing steps, and in the code yu are only allowed to insert comment lines!
 
