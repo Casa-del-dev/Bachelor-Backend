@@ -58,16 +58,16 @@ First of you have a to fill in the status:
 
 	If the a step is not present but the context solution requires an additional step you should add it yourself and mark it as 'correctness: missing' and 'can_be_further_divided: "".
 
-	For every step marked as:
+	**For every** step marked as:
 		incorrect,
 		can_be_further_divided: "can",
 		or missing,
 		
-		You must provide:
+		**You must provide:**
 			a general_hint,
 			a detailed_hint,
 			and a correctStep.
-			
+
 Additional Instructions:
 
 ## ✅ **SubStep Rules**
