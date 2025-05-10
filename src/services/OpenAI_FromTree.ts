@@ -89,6 +89,12 @@ This means the logic described in the step does not match what the line does. Do
 5. For every step or substep that matches a code line in the provided Code:
    - **You must insert that exact line in the step''s "code" field**, even if the step is marked as incorrect.
    - Example:
+     Code says: 
+            total += value
+     Tree says:
+     "content": "sum all values to one tot variable"
+
+     -> therefore the step.code field should be:
      "code": "total += value"
 
 ### IMPORTANT
