@@ -72,8 +72,12 @@ You **must** analyze the logical dependencies between steps:
 	- Do not assume that adding a subStep prevents you from adding other independent top-level steps.
 
 	** Do not treat all steps as flat unless they are truly independent: ** for example, when the prompt says finally return x. Don't assume that the previous steps are not nested. Always check if they are and if they are put them as substeps of each one.
+Important:
 
-In the return format you will see a lot of empty fields, those are required to stay empty.
+	- If you do not apply nesting, you must be able to explain why the steps are independent.
+	- Do not flatten the steps by default.
+	- You must check if later steps depend on earlier ones, and nest them if they do.
+	- In the return format you will see a lot of empty fields, those are required to stay empty.
 
 ### **Return Format:** ###
 
