@@ -127,13 +127,13 @@ You must provide all of the following:
   content: '""'
   correctness: ''missing''
   can_be_further_divided: '""'
-  general_hint, detailed_hint, correctStep: filled!
+  general_hint: filled!, detailed_hint: filled!, correctStep: filled!
 
 ---
 
 - Dividable steps must have:
   can_be_further_divided: '"can"'
-  general_hint, detailed_hint, correctStep: filled!
+  general_hint: filled!, detailed_hint: filled!, correctStep: filled!
 
 ---
 
