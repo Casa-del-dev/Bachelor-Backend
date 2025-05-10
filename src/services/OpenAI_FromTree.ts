@@ -196,7 +196,7 @@ Using the input **Code** and **Tree**, follow the instructions below:
 Clarification on “incorrect”:
 This means the logic described in the step does not match what the line does. Do not infer correctness based on expected behavior. Only judge based on content mismatch.
 
-2. DO NOT modify any other part of the Tree!
+2. DO NOT modify any part of the Tree that doesn't include missing steps!
    - All steps and subSteps (even if they seem empty or partially filled) must be preserved.
    - All keys and values (like "id", "content", "status", etc.) must remain exactly as in the input Tree.
    - **Do not** delete steps or subSteps, even if "code" or "content" is missing or empty.
@@ -204,38 +204,11 @@ This means the logic described in the step does not match what the line does. Do
    - Maintain the exact order and structure of steps and substeps from the input Tree.
 
 3. If there are missing steps, add them into the tree and label them in the "code" field as **# Step N - MISSING STEP**.
-   - In the Tree, leave the "code" field **empty** for missing steps.
+   - For missing steps, leave the "code", "content" field **empty**
+   - And fill general hint, detailed hint, and correctStep fields.
 
 ---
 
-**Additional Clarification**:
-
-- You must apply this logic to all steps and substeps, no matter how deeply nested.
-- **Every step and substep must contain a "code" field.**
-- Do not remove or rewrite Python function definitions. If the logic is inside a function like 'def foo(x: str) -> str:', the function must remain and contain the commented lines inside.
-- When generating the top-level code field:
-  - Insert all comments **above** the corresponding code lines **if and only if they are present in the Tree as well**, e.g., **# Step 1**, **# Step 1.1**, etc.
-  - Always preserve the original function structure (do not extract just parts of the body outside the function).
-  - For any incorrectly implemented logic, comment it with **# Step N - NOT IMPLEMENTED CORRECTLY** above the line.
-  - For any missing implementation, comment it with **# Step N - MISSING STEP** at the correct position in the top-level code.
-
-- When working with 'for', 'while', 'if', 'else', etc.:
-  - **Do not inline the logic on the same line** as the control structure.
-  - Break them into multiple lines for clarity so comments can appear directly above individual logical lines.
-
-Function Preservation Requirements:
-
-- You must retain the full function declaration: 'def function_name(args):'.
-- When inserting step comments, they must go inside the function body, never above or outside the def line.
-- All extracted logic must appear within the appropriate function, inside its indentation.
-- Never output loose lines of logic without wrapping them in their original function if they came from within it.
-- When generating the top-level "code" field:
-  - Start with the original function definitions, such as 'def myFunc():'.
-  - Insert step or substep comments above the corresponding code lines within the function.
-  - The 'def main()' function must appear at the end, completely preserved and never labeled or commented.
-  - Do not extract the body alone without the function declaration.
-
----
 
 **Code:**  
 "${Code}"
