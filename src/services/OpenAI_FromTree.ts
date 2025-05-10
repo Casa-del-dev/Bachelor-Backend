@@ -49,7 +49,7 @@ const service: Service = {
 
 Using the input **Code** and **Tree**, follow the instructions below:
 
-1. For each step (and substep) in the Tree:
+1. For each step (and substep) containing content in the Tree:
    - Compare the step’s **content** with the logic found in the **Code** to determine whether it is implemented.
    - Do **not** use the general_hint or detailed_hint to decide if something is implemented — only use the **content** field.
    - If the described content is implemented in the Code, insert the corresponding code snippet into the "code" field, **even if the step is marked as incorrect**.
