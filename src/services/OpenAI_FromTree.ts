@@ -188,10 +188,13 @@ Using the input **Code** and **Tree**, follow the instructions below:
    - If the described content is implemented in the Code, insert the corresponding code snippet into the "code" field, **even if the step is marked as incorrect**.
    - In the top-level "code" field, insert **# Step N** (e.g., '# Step 1','# Step 1.1') **above the matching code line**, **only if the step exists in the Tree**.
    - If the logic is present but **incorrect**, still insert the code line and add **# Step N - NOT IMPLEMENTED CORRECTLY** above it in the top-level code.
-   - If the content is **not implemented at all**, do **both** of the following:
-     - Leave the step's "code" field **empty** in the Tree.
-     - Insert **# Step N - MISSING STEP** in the **top-level code** at the correct position.
-     - **Also add the missing step into the Tree**, preserving its structure with empty "code".
+
+   - If the content is **not implemented at all** but is present in the tree, do:
+     - Leave a comment saying #Step N - NOT IMPLEMENTED
+
+   - If a logical step is **not present at all** in the tree, do **both** of the following:
+     - **Add the missing step into the Tree**, preserving its structure with empty "code".
+     - Insert **MISSING STEP** in the **code** at the correct position.
 
 Clarification on “incorrect”:
 This means the logic described in the step does not match what the line does. Do not infer correctness based on expected behavior. Only judge based on content mismatch.
@@ -206,6 +209,16 @@ This means the logic described in the step does not match what the line does. Do
 3. If there are missing steps, add them into the tree and label them in the "code" field as **# Step N - MISSING STEP**.
    - For missing steps, leave the "code", "content" field **empty**
    - And fill general hint, detailed hint, and correctStep fields.
+
+4. Clarification of "missing step":
+   - Content: ""
+   - General_hint: filled
+   - Detailed_hint: filled
+   - CorrectStep: filled
+   - Status:
+		- correctness: "missing"
+		- can_be_further_divided: ""
+
 
 ---
 
