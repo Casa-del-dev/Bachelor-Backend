@@ -111,9 +111,17 @@ A step or substep that contains all empty string values ("") except:
   "can_be_further_divided": ""
 }
 
-**note**: The missing step have the same substeps rules as normal steps, but with empty values for all fields except "status". Double check if really a substep, and always provide general and detailed hints, and the correctStep..
+Dependency-Aware Step Placement Rule:
+You must analyze what step depends on what:
 
-You **must** add blank steps/substeps if a part of the Problem logic is not accounted for in the Tree. When adding a blank step/substep, you must also provide the following fields: general_hint, detailed_hint, and the correctStep.
+	- Example: if a step uses a variable that requires initialization first, you must insert a missing initialization step before it, not after.
+	- Example: if a summation depends on a loop, the loop must come before the summation.
+	- Example: if a return comes after a computation, you must nest the return inside the computation step if it logically concludes that action.
+	- Do not add missing steps blindly at the end or at random positions.
+	- Always check the logical flow of the Problem Description.
+	- If a step is part of completing another step, add it as a subStep.
+	- If it should happen before an existing step, insert it before in the same level or as a parent if required.
+	- If it should happen after a step, insert it after, but only if it is logically independent.
 
 Common mistakes to avoid:
 - Do not overwrite or blank out existing steps marked as "incorrect".
