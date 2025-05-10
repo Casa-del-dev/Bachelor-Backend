@@ -111,30 +111,28 @@ const service: Service = {
 
 	## ✅ Placement of Missing Steps
 
-	- You **must insert** missing steps in the correct logical order, in-between existing steps **if needed**.
-	Example correction:
-		Original:
-		Step 3: Sum all values to tot
-		Correction:
-		Step 3: Initialize tot
-		Step 4: Sum all values to tot
+	- You **must insert** missing steps in the **correct logical position**, never at the end by default.
+	- Always check the **logical sequence** of the problem.
 
-	- Before dependent steps, if they are prerequisites (e.g., initialization).
-	- After other steps only if independent.
-	- Nested as substeps if part of a broader step.
-	- Do not add missing steps at the end by default.  
-	Always check the logical sequence.
+	### ✅ **Where to Place Missing Steps**
+	- **Before** dependent steps, if they are prerequisites (e.g., initialization).
+	- **After** other steps only if they are **independent**.
+	- **Nested as substeps** if they are **part of a broader step**.
+	- Example:
+		- For loop:
+		- Something happens **in the loop** → The step is a **substep of the loop**.
 
-	- When adding a missing step:
-	- You **must add it in the correct logical position**, **before any dependent step** if required.
-	- You **must leave the content field empty ("")**.
-	- You **must provide**:
-		- general_hint (required)
-		- detailed_hint (required)
-		- correctStep (required, describing what this missing step should achieve)
+	### ✅ **When Adding a Missing Step, You Must:**
+	1. **Place it correctly** in the sequence (before dependents, as substep if needed).
+	2. **Leave the content field empty ("")**.
+	3. **Provide all of the following**:
+	- general_hint (required)
+	- detailed_hint (required)
+	- correctStep (required, describing what this missing step should achieve)
+
 
 	---
-
+### IMPORTANT 
 	- When marking can_be_further_divided: "can", you **must provide**:
 	- general_hint (required)
 	- detailed_hint (required, describing how to divide it)
