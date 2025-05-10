@@ -59,9 +59,9 @@ Using the input **Code** and **Tree**, follow the instructions below:
    - If the content is **not implemented at all** but is present in the tree, do:
      - Leave a comment saying #Step N - NOT IMPLEMENTED
 
-   - If a logical step is **not present at all** in the tree, do **both** of the following:
+   - If a logical step is **not present at all** in the tree or a **compiling error** accurs in the code, do **both** of the following:
      - **Add the missing step into the Tree**, preserving its structure with empty "code".
-     - Insert **MISSING STEP** in the **code** at the correct position.
+     - Insert **# MISSING STEP** in the **code** at the correct position.
 
 Clarification on “incorrect”:
 This means the logic described in the step does not match what the line does. Do not infer correctness based on expected behavior. Only judge based on content mismatch.
@@ -73,7 +73,7 @@ This means the logic described in the step does not match what the line does. Do
    - **Do not** reformat or clean the JSON structure in any way.
    - Maintain the exact order and structure of steps and substeps from the input Tree.
 
-3. If there are missing steps, add them into the tree and label them in the "code" field as **# Step N - MISSING STEP**.
+3. If there are missing steps, add them into the tree and label them in the "code" field as ** MISSING STEP**.
    - For missing steps, leave the "code", "content" field **empty**
    - And fill general hint, detailed hint, and correctStep fields.
 
@@ -86,6 +86,8 @@ This means the logic described in the step does not match what the line does. Do
 		- correctness: "missing"
 		- can_be_further_divided: ""
 
+### IMPORTANT
+Do not any other changes! In the tree you are only allowed to insert missing steps, and in the code yu are only allowed to insert comment lines!
 
 ---
 
