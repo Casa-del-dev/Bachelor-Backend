@@ -52,7 +52,7 @@ Using the input **Code** and **Tree**, follow the instructions below:
 1. For each step (and substep) in the Tree:
    - Compare the step’s **content** with the logic found in the **Code** to determine whether it is implemented.
    - Do **not** use the general_hint or detailed_hint to decide if something is implemented — only use the **content** field.
-   - If the described content is implemented in the Code, insert the corresponding code snippet into the "code" field, **even if the step is marked as incorrect**.
+   - If the described content is implemented in the Code, **ALWAYS** insert the corresponding code snippet into the "code" field, **even if the step is marked as incorrect**.
    - In the top-level "code" field, insert **# Step N** (e.g., '# Step 1','# Step 1.1') **above the matching code line**, **only if the step exists in the Tree**.
    - If the logic is present but **incorrect**, still insert the code line and add **# Step N - NOT IMPLEMENTED CORRECTLY** above it in the top-level code.
 
