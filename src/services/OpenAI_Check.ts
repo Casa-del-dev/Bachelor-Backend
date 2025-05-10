@@ -39,94 +39,52 @@ const service: Service = {
 				messages: [
 					{
 						role: 'user',
-						content: `Goal:
+						content: `You are a code review assistant. You will receive a JSON object which you are required to analyze and provide feedback on, through the Problem description.
 
-Use the input Tree as a base and revise only the fields specified below. However, if the Problem describes steps or substeps that are **missing or unrepresented** in the Tree, you **must add new blank steps or substeps** to capture that logic.
+JSON Input:
+Tree: ${Tree}
 
-The goal is to produce a new JSON file that is **semantically equivalent to a complete solution** for the Problem — meaning:
-- All required steps and substeps described or implied in the Problem are present,
-- The original structure is preserved **unless** the Problem clearly requires additions.
+Problem Description:
+${Problem}
 
-**Tree:**  
-"${Tree}"
+First of you have a to fill in the status:
+	correctness: correct / incorrect / missing
+	can_be_further_divided: can / cannot
 
-⚠️ Input Tree Note:
-- The input is a flat list of steps, each with optional "children" arrays. You must transform this into the nested "steps" → "subSteps" format shown below.
-- If a step in the input has children, those must appear inside "subSteps" in the output.
-- Each substep (child) should have its own status, correctness, and hints, and must be preserved exactly unless the Problem requires changes.
-- Do not remove any existing children — all must appear in "subSteps" in the final output.
+	If the step described is correct then mark it as 'correctness: correct' and 'can_be_further_divided: "cannot"'.
+	If the step described is correct but can be further divided in smaller steps mark it as 'correctness: correct' and 'can_be_further_divided: can'.
+	If the step described is incorrect mark it as 'correctness: incorrect' and depending if it can be further divided or not mark it as 'can_be_further_divided: "can / cannot"'.
 
-**Problem:**  
-"${Problem}"
+	If the a step is not present but the context solution requires an additional step you should add it yourself and mark it as 'correctness: missing' and 'can_be_further_divided: "".
 
-You should update only the following properties, based on the Problem:
+	If you mark a step as incorrect, dividable or missing you **must** add a general, detailed hint, and provide the correctSolution.
 
-- status.correctness
-- status.can_be_further_divided
-- correctStep (**Provide the correct step only if the existing step is incorrect or missing**)
-- general_hint (**Required if step is incorrect, missing, or can be further divided**)
-- detailed_hint (**Required if step is incorrect, missing, or can be further divided**)
-- Add missing steps or substeps if the Problem context requires any that are not already present in the Tree
+Additional Instructions:
 
-	🧭 Ordering Rule:
-	
-	- If you add a missing step or substep, you must place it in the correct logical and semantic order based on the Problem and the surrounding context.
-	- Do not add missing steps at the end unless the logic clearly belongs there (e.g., cleanup, return, summary).
-	- When in doubt, insert the missing step before the next related step (e.g., setup before usage, loop before total update, etc.).
+## ✅ **SubStep Rules**
 
-Important:
-- **Always** keep the steps and substeps given in the input! Only add **if necessary** missing steps.
-- If a step exists but has incorrect content, mark it as "incorrect" — do NOT mark it as "missing" or delete its content.
-- Only mark a step as "missing" if it is **entirely absent** from the Tree.
-- When status.can_be_further_divided = "can", you must provide hints explaining how the step could be broken down further.
-- Do not remove any existing substeps. All children in the input Tree must be preserved in the output, even if unchanged.
-- If a step contains substeps (children), include those in the output exactly as provided, updating only the fields if needed.
+- A **substep** is any action that:
+- **Depends on the parent step to make sense**,  
+- **Breaks down the parent into smaller actions**, or  
+- **Is logically part of completing the parent step**.
 
-Return Format:
+- **Do not flatten** all steps to the top-level if they are **logically part** of a parent step.
+- **Add substeps** if the Problem describes finer details that are **part of a broader action**.
+- **Do not add substeps randomly**; apply this rule only when **dependency or breakdown makes sense**.
 
-- steps → Keep all original steps, unless the Problem clearly requires an additional step (as a blank step).
-- Each step contains:
-  - "content" → Keep as input.
-  - "correctStep" → Only include if correctness is not "correct".
-  - code → "Same as input" (//keep as input)
-  - "status":
-    - "correctness" → "correct" / "incorrect" / "missing"
-    - "can_be_further_divided" → "can" / "cannot"
-  - "general_hint" → Only if correctness is not "correct".
-  - "detailed_hint" → Only if correctness is not "correct".
-  - "subSteps" → **Same as input**, but if the Problem describes or implies new blank substeps that should be added.
+---
 
-What qualifies as a substep?
+## ✅ **Placement of Missing Steps**
 
-- A task required to complete a larger step.
-- A process dependent on the parent step.
-- A breakdown of a broad action into finer details.
+- **Insert missing steps in the correct logical order**:
+- **Before** any step that depends on them (e.g., initialize 'total' before summing values).
+- **After** other steps **only if independent** and **logically makes sense**.
+- **Nested** as **substeps** if they are **required to complete an existing broader step**.
 
-What is a blank step or substep?
+- **Do not add missing steps at the end by default**.  
+**Always check the logical sequence.**
 
-A step or substep that contains all empty string values ("") except:
 
-"status": {
-  "correctness": "missing",
-  "can_be_further_divided": ""
-}
-
-Dependency-Aware Step Placement Rule:
-You must analyze what step depends on what:
-
-	- Example: if a step uses a variable that requires initialization first, you must insert a missing initialization step before it, not after.
-	- Example: if a summation depends on a loop, the loop must come before the summation.
-	- Example: if a return comes after a computation, you must nest the return inside the computation step if it logically concludes that action.
-	- Do not add missing steps blindly at the end or at random positions.
-	- Always check the logical flow of the Problem Description.
-	- If a step is part of completing another step, add it as a subStep.
-	- If it should happen before an existing step, insert it before in the same level or as a parent if required.
-	- If it should happen after a step, insert it after, but only if it is logically independent.
-
-Common mistakes to avoid:
-- Do not overwrite or blank out existing steps marked as "incorrect".
-- Never mark a step as "missing" unless it is truly not present in the input Tree.
-- Always provide general and detailed hints when correctness is not "correct", or when a step can be further divided.
 
 Example JSON Output:
 
