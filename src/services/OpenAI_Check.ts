@@ -87,6 +87,8 @@ Additional Instructions:
 
 - **Insert missing steps in the correct logical order**:
 - **Before** any step that depends on them (e.g., initialize 'total' before summing values).
+	Example: Step 3: Sum all values to tot. becomes -> Step 3: initialize tot -> Step 4:  Sum all values to tot.
+
 - **After** other steps **only if independent** and **logically makes sense**.
 - **Nested** as **substeps** if they are **required to complete an existing broader step**.
 
