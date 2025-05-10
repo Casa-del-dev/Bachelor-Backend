@@ -144,6 +144,11 @@ Additional Enforcement Rules:
   You MUST insert the matched code snippet in the "code" field, exactly like any other step.
   You MUST still add the corresponding comment in the top-level "code" field.
 
+⚠️ Skip Processing Steps Without Content
+
+  Only process steps that have a non-empty "content" field.
+  Ignore steps that have empty "content", even if they include hints, correctStep, or status.
+  Do not insert comments or code for steps that have no "content".
 ---
 
 Example JSON Output:
