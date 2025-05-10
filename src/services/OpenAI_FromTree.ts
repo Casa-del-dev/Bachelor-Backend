@@ -86,15 +86,13 @@ This means the logic described in the step does not match what the line does. Do
 		- correctness: "missing"
 		- can_be_further_divided: ""
 
+⚠️ Important Clarification About Missing Steps in the Tree:
+  Only new missing steps that you insert must have empty "code" and "content" fields.
+  If the step already exists in the Tree and is marked as "missing",
+  you must still insert the matching code snippet in its "code" field if you find it in the provided Code.
+  This applies even if the step is marked as "missing".
 
-5. For each step (and substep) in the Tree:
-
-  Compare the step’s content with the logic found in the Code to determine whether it is implemented.
-  Do not use the general_hint or detailed_hint to decide if something is implemented — only use the content field.
-  If the described content is implemented in the Code, ALWAYS insert the corresponding code snippet into BOTH:
-  the step’s "code" field, and the top-level "code" field, with a comment above it (e.g., # Step N), even if the step is marked as incorrect.
-
-### IMPORTANT
+  ### IMPORTANT
 Do not any other changes! In the tree you are only allowed to insert missing steps, and in the code yu are only allowed to insert comment lines!
 
 ---
