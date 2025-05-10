@@ -56,36 +56,36 @@ ${Problem}
 
 For each step and substep, fill in:
 
-- correctness: ''correct'' / ''incorrect'' / ''missing''
-- can_be_further_divided: ''can'' / ''cannot''
+- correctness: '"correct"' / '"incorrect"' / '"missing"'
+- can_be_further_divided: '"can"' / '"cannot"'
 
 ### ✅ Evaluation Rules
 
 - If the step is correct and complete, mark as:
-  correctness: ''correct''
-  can_be_further_divided: ''cannot''
+  correctness: '"correct"'
+  can_be_further_divided: '"cannot"'
 
 - If the step is correct but can be broken down, mark as:
-  correctness: ''correct''
-  can_be_further_divided: ''can''
+  correctness: '"correct"'
+  can_be_further_divided: '"can"'
 
 - If the step is incorrect, mark as:
-  correctness: ''incorrect''
-  can_be_further_divided: ''can'' or ''cannot''
+  correctness: '"incorrect"'
+  can_be_further_divided: '"can"' or '"cannot"'
 
 - If a required step is missing, add a blank step yourself with:
-  correctness: ''missing''
-  can_be_further_divided: ''''
-  content: ''''
+  correctness: '"missing"'
+  can_be_further_divided: '""'
+  content: '""'
 
 ---
 
 ## ✅ Mandatory Hints and Correct Step for Non-Final Steps
 
 For every step marked as:
-- correctness: ''incorrect''
-- correctness: ''missing''
-- can_be_further_divided: ''can''
+- correctness: '"incorrect"'
+- correctness: '"missing"'
+- can_be_further_divided: '"can"'
 
 You must provide all of the following:
 - A general_hint explaining why the step is incorrect, incomplete, or missing.
@@ -124,10 +124,16 @@ You must provide all of the following:
   Always check the logical sequence.
 
 - Missing steps must have:
-  content: ''''
+  content: '""'
   correctness: ''missing''
-  can_be_further_divided: ''''
-  general_hint, detailed_hint, correctStep
+  can_be_further_divided: '""'
+  general_hint, detailed_hint, correctStep: filled!
+
+---
+
+- Dividable steps must have:
+  can_be_further_divided: '"can"'
+  general_hint, detailed_hint, correctStep: filled!
 
 ---
 
