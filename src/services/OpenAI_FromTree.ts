@@ -86,16 +86,13 @@ This means the logic described in the step does not match what the line does. Do
 		- correctness: "missing"
 		- can_be_further_divided: ""
 
-5. For every step or substep that matches a code line in the provided Code:
-   - **You must insert that exact line in the step''s "code" field**, even if the step is marked as incorrect.
-   - Example:
-     Code says: 
-            total += value
-     Tree says:
-     "content": "sum all values to one tot variable"
 
-     -> therefore the step.code field should be:
-     "code": "total += value"
+5. For each step (and substep) in the Tree:
+
+  Compare the step’s content with the logic found in the Code to determine whether it is implemented.
+  Do not use the general_hint or detailed_hint to decide if something is implemented — only use the content field.
+  If the described content is implemented in the Code, ALWAYS insert the corresponding code snippet into BOTH:
+  the step’s "code" field, and the top-level "code" field, with a comment above it (e.g., # Step N), even if the step is marked as incorrect.
 
 ### IMPORTANT
 Do not any other changes! In the tree you are only allowed to insert missing steps, and in the code yu are only allowed to insert comment lines!
