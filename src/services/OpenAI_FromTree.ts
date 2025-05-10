@@ -77,8 +77,9 @@ This means the logic described in the step does not match what the line does. Do
    - For missing steps, leave the "code", "content" field **empty**
    - And fill general hint, detailed hint, and correctStep fields.
 
-4. Clarification of "missing step":
+4. Clarification of newly inserted "missing step":
    - Content: ""
+   - Code: ""
    - General_hint: filled
    - Detailed_hint: filled
    - CorrectStep: filled
