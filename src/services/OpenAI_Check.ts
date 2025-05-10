@@ -52,7 +52,7 @@ ${Problem}
 
 ---
 
-I want you to evaluate the Problem description, such that you can check the JSON input and see if the steps are correct. I any steps are missing for completition you can add missing steps. Rest is described below:
+I want you to evaluate the Problem description, such that you can check the JSON input and see if the steps are correct. I any steps are missing or steps are incomplete for correctness and soundness you can add missing steps. Rest is described below:
 
 ## ✅ Status Evaluation
 
@@ -129,13 +129,13 @@ You must provide all of the following:
   content: '""'
   correctness: ''missing''
   can_be_further_divided: '""'
-  general_hint: filled!, detailed_hint: filled!, correctStep: filled!
+  **general_hint: filled!, detailed_hint: filled!, correctStep: filled!**
 
 ---
 
 - Dividable steps must have:
   can_be_further_divided: '"can"'
-  general_hint: filled!, detailed_hint: filled!, correctStep: filled!
+  **general_hint: filled!, detailed_hint: filled!, correctStep: filled!**
 
 ---
 
