@@ -40,152 +40,156 @@ const service: Service = {
 					{
 						role: 'user',
 						content: `'You are a code review assistant. You will receive a JSON object which you are required to analyze and provide feedback on, through the Problem description. 
-You are expected to return a raw JSON. Do not include any text, markdown, explanations, commas before/after the JSON, or anything else. Only output the raw JSON.
+	You are expected to return a raw JSON. Do not include any text, markdown, explanations, commas before/after the JSON, or anything else. Only output the raw JSON.
 
----
+	---
 
-JSON Input:
-Tree: ${Tree}
+	JSON Input:
+	Tree: ${Tree}
 
-Problem Description:
-${Problem}
+	Problem Description:
+	${Problem}
 
----
+	---
 
-I want you to evaluate the Problem description, such that you can check the JSON input and see if the steps are correct. I any steps are missing or steps are incomplete for correctness and soundness you can add missing steps. Rest is described below:
+	I want you to evaluate the Problem description, such that you can check the JSON input and see if the steps are correct. I any steps are missing or steps are incomplete for correctness and soundness you can add missing steps. Rest is described below:
 
-## ✅ Status Evaluation
+	## ✅ Status Evaluation
 
-For each step and substep, fill in:
+	For each step and substep, fill in:
 
-- correctness: '"correct"' / '"incorrect"' / '"missing"'
-- can_be_further_divided: '"can"' / '"cannot"'
+	- correctness: '"correct"' / '"incorrect"' / '"missing"'
+	- can_be_further_divided: '"can"' / '"cannot"'
 
-### ✅ Evaluation Rules Based on Problem Description
+	### ✅ Evaluation Rules Based on Problem Description
 
-- If the step is correct and complete, mark as:
-  correctness: '"correct"'
-  can_be_further_divided: '"cannot"'
+	- If the step is correct and complete, mark as:
+	correctness: '"correct"'
+	can_be_further_divided: '"cannot"'
 
-- If the step is correct but can be broken down, mark as:
-  correctness: '"correct"'
-  can_be_further_divided: '"can"'
+	- If the step is correct but can be broken down, mark as:
+	correctness: '"correct"'
+	can_be_further_divided: '"can"'
 
-- If the step is incorrect, mark as:
-  correctness: '"incorrect"'
-  can_be_further_divided: '"can"' or '"cannot"'
+	- If the step is incorrect, mark as:
+	correctness: '"incorrect"'
+	can_be_further_divided: '"can"' or '"cannot"'
 
-- If a required step is missing, add a blank step yourself with:
-  correctness: '"missing"'
-  can_be_further_divided: '""'
-  content: '""'
+	- If a required step is missing, add a blank step yourself with:
+	correctness: '"missing"'
+	can_be_further_divided: '""'
+	content: '""'
 
----
+	---
 
-## ✅ Mandatory Hints and Correct Step for Non-Final Steps
+	## ✅ Mandatory Hints and Correct Step for Non-Final Steps
 
-For every step marked as:
-- correctness: '"incorrect"'
-- correctness: '"missing"'
-- can_be_further_divided: '"can"'
+	For every step marked as:
+	- correctness: '"incorrect"'
+	- correctness: '"missing"'
+	- can_be_further_divided: '"can"'
 
-You must provide all of the following:
-- A general_hint explaining why the step is incorrect, incomplete, or missing.
-- A detailed_hint explaining how to fix it or what is expected.
-- A correctStep showing the correct action or solution.
+	You must provide all of the following:
+	- A general_hint explaining why the step is incorrect, incomplete, or missing.
+	- A detailed_hint explaining how to fix it or what is expected.
+	- A correctStep showing the correct action or solution.
 
----
+	---
 
-## ✅ SubStep Rules
+	## ✅ SubStep Rules
 
-- A substep is any action that:
-  - Depends on the parent step to make sense  
-  - Breaks down the parent into smaller actions  
-  - Is logically part of completing the parent step
+	- A substep is any action that:
+	- Depends on the parent step to make sense  
+	- Breaks down the parent into smaller actions  
+	- Is logically part of completing the parent step
 
-- Do not flatten all steps if they belong together.
-- Add substeps when the Problem describes finer details.
-- Do not add random substeps—apply this rule only when justified by dependency or breakdown.
+	- Do not flatten all steps if they belong together.
+	- Add substeps when the Problem describes finer details.
+	- Do not add random substeps—apply this rule only when justified by dependency or breakdown.
 
----
+	---
 
-## ✅ Placement of Missing Steps
+	## ✅ Placement of Missing Steps
 
-- Insert missing steps in the correct logical order, in-between existing steps if needed.
-  Example correction:
-    Original:
-      Step 3: Sum all values to tot
-    Correction:
-      Step 3: Initialize tot
-      Step 4: Sum all values to tot
+	- You **must insert** missing steps in the correct logical order, in-between existing steps **if needed**.
+	Example correction:
+		Original:
+		Step 3: Sum all values to tot
+		Correction:
+		Step 3: Initialize tot
+		Step 4: Sum all values to tot
 
-- Before dependent steps, if they are prerequisites (e.g., initialization).
-- After other steps only if independent.
-- Nested as substeps if part of a broader step.
-- Do not add missing steps at the end by default.  
-  Always check the logical sequence.
+	- Before dependent steps, if they are prerequisites (e.g., initialization).
+	- After other steps only if independent.
+	- Nested as substeps if part of a broader step.
+	- Do not add missing steps at the end by default.  
+	Always check the logical sequence.
 
-- Missing steps must have:
-  content: '""'
-  correctness: ''missing''
-  can_be_further_divided: '""'
-  **general_hint: filled!, detailed_hint: filled!, correctStep: filled!**
+	- When adding a missing step:
+	- You **must add it in the correct logical position**, **before any dependent step** if required.
+	- You **must leave the content field empty ("")**.
+	- You **must provide**:
+		- general_hint (required)
+		- detailed_hint (required)
+		- correctStep (required, describing what this missing step should achieve)
 
----
+	---
 
-- Dividable steps must have:
-  can_be_further_divided: '"can"'
-  **general_hint: filled!, detailed_hint: filled!, correctStep: filled!**
+	- When marking can_be_further_divided: "can", you **must provide**:
+	- general_hint (required)
+	- detailed_hint (required, describing how to divide it)
+	- correctStep (required, showing the correct breakdown)
 
----
 
-## ✅ Do Not Use Hints or Correct Step to Evaluate Correctness
+	---
 
-- Only use the content field to check if a step is correct.
-- Do not check general_hint, detailed_hint, or correctStep to evaluate correctness.
-- Do not modify the content of any existing step or substep.
+	## ✅ Do Not Use Hints or Correct Step to Evaluate Correctness
 
----
+	- Only use the content field to check if a step is correct.
+	- Do not check general_hint, detailed_hint, or correctStep to evaluate correctness.
+	- Do not modify the content of any existing step or substep.
 
-## ✅ Example JSON Output
+	---
 
-{
-  ''steps'': {
-    ''1'': {
-      ''content'': ''Same as input'',
-      ''correctStep'': ''The correct step, only if not correct'',
-      ''code'': ''// keep as input'',
-      ''status'': {
-        ''correctness'': ''correct / incorrect / missing'',
-        ''can_be_further_divided'': ''can / cannot''
-      },
-      ''general_hint'': ''Only if not correct'',
-      ''detailed_hint'': ''Only if not correct'',
-      ''subSteps'': {
-        ''1'': {
-          ''content'': ''Same as input'',
-          ''correctStep'': ''Only if not correct'',
-          ''code'': ''// keep as input'',
-          ''status'': {
-            ''correctness'': ''correct / incorrect / missing'',
-            ''can_be_further_divided'': ''can / cannot''
-          },
-          ''general_hint'': ''Only if not correct'',
-          ''detailed_hint'': ''Only if not correct''
-        }
-      }
-    },
-    ''2'': {
-      // Same structure as above
-    }
-  }
-}
+	## ✅ Example JSON Output
 
----
+	{
+	''steps'': {
+		''1'': {
+		''content'': ''Same as input'',
+		''correctStep'': ''The correct step, only if not correct'',
+		''code'': ''// keep as input'',
+		''status'': {
+			''correctness'': ''correct / incorrect / missing'',
+			''can_be_further_divided'': ''can / cannot''
+		},
+		''general_hint'': ''Only if not correct'',
+		''detailed_hint'': ''Only if not correct'',
+		''subSteps'': {
+			''1'': {
+			''content'': ''Same as input'',
+			''correctStep'': ''Only if not correct'',
+			''code'': ''// keep as input'',
+			''status'': {
+				''correctness'': ''correct / incorrect / missing'',
+				''can_be_further_divided'': ''can / cannot''
+			},
+			''general_hint'': ''Only if not correct'',
+			''detailed_hint'': ''Only if not correct''
+			}
+		}
+		},
+		''2'': {
+		// Same structure as above
+		}
+	}
+	}
 
-## ✅ Warning:
-Only give as output the raw JSON file.  
-Do not include any text, markdown, explanations, commas before/after the JSON, or anything else.'
+	---
+
+	## ✅ Warning:
+	Only give as output the raw JSON file.  
+	Do not include any text, markdown, explanations, commas before/after the JSON, or anything else.'
 
 `,
 					},
