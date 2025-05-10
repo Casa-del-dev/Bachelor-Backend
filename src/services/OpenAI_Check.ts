@@ -156,7 +156,7 @@ const service: Service = {
 		''1'': {
 		''content'': ''Same as input'',
 		''correctStep'': ''The correct step, only if not correct'',
-		''code'': ''// keep as input'',
+		''code'': ''Same as input'',
 		''status'': {
 			''correctness'': ''correct / incorrect / missing'',
 			''can_be_further_divided'': ''can / cannot''
@@ -167,7 +167,7 @@ const service: Service = {
 			''1'': {
 			''content'': ''Same as input'',
 			''correctStep'': ''Only if not correct'',
-			''code'': ''// keep as input'',
+			''code'': ''Same as input'',
 			''status'': {
 				''correctness'': ''correct / incorrect / missing'',
 				''can_be_further_divided'': ''can / cannot''
