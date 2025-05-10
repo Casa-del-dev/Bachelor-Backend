@@ -52,6 +52,8 @@ ${Problem}
 
 ---
 
+I want you to evaluate the Problem description, such that you can check the JSON input and see if the steps are correct. I any steps are missing for completition you can add missing steps. Rest is described below:
+
 ## ✅ Status Evaluation
 
 For each step and substep, fill in:
