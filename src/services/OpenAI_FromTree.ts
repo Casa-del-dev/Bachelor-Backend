@@ -66,14 +66,14 @@ Using the input **Code** and **Tree**, follow the instructions below:
 Clarification on “incorrect”:
 This means the logic described in the step does not match what the line does. Do not infer correctness based on expected behavior. Only judge based on content mismatch.
 
-2. DO NOT modify any part of the Tree that doesn't include missing steps!
+2. DO NOT modify any part of the Tree that doesn't include newly added missing steps!
    - All steps and subSteps (even if they seem empty or partially filled) must be preserved.
    - All keys and values (like "id", "content", "status", etc.) must remain exactly as in the input Tree.
-   - **Do not** delete steps or subSteps, even if "code" or "content" is missing or empty.
+   - **Do not** delete steps or subSteps, even if "code" or "content" is empty.
    - **Do not** reformat or clean the JSON structure in any way.
    - Maintain the exact order and structure of steps and substeps from the input Tree.
 
-3. If there are missing steps, add them into the tree and label them in the "code" field as ** MISSING STEP**.
+3. If you must insert missing steps, add them into the tree and label them in the "code" field as ** MISSING STEP**.
    - For missing steps, leave the "code", "content" field **empty**
    - And fill general hint, detailed hint, and correctStep fields.
 
@@ -111,6 +111,7 @@ Additional Enforcement Rules:
 
 1. Do **not** consider general_hint, detailed_hint, or correctStep when judging correctness.
    - Only compare the step's "content" with the code implementation.
+   - Only compare the step's that have content!
 
 2. For **newly added missing steps**:
    - In the **steps object**, leave the "code" field **empty**.
