@@ -147,6 +147,8 @@ Additional Enforcement Rules:
   Only process steps that have a non-empty "content" field.
   Ignore steps that have empty "content", even if they include hints, correctStep, or status.
   Do not insert comments or code for steps that have no "content".
+
+⚠️ Do not put fill **any** content field in the tree!
 ---
 
 Example JSON Output:
@@ -155,7 +157,7 @@ Example JSON Output:
   "code": "// Original code with added comments that describe the steps",
   "steps": {
     "1": {
-      "id": "Same as input",
+      "id": "unique id",
       "content": "Same as input",
       "correctStep": "Same as input",
       "code": "Extracted code line or empty string",
@@ -168,7 +170,7 @@ Example JSON Output:
       "detailed_hint": "Same as input",
       "subSteps": {
         "1": {
-          "id": "Same as input",
+          "id": "unique id",
           "content": "Same as input",
           "correctStep": "Same as input",
           "code": "Extracted code line or empty string",
