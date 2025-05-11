@@ -88,6 +88,16 @@ This means the logic described in the step does not match what the line does. Do
   - You must check all substeps recursively (e.g., step 3.1) before labeling their parent (e.g., step 3) as missing.
   - You must not mark a parent step as "MISSING STEP" if its substeps already map to implemented code.
 
+  You must process all substeps recursively.
+
+**After processing a parent step, you must continue and process all of its substeps, applying the exact same evaluation rules as for parent steps.**
+  Do not stop after processing the parent.
+  Each substep must be checked independently for:
+  content matching,
+  correctness,
+  missing status,
+  labeling in the top-level code field.
+
 3. If you must insert missing steps, add them into the tree and label them in the "code" field as ** MISSING STEP**.
    - For missing steps, leave the "code", "content" field **empty**
    - And fill general hint, detailed hint, and correctStep fields.
