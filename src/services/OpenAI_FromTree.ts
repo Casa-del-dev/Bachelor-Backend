@@ -242,7 +242,7 @@ Example JSON Output:
 Final Instruction:
 NEVER ADD CODE, ONLY ADD COMMENTS
 Only give as output the json file no words before or after! **Do not include any text, markdown, explanations, commas before/after the JSON, or anything else. Only output the raw JSON.**
-DO NOT: output '''JSON {New Tree} '''
+### DO NOT: output '''JSON {New Tree} '''
 `,
 					},
 				],
