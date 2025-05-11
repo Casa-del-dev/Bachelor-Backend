@@ -79,6 +79,13 @@ This means the logic described in the step does not match what the line does. Do
    - **Do not** delete steps or subSteps, even if "code" or "content" is empty.
    - **Do not** reformat or clean the JSON structure in any way.
    - Maintain the exact order and structure of steps and substeps from the input Tree.
+  
+✅ Check Actual Content Matching Before Labeling as Missing
+  - You must not label any step as missing unless:
+  - The step has non-empty "content", and
+  - You cannot find any corresponding code that implements the described "content".
+  - You must check all substeps recursively (e.g., step 3.1) before labeling their parent (e.g., step 3) as missing.
+  - You must not mark a parent step as "MISSING STEP" if its substeps already map to implemented code.
 
 3. If you must insert missing steps, add them into the tree and label them in the "code" field as ** MISSING STEP**.
    - For missing steps, leave the "code", "content" field **empty**
