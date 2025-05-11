@@ -148,7 +148,7 @@ Additional Enforcement Rules:
   Ignore steps that have empty "content", even if they include hints, correctStep, or status.
   Do not insert comments or code for steps that have no "content".
 
-⚠️ Do not put fill **any** content field in the tree!
+⚠️ **Every** content field must remain as it is in the tree! If The content is empty but the correctStep is not -> DO NOT fill the content!
 ---
 
 Example JSON Output:
