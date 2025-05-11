@@ -87,9 +87,6 @@ This means the logic described in the step does not match what the line does. Do
 		- correctness: "missing"
 		- can_be_further_divided: ""
 
-### IMPORTANT
-Do not change the tree's content! and if a steps or substeps content is missing do not search for the step in the code. 🚨 Do not look at the correctStep field!
-
 ---
 
 
@@ -112,10 +109,10 @@ The **def main()** function should appear **at the end of the code**, unmodified
 
 Additional Enforcement Rules:
 
-1. Do **not** consider general_hint or detailed_hint when judging correctness.
+1. Do **not** consider general_hint, detailed_hint, or correctStep when judging correctness.
    - Only compare the step's "content" with the code implementation.
 
-2. For **missing steps**:
+2. For **newly added missing steps**:
    - In the **steps object**, leave the "code" field **empty**.
    - In the **top-level "code" field**, insert **# Step N - MISSING STEP** **at the correct position**.
      Example:
