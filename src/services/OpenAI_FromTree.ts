@@ -119,7 +119,7 @@ Return Format:
 Return a JSON object with exactly one key:
 - "steps" → an object where each step (and subStep) is indexed with a numerical key (as shown in the example below).
 
-🚨 Important: You must also return a **code** field that includes the full original code with inline **# Step N** comments as described.  
+🚨 Important: You must also return a **code** field that includes the full original (full function definition) code with inline **# Step N** comments as described.  
 The **def main()** function should appear **at the end of the code**, unmodified and not commented away. Do not label it with a step.
 
 Additional Enforcement Rules:
