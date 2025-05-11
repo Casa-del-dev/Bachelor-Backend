@@ -58,17 +58,18 @@ Using the input **Code** and **Tree**, follow the instructions below:
 
 1. For each step (and substep) containing content in the Tree:
    - Compare the step’s **content** with the logic found in the **Code** to determine whether it is implemented.
-   - Do **not** use the general_hint or detailed_hint to decide if something is implemented — only use the **content** field.
+   - Do **not** use general_hint, detailed_hint, or correctStep to decide if something is implemented — only use the **content** field.
    - If the described content is implemented in the Code, insert the corresponding code snippet into the "code" field, **even if the step is marked as incorrect**.
    - In the top-level "code" field, insert **# Step N** (e.g., '# Step 1','# Step 1.1') **above the matching code line**, **only if the step exists in the Tree**.
-   - If the logic is present but **incorrect**, still insert the code line and add **# Step N - NOT IMPLEMENTED CORRECTLY** above it in the top-level code. Do not look at it's substeps to check about correctness!
+   - If the logic is present but **incorrect**, still insert the code line and add **# Step N - NOT IMPLEMENTED CORRECTLY** above it in the top-level code.
 
-   - If the content is **not implemented at all** but is present in the tree, do:
-     - Leave a comment saying #Step N - NOT IMPLEMENTED
+### ✅ **Added Rule to Clarify Parent/Substep Handling**
 
-   - If a logical step is **not present at all** in the tree or a **compiling error** accurs in the code, do **both** of the following:
-     - **Add the missing step into the Tree**, preserving its structure with empty "code".
-     - Insert **# MISSING STEP** in the **code** at the correct position.
+  > - **If the parent’s high-level action is implemented, mark the parent as "correct"**, even if one or more of its **substeps are missing or incorrect**.
+  > - **Substeps must be evaluated independently**, even if their parent is marked as correct.
+  > - **Do not mark the parent as missing just because one or more substeps are missing.**
+  > - **Do not consider substeps when deciding the parent’s correctness**, only check the parent’s own **content**.
+
 
 Clarification on “incorrect”:
 This means the logic described in the step does not match what the line does. Do not infer correctness based on expected behavior. Only judge based on content mismatch.
