@@ -49,6 +49,13 @@ const service: Service = {
 
 Using the input **Code** and **Tree**, follow the instructions below:
 
+0. Process Only Steps with Non-Empty "content"  
+   - You **must skip** any step or substep **if its "content" field is empty**, even if:
+     - It includes hints,
+     - It includes correctStep,
+     - It includes any status.
+   - You **must not process or label steps that have empty "content"**.
+
 1. For each step (and substep) containing content in the Tree:
    - Compare the step’s **content** with the logic found in the **Code** to determine whether it is implemented.
    - Do **not** use the general_hint or detailed_hint to decide if something is implemented — only use the **content** field.
