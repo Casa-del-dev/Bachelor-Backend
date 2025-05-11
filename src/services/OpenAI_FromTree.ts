@@ -88,7 +88,7 @@ This means the logic described in the step does not match what the line does. Do
 		- can_be_further_divided: ""
 
 ### IMPORTANT
-Do not any other changes! In the tree you are only allowed to insert missing steps, and in the code yu are only allowed to insert comment lines!
+Do not change the tree's content! and if a steps or substeps content is missing do not search for the step in the code!!!!!
 
 ---
 
