@@ -222,10 +222,20 @@ Example JSON Output:
 
 ---
 
-⚠️ When checking if the code section corrisponds to a step or substep just look if the logic corrisponds. Only look that the step is actually there.
-EG. Step 4 content: "return the return variable" -> code: "... return tot" (# Step 4) because it is returning we don't care if it's the correct return variable.
+⚠️ How to Validate Code Against Steps/Substeps
 
-⚠️ Put the substeps comments in the correct line on top of where they are implemented!!
+  Only check whether the described action is present, not whether the result is fully correct or optimal.
+  You must match the described logic, even if details like variable names differ.
+  Example:
+    Step 4 content: "Return the return variable"
+    Code: "return tot"
+
+✅ Match found → Comment it as # Step 4 because the return action exists, even if "tot" may or may not be the correct variable.
+
+⚠️ Substep Comment Placement
+
+  Place substep comments directly above the specific line where the substep is implemented in the code.
+  Make sure the comment appears exactly on the correct line representing the substep’s action.
 
 ---
 
