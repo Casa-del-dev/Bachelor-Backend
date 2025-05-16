@@ -115,8 +115,12 @@ async def websocket_endpoint(websocket: WebSocket):
                 elif action == "enter":
                     code = request.get("code", "")
 
-                    # Execute user input without calling main()
-                    await run_user_code(call_main=False)
+                    if not code.strip():
+                        # Output empty line if the user just pressed Enter without typing anything
+                        await websocket.send_text("\n")
+                    else:
+                        # Execute user input without calling main()
+                        await run_user_code(call_main=False)
 
                 elif action == "compile":
                     code = request.get("code", "")
