@@ -110,16 +110,29 @@ async def websocket_endpoint(websocket: WebSocket):
 
                         async def run_user_code():
                             try:
-                                # Transform the code to automatically print the last expression
+                                # 1) Check if this submission defines `main(...)` at top level
+                                try:
+                                    tree = ast.parse(code, mode='exec')
+                                    has_new_main = any(
+                                        isinstance(stmt, ast.FunctionDef) and stmt.name == 'main'
+                                        for stmt in tree.body
+                                    )
+                                except SyntaxError:
+                                    # if the submission doesn't even parse, don't consider it as defining main
+                                    has_new_main = False
+
+                                # 2) Transform & exec the code (prints last expr, etc.)
                                 code_obj = wrap_last_expr_in_print(code)
                                 exec(code_obj, console.locals)
-                                # Only call main() if it's defined.
-                                main_fn = console.locals.get("main")
-                                if callable(main_fn):
-                                    if asyncio.iscoroutinefunction(main_fn):
-                                        await main_fn()
-                                    else:
-                                        main_fn()
+
+                                # 3) Only call main() if *this* submission actually defined it
+                                if has_new_main:
+                                    main_fn = console.locals.get("main")
+                                    if callable(main_fn):
+                                        if asyncio.iscoroutinefunction(main_fn):
+                                            await main_fn()
+                                        else:
+                                            main_fn()
                             except Exception as e:
                                 print(f"⚠️ Runtime error: {type(e).__name__}: {str(e)}")
 

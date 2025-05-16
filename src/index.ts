@@ -48,6 +48,8 @@ export default {
 				if (serviceResponse) {
 					return addCORSHeaders(serviceResponse);
 				}
+			} else if (url.pathname === '/') {
+				return addCORSHeaders(new Response('Welcome to the API!'));
 			}
 
 			return addCORSHeaders(new Response('Service not implemented', { status: 501 }));
