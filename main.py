@@ -84,63 +84,6 @@ async def websocket_endpoint(websocket: WebSocket):
 
             try:
                 if action == "run":
-                    # Grab and sanitize the raw snippet
-                    code = request.get("code", "")
-                    # Remove any leading '>' or '> ' characters added by the frontend
-                    code = "\n".join(line.lstrip("> ") for line in code.splitlines())
-
-                    try:
-                        # Test compilation of original code (for syntax errors)
-                        compile(code, "<input>", "exec")
-                    except SyntaxError as e:
-                        print(f"❌ SyntaxError: {e.msg} on line {e.lineno}")
-                    else:
-                        # Patch input as an async function
-                        async def websocket_input(prompt: str) -> str:
-                            nonlocal input_future
-                            input_future = asyncio.get_event_loop().create_future()
-                            await websocket.send_text(json.dumps({
-                                "action": "input_request",
-                                "prompt": prompt
-                            }))
-                            return await input_future
-
-                        async def patched_input(prompt=""):
-                            return await websocket_input(prompt)
-
-                        # Override input() in the user's local namespace.
-                        console.locals["input"] = patched_input
-
-                        async def run_user_code():
-                            if not code.strip():
-                                return  # Skip if empty
-
-                            try:
-                                # Check if this submission defines `main(...)`
-                                tree = ast.parse(code, mode='exec')
-                                has_new_main = any(
-                                    isinstance(stmt, ast.FunctionDef) and stmt.name == 'main'
-                                    for stmt in tree.body
-                                )
-
-                                # Compile and execute this submission only
-                                code_obj = wrap_last_expr_in_print(code)
-                                exec(code_obj, console.locals)
-
-                                # Call main() only if it was part of this submission
-                                if has_new_main:
-                                    main_fn = console.locals.get("main")
-                                    if callable(main_fn):
-                                        if asyncio.iscoroutinefunction(main_fn):
-                                            await main_fn()
-                                        else:
-                                            main_fn()
-
-                            except Exception as e:
-                                print(f"⚠️ Runtime error: {type(e).__name__}: {str(e)}")
-
-                        await run_user_code()
-
                     code = request.get("code", "")
 
                     try:
@@ -165,56 +108,11 @@ async def websocket_endpoint(websocket: WebSocket):
                         # Override input() in the user's local namespace.
                         console.locals["input"] = patched_input
 
-                        async def run_user_code():
-                            if not code.strip():
-                                return  # Skip if empty
-
+                        async def run_user_code(call_main: bool):
                             try:
-                                # 1) Check if this submission defines `main(...)`
-                                try:
-                                    tree = ast.parse(code, mode='exec')
-                                    has_new_main = any(
-                                        isinstance(stmt, ast.FunctionDef) and stmt.name == 'main'
-                                        for stmt in tree.body
-                                    )
-                                except SyntaxError:
-                                    has_new_main = False
-
-                                # 2) Wrap and compile this submission (only this snippet)
-                                code_obj = wrap_last_expr_in_print(code)
-
-                                # 3) Execute this snippet **only**, in the persistent locals
-                                exec(code_obj, console.locals)
-
-                                # 4) Call main() **only if the user just defined it**
-                                if has_new_main:
-                                    main_fn = console.locals.get("main")
-                                    if callable(main_fn):
-                                        if asyncio.iscoroutinefunction(main_fn):
-                                            await main_fn()
-                                        else:
-                                            main_fn()
-
-                            except Exception as e:
-                                print(f"⚠️ Runtime error: {type(e).__name__}: {str(e)}")
-                            try:
-                                # 1) Check if this submission defines `main(...)` at top level
-                                try:
-                                    tree = ast.parse(code, mode='exec')
-                                    has_new_main = any(
-                                        isinstance(stmt, ast.FunctionDef) and stmt.name == 'main'
-                                        for stmt in tree.body
-                                    )
-                                except SyntaxError:
-                                    # if the submission doesn't even parse, don't consider it as defining main
-                                    has_new_main = False
-
-                                # 2) Transform & exec the code (prints last expr, etc.)
                                 code_obj = wrap_last_expr_in_print(code)
                                 exec(code_obj, console.locals)
-
-                                # 3) Only call main() if *this* submission actually defined it
-                                if has_new_main:
+                                if call_main:
                                     main_fn = console.locals.get("main")
                                     if callable(main_fn):
                                         if asyncio.iscoroutinefunction(main_fn):
@@ -225,6 +123,10 @@ async def websocket_endpoint(websocket: WebSocket):
                                 print(f"⚠️ Runtime error: {type(e).__name__}: {str(e)}")
 
                         await run_user_code()
+
+                elif action == "enter":
+                    # New enter handling, do NOT call main() after exec
+                    await run_user_code(call_main=False)
 
                 elif action == "compile":
                     code = request.get("code", "")
