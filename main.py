@@ -83,6 +83,20 @@ async def websocket_endpoint(websocket: WebSocket):
             sys.stderr = io.StringIO()
 
             try:
+                async def run_user_code(call_main: bool):
+                    try:
+                        code_obj = wrap_last_expr_in_print(code)
+                        exec(code_obj, console.locals)
+                        if call_main:
+                            main_fn = console.locals.get("main")
+                            if callable(main_fn):
+                                if asyncio.iscoroutinefunction(main_fn):
+                                    await main_fn()
+                                else:
+                                    main_fn()
+                    except Exception as e:
+                        print(f"⚠️ Runtime error: {type(e).__name__}: {str(e)}")
+                
                 if action == "run":
                     code = request.get("code", "")
 
@@ -92,40 +106,16 @@ async def websocket_endpoint(websocket: WebSocket):
                     except SyntaxError as e:
                         print(f"❌ SyntaxError: {e.msg} on line {e.lineno}")
                     else:
-                        # Patch input as an async function
-                        async def websocket_input(prompt: str) -> str:
-                            nonlocal input_future
-                            input_future = asyncio.get_event_loop().create_future()
-                            await websocket.send_text(json.dumps({
-                                "action": "input_request",
-                                "prompt": prompt
-                            }))
-                            return await input_future
-
-                        async def patched_input(prompt=""):
-                            return await websocket_input(prompt)
-
-                        # Override input() in the user's local namespace.
+                        # Override input() in the user's local namespace
                         console.locals["input"] = patched_input
 
-                        async def run_user_code(call_main: bool):
-                            try:
-                                code_obj = wrap_last_expr_in_print(code)
-                                exec(code_obj, console.locals)
-                                if call_main:
-                                    main_fn = console.locals.get("main")
-                                    if callable(main_fn):
-                                        if asyncio.iscoroutinefunction(main_fn):
-                                            await main_fn()
-                                        else:
-                                            main_fn()
-                            except Exception as e:
-                                print(f"⚠️ Runtime error: {type(e).__name__}: {str(e)}")
-
-                        await run_user_code()
+                        # Call user code and execute main() if defined
+                        await run_user_code(call_main=True)
 
                 elif action == "enter":
-                    # New enter handling, do NOT call main() after exec
+                    code = request.get("code", "")
+
+                    # Execute user input without calling main()
                     await run_user_code(call_main=False)
 
                 elif action == "compile":
