@@ -109,6 +109,37 @@ async def websocket_endpoint(websocket: WebSocket):
                         console.locals["input"] = patched_input
 
                         async def run_user_code():
+                            if not code.strip():
+                                return  # Skip if empty
+
+                            try:
+                                # 1) Check if this submission defines `main(...)`
+                                try:
+                                    tree = ast.parse(code, mode='exec')
+                                    has_new_main = any(
+                                        isinstance(stmt, ast.FunctionDef) and stmt.name == 'main'
+                                        for stmt in tree.body
+                                    )
+                                except SyntaxError:
+                                    has_new_main = False
+
+                                # 2) Wrap and compile this submission (only this snippet)
+                                code_obj = wrap_last_expr_in_print(code)
+
+                                # 3) Execute this snippet **only**, in the persistent locals
+                                exec(code_obj, console.locals)
+
+                                # 4) Call main() **only if the user just defined it**
+                                if has_new_main:
+                                    main_fn = console.locals.get("main")
+                                    if callable(main_fn):
+                                        if asyncio.iscoroutinefunction(main_fn):
+                                            await main_fn()
+                                        else:
+                                            main_fn()
+
+                            except Exception as e:
+                                print(f"⚠️ Runtime error: {type(e).__name__}: {str(e)}")
                             try:
                                 # 1) Check if this submission defines `main(...)` at top level
                                 try:
