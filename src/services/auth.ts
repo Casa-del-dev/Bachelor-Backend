@@ -65,7 +65,7 @@ const service: Service = {
 						Accept: 'application/json',
 						'Content-Type': 'application/x-www-form-urlencoded',
 					},
-					body: JSON.stringify({
+					body: new URLSearchParams({
 						client_id: env.GITHUB_CLIENT_ID,
 						client_secret: env.GITHUB_CLIENT_SECRET,
 						code,
