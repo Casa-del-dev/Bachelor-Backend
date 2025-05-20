@@ -69,11 +69,10 @@ const service: Service = {
 					secret_ok: !!env.GITHUB_CLIENT_SECRET,
 				});
 
-				// Exchange code for token
 				const tokenRes = await fetch('https://github.com/login/oauth/access_token', {
 					method: 'POST',
 					headers: {
-						Accept: 'application/json',
+						Accept: 'application/json, application/x-www-form-urlencoded',
 						'Content-Type': 'application/x-www-form-urlencoded',
 					},
 					body: new URLSearchParams({
@@ -84,21 +83,32 @@ const service: Service = {
 					}),
 				});
 
-				const tokenData = await tokenRes.json<GitHubTokenResponse>();
-				console.log('🧪 Parsed token response:', tokenData);
+				// Always grab as text
+				const tokenText = await tokenRes.text();
+				console.log('🧪 Raw token response:', tokenText);
 
-				const accessToken = tokenData.access_token;
+				let accessToken: string;
+				try {
+					// If it’s JSON, parse it
+					if (tokenText.trim().startsWith('{')) {
+						const json = JSON.parse(tokenText) as GitHubTokenResponse;
+						accessToken = json.access_token;
+					} else {
+						// Otherwise treat it as URL-encoded
+						const params = new URLSearchParams(tokenText);
+						accessToken = params.get('access_token') || '';
+					}
+				} catch (err) {
+					console.error('❌ Could not parse access token:', err);
+					return new Response('Invalid token response from GitHub', { status: 500 });
+				}
+
 				if (!accessToken) {
-					console.error('❌ Missing access_token in parsed response:', tokenData);
+					console.error('❌ No access_token found in:', tokenText);
 					return new Response('Failed to get token', { status: 401 });
 				}
 
-				console.log('🔐 Sending to GitHub with:', {
-					client_id: env.GITHUB_CLIENT_ID,
-					client_secret: env.GITHUB_CLIENT_SECRET,
-					code,
-				});
-				// Get GitHub user info
+				// Now fetch the user with a valid token…
 				const userRes = await fetch('https://api.github.com/user', {
 					headers: {
 						Authorization: `Bearer ${accessToken}`,
