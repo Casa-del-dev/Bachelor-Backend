@@ -140,8 +140,7 @@ const service: Service = {
 
 				const jwt = await signJWT(payload, env.JWT_SECRET, 24 * 60 * 60);
 
-				// You could also set a cookie here if you want session persistence
-				return new Response(JSON.stringify({ token: jwt }), { status: 200 });
+				return Response.redirect(`https://bachelor.erenhomburg.com/github/callback?token=${jwt}`, 302);
 			}
 
 			default:
