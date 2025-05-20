@@ -112,3 +112,12 @@ const service: Service = {
 };
 
 export default service;
+
+export async function authenticateToken(headers: Headers, env: Env): Promise<JWTPayload | Response> {
+	const authHeader = headers.get('Authorization');
+	if (!authHeader) return new Response('Invalid token', { status: 401 });
+	const token = authHeader.split(' ')[1];
+	const payload = await verifyJWT<JWTPayload>(token, env.JWT_SECRET);
+	if (!payload) return new Response('Invalid token', { status: 401 });
+	return payload;
+}
