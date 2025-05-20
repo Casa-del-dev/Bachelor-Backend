@@ -84,30 +84,14 @@ const service: Service = {
 					}),
 				});
 
-				const tokenText = await tokenRes.text();
-				console.log('🧪 Raw token response:', tokenText);
-
-				let tokenData: GitHubTokenResponse;
-				try {
-					const params = new URLSearchParams(tokenText);
-					const access_token = params.get('access_token');
-					const token_type = params.get('token_type');
-					const scope = params.get('scope');
-
-					if (!access_token) throw new Error('Missing access_token');
-
-					tokenData = {
-						access_token,
-						token_type: token_type ?? '',
-						scope: scope ?? '',
-					};
-				} catch (err) {
-					console.error('❌ Failed to parse token response:', err);
-					return new Response('Invalid token response from GitHub', { status: 500 });
-				}
+				const tokenData = await tokenRes.json<GitHubTokenResponse>();
+				console.log('🧪 Parsed token response:', tokenData);
 
 				const accessToken = tokenData.access_token;
-				if (!accessToken) return new Response('Failed to get token', { status: 401 });
+				if (!accessToken) {
+					console.error('❌ Missing access_token in parsed response:', tokenData);
+					return new Response('Failed to get token', { status: 401 });
+				}
 
 				console.log('🔐 Sending to GitHub with:', {
 					client_id: env.GITHUB_CLIENT_ID,
