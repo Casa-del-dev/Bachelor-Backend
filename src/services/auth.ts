@@ -113,6 +113,7 @@ const service: Service = {
 					headers: {
 						Authorization: `Bearer ${accessToken}`,
 						Accept: 'application/json',
+						'User-Agent': 'DecompositionBox/1.0',
 					},
 				});
 
