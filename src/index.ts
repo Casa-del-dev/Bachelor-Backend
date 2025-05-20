@@ -41,7 +41,12 @@ export default {
 			const servicePath = `/${url.pathname.split('/').slice(1, 3).join('/')}/`;
 			const subPath = url.pathname.substring(servicePath.length);
 
+			console.log('🟡 Incoming URL:', url.pathname);
+			console.log('🟢 servicePath:', servicePath);
+			console.log('🔵 subPath:', subPath);
+
 			const foundService = Object.values(services).find((service: Service) => service.path === servicePath);
+			console.log('🟣 Matching service:', foundService?.path);
 
 			if (foundService) {
 				const serviceResponse = await foundService.fetch(request, env, ctx, subPath);

@@ -15,8 +15,6 @@ const service: Service = {
 	path: '/openai/v1/',
 
 	async fetch(request: Request, env: Env, ctx: ExecutionContext, subPath: string): Promise<Response | void> {
-		console.log('🔍 URL:', request.url);
-
 		if (request.method !== 'POST') {
 			return new Response('Method Not Allowed', {
 				status: 405,
