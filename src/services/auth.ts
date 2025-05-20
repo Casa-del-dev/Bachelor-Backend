@@ -45,9 +45,9 @@ const service: Service = {
 
 		console.log('🔍 URL:', request.url);
 		console.log('🔍 subPath:', subPath);
-		console.log('🔍 match key:', request.method + ' ' + subPath.split('/')[0]);
+		console.log('🔍 match key:', request.method + ' ' + subPath);
 
-		switch (request.method + ' ' + subPath.split('/')[0]) {
+		switch (request.method + ' ' + subPath) {
 			case 'GET github/login': {
 				const redirectUri = `https://github.com/login/oauth/authorize?client_id=${env.GITHUB_CLIENT_ID}&scope=user:email`;
 				return Response.redirect(redirectUri, 302);
