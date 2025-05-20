@@ -43,10 +43,6 @@ const service: Service = {
 	fetch: async (request: Request, env: Env, ctx: ExecutionContext, subPath: string): Promise<Response | void> => {
 		const authContext = await authenticateToken(request.headers, env);
 
-		console.log('🔍 URL:', request.url);
-		console.log('🔍 subPath:', subPath);
-		console.log('🔍 match key:', request.method + ' ' + subPath);
-
 		switch (request.method + ' ' + subPath) {
 			case 'GET github/login': {
 				const redirectUri = `https://github.com/login/oauth/authorize?client_id=${env.GITHUB_CLIENT_ID}&scope=user:email`;
@@ -77,11 +73,13 @@ const service: Service = {
 
 				let tokenData: GitHubTokenResponse;
 				try {
-					tokenData = JSON.parse(tokenText);
+					tokenData = await tokenRes.json();
+					console.log('🧪 Parsed token data:', tokenData);
 				} catch (e) {
-					console.error('❌ Failed to parse token JSON. Response was:', tokenText);
+					console.error('❌ Failed to parse JSON from token response');
 					return new Response('Invalid token response from GitHub', { status: 500 });
 				}
+
 				const accessToken = tokenData.access_token;
 				if (!accessToken) return new Response('Failed to get token', { status: 401 });
 
