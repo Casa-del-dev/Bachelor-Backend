@@ -54,6 +54,20 @@ const service: Service = {
 				const code = url.searchParams.get('code');
 				if (!code) return new Response('Missing code', { status: 400 });
 
+				console.log(
+					'🔐 Full token request body:',
+					new URLSearchParams({
+						client_id: env.GITHUB_CLIENT_ID,
+						client_secret: env.GITHUB_CLIENT_SECRET,
+						code,
+					}).toString()
+				);
+
+				console.log('✅ Secrets present:', {
+					client_id_ok: !!env.GITHUB_CLIENT_ID,
+					secret_ok: !!env.GITHUB_CLIENT_SECRET,
+				});
+
 				// Exchange code for token
 				const tokenRes = await fetch('https://github.com/login/oauth/access_token', {
 					method: 'POST',
