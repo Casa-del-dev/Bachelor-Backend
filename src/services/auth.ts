@@ -58,64 +58,60 @@ const service: Service = {
 				const code = url.searchParams.get('code');
 				if (!code) return new Response('Missing code', { status: 400 });
 
-				console.log('🛬 Callback hit with code:', code);
+				// Exchange code for token
+				const tokenRes = await fetch('https://github.com/login/oauth/access_token', {
+					method: 'POST',
+					headers: {
+						Accept: 'application/json',
+						'Content-Type': 'application/x-www-form-urlencoded',
+					},
+					body: new URLSearchParams({
+						client_id: env.GITHUB_CLIENT_ID,
+						client_secret: env.GITHUB_CLIENT_SECRET,
+						code,
+					}),
+				});
 
+				const tokenText = await tokenRes.text();
+				console.log('🧪 Raw token response:', tokenText);
+
+				let tokenData: GitHubTokenResponse;
 				try {
-					const tokenRes = await fetch('https://github.com/login/oauth/access_token', {
-						method: 'POST',
-						headers: {
-							Accept: 'application/json',
-							'Content-Type': 'application/x-www-form-urlencoded',
-						},
-						body: new URLSearchParams({
-							client_id: env.GITHUB_CLIENT_ID,
-							client_secret: env.GITHUB_CLIENT_SECRET,
-							code,
-						}),
-					});
-
-					const tokenRaw = await tokenRes.text();
-					console.log('🧪 Raw token response:', tokenRaw);
-
-					const tokenData = JSON.parse(tokenRaw); // manually parse to catch issues
-					const accessToken = tokenData.access_token;
-
-					if (!accessToken) {
-						console.error('❌ No access token:', tokenData);
-						return new Response('Failed to get token', { status: 401 });
-					}
-
-					const userRes = await fetch('https://api.github.com/user', {
-						headers: {
-							Authorization: `Bearer ${accessToken}`,
-							Accept: 'application/json',
-						},
-					});
-
-					const userRaw = await userRes.text();
-					console.log('👤 Raw user response:', userRaw);
-
-					const gitHubUser: GitHubUser = JSON.parse(userRaw);
-					if (!gitHubUser.login) {
-						console.error('❌ GitHub user login missing:', gitHubUser);
-						return new Response('Failed to fetch GitHub user', { status: 401 });
-					}
-
-					const payload: JWTPayload = {
-						iat: Date.now(),
-						jti: crypto.randomUUID(),
-						username: gitHubUser.login,
-						email: gitHubUser.email ?? '',
-					};
-
-					console.log('✅ JWT payload:', payload);
-
-					const jwt = await signJWT(payload, env.JWT_SECRET, 24 * 60 * 60);
-					return new Response(JSON.stringify({ token: jwt }), { status: 200 });
-				} catch (err) {
-					console.error('🔥 Error during GitHub callback:', err);
-					return new Response('Internal Server Error', { status: 500 });
+					tokenData = JSON.parse(tokenText);
+				} catch (e) {
+					console.error('❌ Failed to parse token JSON. Response was:', tokenText);
+					return new Response('Invalid token response from GitHub', { status: 500 });
 				}
+				const accessToken = tokenData.access_token;
+				if (!accessToken) return new Response('Failed to get token', { status: 401 });
+
+				console.log('🔐 Sending to GitHub with:', {
+					client_id: env.GITHUB_CLIENT_ID,
+					client_secret: env.GITHUB_CLIENT_SECRET,
+					code,
+				});
+				// Get GitHub user info
+				const userRes = await fetch('https://api.github.com/user', {
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+						Accept: 'application/json',
+					},
+				});
+
+				const gitHubUser = await userRes.json<GitHubUser>();
+				if (!gitHubUser.login) return new Response('Failed to fetch GitHub user', { status: 401 });
+
+				const payload: JWTPayload = {
+					iat: Date.now(),
+					jti: crypto.randomUUID(),
+					username: gitHubUser.login,
+					email: gitHubUser.email ?? '',
+				};
+
+				const jwt = await signJWT(payload, env.JWT_SECRET, 24 * 60 * 60);
+
+				// You could also set a cookie here if you want session persistence
+				return new Response(JSON.stringify({ token: jwt }), { status: 200 });
 			}
 
 			default:
