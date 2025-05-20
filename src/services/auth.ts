@@ -2,6 +2,19 @@ import { Service } from '..';
 import { User } from '../types';
 import { hash, signJWT, verifyJWT } from '../util/crypto';
 
+type GitHubTokenResponse = {
+	access_token: string;
+	token_type: string;
+	scope: string;
+};
+
+type GitHubUser = {
+	login: string;
+	id: number;
+	avatar_url: string;
+	email: string | null;
+};
+
 type SignUpPayload = {
 	username: string;
 	password: string;
@@ -31,46 +44,58 @@ const service: Service = {
 		const authContext = await authenticateToken(request.headers, env);
 
 		switch (request.method + ' ' + subPath.split('/')[0]) {
-			case 'POST signup': {
-				return new Response('Disabled due to development', { status: 503 });
+			case 'GET github/login': {
+				const redirectUri = `https://github.com/login/oauth/authorize?client_id=${env.GITHUB_CLIENT_ID}&scope=user:email`;
+				return Response.redirect(redirectUri, 302);
+			}
 
-				const { email, password, username } = await request.json<SignUpPayload>();
-				const hashedPasswordPromise = hash(password);
+			case 'GET github/callback': {
+				const url = new URL(request.url);
+				const code = url.searchParams.get('code');
+				if (!code) return new Response('Missing code', { status: 400 });
 
-				const oldUser = await env.users.get(username);
+				// Exchange code for token
+				const tokenRes = await fetch('https://github.com/login/oauth/access_token', {
+					method: 'POST',
+					headers: {
+						Accept: 'application/json',
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({
+						client_id: env.GITHUB_CLIENT_ID,
+						client_secret: env.GITHUB_CLIENT_SECRET,
+						code,
+					}),
+				});
 
-				if (oldUser) {
-					return new Response('User already exists', { status: 409 });
-				}
+				const tokenData = await tokenRes.json<GitHubTokenResponse>();
+				const accessToken = tokenData.access_token;
+				if (!accessToken) return new Response('Failed to get token', { status: 401 });
 
-				const userData: User = {
-					email,
-					username,
-					password: await hashedPasswordPromise,
+				// Get GitHub user info
+				const userRes = await fetch('https://api.github.com/user', {
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+						Accept: 'application/json',
+					},
+				});
+
+				const gitHubUser = await userRes.json<GitHubUser>();
+				if (!gitHubUser.login) return new Response('Failed to fetch GitHub user', { status: 401 });
+
+				const payload: JWTPayload = {
+					iat: Date.now(),
+					jti: crypto.randomUUID(),
+					username: gitHubUser.login,
+					email: gitHubUser.email ?? '',
 				};
 
-				await env.users.put(username, JSON.stringify(userData));
+				const jwt = await signJWT(payload, env.JWT_SECRET, 24 * 60 * 60);
 
-				return new Response('User created successfully', { status: 201 });
+				// You could also set a cookie here if you want session persistence
+				return new Response(JSON.stringify({ token: jwt }), { status: 200 });
 			}
-			case 'POST login': {
-				const { username, password } = await request.json<SignInPayload>();
 
-				const userData: User | null = await env.users.get(username, 'json');
-				if (!userData) return new Response('User not found', { status: 400 });
-
-				if (userData.password !== (await hash(password))) return new Response('Invalid password', { status: 400 });
-
-				const payload: JWTPayload = { iat: Date.now(), jti: crypto.randomUUID(), username, email: userData.email };
-				const token = await signJWT(payload, env.JWT_SECRET, 24 * 60 * 60);
-
-				const response: AuthTokenResponse = { token };
-				return new Response(JSON.stringify(response), { status: 200 });
-			}
-			case 'GET auth': {
-				if (authContext instanceof Response) return authContext;
-				return new Response('Authenticated', { status: 200 });
-			}
 			default:
 				return new Response('Not Found', { status: 404 });
 		}
