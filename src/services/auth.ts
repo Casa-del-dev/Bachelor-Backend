@@ -116,8 +116,19 @@ const service: Service = {
 					},
 				});
 
+				// If GitHub gave us an error (401, 403, etc), grab the text and fail gracefully
+				if (!userRes.ok) {
+					const errText = await userRes.text();
+					console.error('❌ GitHub /user error:', userRes.status, errText);
+					return new Response('Failed to fetch GitHub user', { status: 401 });
+				}
+
+				// Safe to parse JSON now
 				const gitHubUser = await userRes.json<GitHubUser>();
-				if (!gitHubUser.login) return new Response('Failed to fetch GitHub user', { status: 401 });
+				if (!gitHubUser.login) {
+					console.error('❌ GitHub user missing login:', gitHubUser);
+					return new Response('Failed to fetch GitHub user', { status: 401 });
+				}
 
 				const payload: JWTPayload = {
 					iat: Date.now(),
