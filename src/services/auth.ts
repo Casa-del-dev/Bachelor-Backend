@@ -63,7 +63,7 @@ const service: Service = {
 					method: 'POST',
 					headers: {
 						Accept: 'application/json',
-						'Content-Type': 'application/json',
+						'Content-Type': 'application/x-www-form-urlencoded',
 					},
 					body: JSON.stringify({
 						client_id: env.GITHUB_CLIENT_ID,
