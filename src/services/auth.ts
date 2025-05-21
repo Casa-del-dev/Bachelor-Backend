@@ -28,19 +28,27 @@ const service: Service = {
 		switch (request.method + ' ' + subPath) {
 			// 1) Kick off OAuth
 			case 'GET github/login': {
-				const redirect = [
-					'https://github.com/login/oauth/authorize',
-					`?client_id=${env.GITHUB_CLIENT_ID}`,
-					`&scope=user:email`,
-					`&redirect_uri=${encodeURIComponent('https://bachelor.erenhomburg.com/github/callback')}`,
-				].join('');
-				return Response.redirect(redirect, 302);
+				const url = new URL(request.url);
+				const clientRedirectUri = url.searchParams.get('redirect_uri') ?? 'https://bachelor.erenhomburg.com/'; // fallback
+
+				// Tell GitHub to send code → our API’s callback endpoint, preserving clientRedirectUri
+				const githubAuthUrl =
+					'https://github.com/login/oauth/authorize' +
+					`?client_id=${env.GITHUB_CLIENT_ID}` +
+					`&scope=user:email` +
+					`&redirect_uri=${encodeURIComponent(
+						'https://bachelor-api.erenhomburg.com/auth/v1/github/callback' + '?client_redirect=' + encodeURIComponent(clientRedirectUri)
+					)}`;
+
+				return Response.redirect(githubAuthUrl, 302);
 			}
 
 			// 2) Frontend calls this to exchange code → JSON
 			case 'GET github/callback': {
 				const url = new URL(request.url);
 				const code = url.searchParams.get('code');
+				const clientRedirect = url.searchParams.get('client_redirect') ?? 'https://bachelor.erenhomburg.com/';
+
 				if (!code) return new Response('Missing code', { status: 400 });
 
 				// Exchange code for token
@@ -89,20 +97,15 @@ const service: Service = {
 					username: gitHubUser.login,
 					email: gitHubUser.email || '',
 				};
-				const jwt = await signJWT(payload, env.JWT_SECRET, 24 * 60 * 60);
+				const jwt = await signJWT(payload, env.JWT_SECRET, 24 * 60 * 60 * 10);
 
 				// Return JSON
-				return new Response(
-					JSON.stringify({
-						token: jwt,
-						username: gitHubUser.login,
-						email: gitHubUser.email,
-					}),
-					{
-						status: 200,
-						headers: { 'Content-Type': 'application/json' },
-					}
-				);
+				const redirectUrl = new URL(clientRedirect);
+				redirectUrl.searchParams.set('token', jwt);
+				redirectUrl.searchParams.set('username', gitHubUser.login);
+				if (gitHubUser.email) redirectUrl.searchParams.set('email', gitHubUser.email);
+
+				return Response.redirect(redirectUrl.toString(), 302);
 			}
 
 			default:
