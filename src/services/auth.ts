@@ -29,14 +29,14 @@ const service: Service = {
 			// 1) Kick off OAuth
 			case 'GET github/login': {
 				const url = new URL(request.url);
-				const state = url.searchParams.get('state') || '';
+				const state = url.searchParams.get('state') ?? '';
 
 				const githubAuthUrl =
 					'https://github.com/login/oauth/authorize' +
 					`?client_id=${env.GITHUB_CLIENT_ID}` +
 					`&scope=user:email` +
-					`&redirect_uri=${encodeURIComponent('https://bachelor-api.erenhomburg.com/auth/v1/github/callback')}` +
-					`&state=${state}`;
+					`&redirect_uri=${encodeURIComponent('https://bachelor.erenhomburg.com/github/callback')}` +
+					`&state=${encodeURIComponent(state)}`;
 
 				return Response.redirect(githubAuthUrl, 302);
 			}
@@ -45,7 +45,8 @@ const service: Service = {
 			case 'GET github/callback': {
 				const url = new URL(request.url);
 				const code = url.searchParams.get('code');
-				const clientRedirect = url.searchParams.get('client_redirect') ?? 'https://bachelor.erenhomburg.com/';
+				const state = url.searchParams.get('state') ?? '';
+				const clientRedirect = decodeURIComponent(state) || 'https://bachelor.erenhomburg.com/';
 
 				if (!code) return new Response('Missing code', { status: 400 });
 
