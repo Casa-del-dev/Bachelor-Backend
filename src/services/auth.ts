@@ -29,16 +29,14 @@ const service: Service = {
 			// 1) Kick off OAuth
 			case 'GET github/login': {
 				const url = new URL(request.url);
-				const clientRedirectUri = url.searchParams.get('redirect_uri') ?? 'https://bachelor.erenhomburg.com/'; // fallback
+				const state = url.searchParams.get('state') || '';
 
-				// Tell GitHub to send code → our API’s callback endpoint, preserving clientRedirectUri
 				const githubAuthUrl =
 					'https://github.com/login/oauth/authorize' +
 					`?client_id=${env.GITHUB_CLIENT_ID}` +
 					`&scope=user:email` +
-					`&redirect_uri=${encodeURIComponent(
-						'https://bachelor-api.erenhomburg.com/auth/v1/github/callback' + '?client_redirect=' + encodeURIComponent(clientRedirectUri)
-					)}`;
+					`&redirect_uri=${encodeURIComponent('https://bachelor-api.erenhomburg.com/auth/v1/github/callback')}` +
+					`&state=${state}`;
 
 				return Response.redirect(githubAuthUrl, 302);
 			}
