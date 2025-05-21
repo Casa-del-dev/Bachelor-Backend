@@ -28,26 +28,19 @@ const service: Service = {
 		switch (request.method + ' ' + subPath) {
 			// 1) Kick off OAuth
 			case 'GET github/login': {
-				const url = new URL(request.url);
-				const state = url.searchParams.get('state') ?? '';
-
-				const githubAuthUrl =
-					'https://github.com/login/oauth/authorize' +
-					`?client_id=${env.GITHUB_CLIENT_ID}` +
-					`&scope=user:email` +
-					`&redirect_uri=${encodeURIComponent('https://bachelor.erenhomburg.com/github/callback')}` +
-					`&state=${encodeURIComponent(state)}`;
-
-				return Response.redirect(githubAuthUrl, 302);
+				const redirect = [
+					'https://github.com/login/oauth/authorize',
+					`?client_id=${env.GITHUB_CLIENT_ID}`,
+					`&scope=user:email`,
+					`&redirect_uri=${encodeURIComponent('https://bachelor.erenhomburg.com/github/callback')}`,
+				].join('');
+				return Response.redirect(redirect, 302);
 			}
 
 			// 2) Frontend calls this to exchange code → JSON
 			case 'GET github/callback': {
 				const url = new URL(request.url);
 				const code = url.searchParams.get('code');
-				const state = url.searchParams.get('state') ?? '';
-				const clientRedirect = decodeURIComponent(state) || 'https://bachelor.erenhomburg.com/';
-
 				if (!code) return new Response('Missing code', { status: 400 });
 
 				// Exchange code for token
@@ -96,15 +89,20 @@ const service: Service = {
 					username: gitHubUser.login,
 					email: gitHubUser.email || '',
 				};
-				const jwt = await signJWT(payload, env.JWT_SECRET, 24 * 60 * 60 * 10);
+				const jwt = await signJWT(payload, env.JWT_SECRET, 24 * 60 * 60);
 
 				// Return JSON
-				const redirectUrl = new URL(clientRedirect);
-				redirectUrl.searchParams.set('token', jwt);
-				redirectUrl.searchParams.set('username', gitHubUser.login);
-				if (gitHubUser.email) redirectUrl.searchParams.set('email', gitHubUser.email);
-
-				return Response.redirect(redirectUrl.toString(), 302);
+				return new Response(
+					JSON.stringify({
+						token: jwt,
+						username: gitHubUser.login,
+						email: gitHubUser.email,
+					}),
+					{
+						status: 200,
+						headers: { 'Content-Type': 'application/json' },
+					}
+				);
 			}
 
 			default:
