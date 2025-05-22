@@ -128,7 +128,7 @@ const service: Service = {
 	3. **Provide all of the following**:
 	- general_hint (required)
 	- detailed_hint (required)
-	- correctStep (required only when step **not** correct, describing what this missing step should achieve)
+	- correctStep (required only when step **not** correct or dividable, describing what this missing step should achieve)
 
 
 	---
@@ -136,9 +136,9 @@ const service: Service = {
 	- When marking can_be_further_divided: "can", you **must provide**:
 	- general_hint (required)
 	- detailed_hint (required, describing how to divide it)
-	- correctStep (required only when step **not** correct, showing the correct breakdown)
+	- correctStep (required only when step **not** correct or dividable, showing the correct breakdown)
 
-	- If correct remove all hints and the correctStep if present in the input.
+	- If correct and **not** dividable remove all hints and the correctStep if present in the input.
 
 
 	---
