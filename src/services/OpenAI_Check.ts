@@ -138,7 +138,7 @@ const service: Service = {
 	- detailed_hint (required, describing how to divide it)
 	- correctStep (required only when step **not** correct or dividable, showing the correct breakdown)
 
-	- If correct and **not** dividable remove all hints and the correctStep if present in the input.
+	- If correct **and only and** **not** dividable too: remove all hints and the correctStep if present in the input.
 
 
 	---
