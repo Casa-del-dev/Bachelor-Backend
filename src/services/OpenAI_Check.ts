@@ -136,7 +136,7 @@ const service: Service = {
 	- When marking can_be_further_divided: "can", you **must provide**:
 	- general_hint (required)
 	- detailed_hint (required, describing how to divide it)
-	- correctStep (required, showing the correct breakdown)
+	- correctStep (required only when step **not** correct, showing the correct breakdown)
 
 
 	---
@@ -151,42 +151,12 @@ const service: Service = {
 
 	## ✅ Example JSON Output
 
-	{
-	''steps'': {
-		''1'': {
-		''content'': ''Same as input'',
-		''correctStep'': ''The correct step, only if not correct'',
-		''code'': ''Same as input'',
-		''status'': {
-			''correctness'': ''correct / incorrect / missing'',
-			''can_be_further_divided'': ''can / cannot''
-		},
-		''general_hint'': ''Only if not correct'',
-		''detailed_hint'': ''Only if not correct'',
-		''subSteps'': {
-			''1'': {
-			''content'': ''Same as input'',
-			''correctStep'': ''Only if not correct'',
-			''code'': ''Same as input'',
-			''status'': {
-				''correctness'': ''correct / incorrect / missing'',
-				''can_be_further_divided'': ''can / cannot''
-			},
-			''general_hint'': ''Only if not correct'',
-			''detailed_hint'': ''Only if not correct''
-			}
-		}
-		},
-		''2'': {
-		// Same structure as above
-		}
-	}
-	}
+{/"steps": {/"1": {/"content": {stays the same},/"correctStep": "The correct step, only if not correct",/"code": {stays the same},/"status": {/"correctness": "correct / incorrect / missing",/"can_be_further_divided": "can / cannot"/},/"general_hint": "Only if not correct",/"detailed_hint": "Only if not correct",/"subSteps": {/"1": {/"content": {stays the same},/"correctStep": "Only if not correct",/"code": {stays the same},/"status": {/"correctness": "correct / incorrect / missing",/"can_be_further_divided": "can / cannot"/},/"general_hint": "Only if not correct",/"detailed_hint": "Only if not correct"/}/}/},/"2": {/"//": "Same structure as above"/}/}/}
 
 	---
 
 	## ✅ Warning:
-	Only give as output the raw JSON file.  
+	Only give as output the raw JSON file and put "/" to go onto a new line.  
 	Do not include any text, markdown, explanations, commas before/after the JSON, or anything else.'
 
 `,
