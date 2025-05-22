@@ -151,7 +151,39 @@ const service: Service = {
 
 	## ✅ Example JSON Output
 
-{/"steps": {/"1": {/"content": {stays the same},/"correctStep": "The correct step, only if not correct",/"code": {stays the same},/"status": {/"correctness": "correct / incorrect / missing",/"can_be_further_divided": "can / cannot"/},/"general_hint": "Only if not correct",/"detailed_hint": "Only if not correct",/"subSteps": {/"1": {/"content": {stays the same},/"correctStep": "Only if not correct",/"code": {stays the same},/"status": {/"correctness": "correct / incorrect / missing",/"can_be_further_divided": "can / cannot"/},/"general_hint": "Only if not correct",/"detailed_hint": "Only if not correct"/}/}/},/"2": {/"//": "Same structure as above"/}/}/}
+	{
+		"steps": {
+			"1": {
+			"content": {stays the same},
+			"correctStep": "The correct step, only if not correct",
+			"code": {stays the same},
+			"status": {
+				"correctness": "correct / incorrect / missing",
+				"can_be_further_divided": "can / cannot"
+			},
+			"general_hint": "Only if not correct",
+			"detailed_hint": "Only if not correct",
+			"subSteps": {
+				"1": {
+				"content": {stays the same},
+				"correctStep": "Only if not correct",
+				"code": {stays the same},
+				"status": {
+					"correctness": "correct" / "incorrect" / "missing",
+					"can_be_further_divided": "can" / "cannot"
+				},
+				"general_hint": "Only if not correct",
+				"detailed_hint": "Only if not correct"
+				}
+			}
+			},
+			"2": {
+			"//": "Same structure as above"
+			}
+		}
+	}
+	
+
 
 	---
 
