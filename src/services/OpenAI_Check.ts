@@ -128,7 +128,7 @@ const service: Service = {
 	3. **Provide all of the following**:
 	- general_hint (required)
 	- detailed_hint (required)
-	- correctStep (required, describing what this missing step should achieve)
+	- correctStep (required only when step **not** correct, describing what this missing step should achieve)
 
 
 	---
@@ -137,6 +137,8 @@ const service: Service = {
 	- general_hint (required)
 	- detailed_hint (required, describing how to divide it)
 	- correctStep (required only when step **not** correct, showing the correct breakdown)
+
+	- If correct remove all hints and the correctStep if present in the input.
 
 
 	---
