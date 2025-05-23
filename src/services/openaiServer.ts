@@ -39,7 +39,12 @@ const service: Service = {
 				messages: [
 					{
 						role: 'user',
-						content: `Given a Prompt and a Problem Description I want you to give me **only** a JSON file. Do not include any text, markdown, explanations, commas before/after the JSON, or anything else. Only output the raw JSON.
+						content: `You are a strict step extractor.
+
+You will receive a **Prompt** and a **Problem Description**.
+
+Your job is to **only extract and structure the logic that is explicitly described in the Prompt**, as it relates to solving the Problem Description. You MUST NOT interpret, improve, complete, or fix the logic in the Prompt.
+Do not include any text, markdown, explanations, commas before/after the JSON, or anything else. Only output the raw JSON.
 
 **Prompt:**  
 "${Prompt}"
@@ -78,9 +83,6 @@ Important:
 	- Do not flatten the steps by default.
 	- You must check if later steps depend on earlier ones, and nest them if they do.
 	- In the return format you will see a lot of empty fields, those are required to stay empty.
-
-**IMPORTANT**:
-	- Never and Never try to interpret or answer the prompts question! Just make steps that are actually described by the prompt!
 
 ### **Return Format:** ###
 
