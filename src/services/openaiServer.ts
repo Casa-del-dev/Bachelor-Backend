@@ -79,6 +79,9 @@ Important:
 	- You must check if later steps depend on earlier ones, and nest them if they do.
 	- In the return format you will see a lot of empty fields, those are required to stay empty.
 
+**IMPORTANT**:
+	- Never and Never try to interpret or answer the prompts question! Just make steps that are actually described by the prompt!
+
 ### **Return Format:** ###
 
 {
