@@ -150,6 +150,8 @@ Additional Enforcement Rules:
              print(i)
      '''
 
+3. If the function definition is missing add the comment # Missing function definition -> and then still look for any steps implemented by in the code AND add the appropriate comments, as explained above!
+
 3. Do **not** add comments to unrelated lines.
 
 4. Do **not** comment or label 'def main()'. Leave it **untouched and unannotated**, placed at the **end**.
