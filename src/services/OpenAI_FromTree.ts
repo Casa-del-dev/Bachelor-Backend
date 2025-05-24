@@ -30,7 +30,7 @@ const service: Service = {
 			let { Tree, Code } = mergedPayload;
 
 			if (!Code || !Tree) {
-				if (Code === null) {
+				if (Code === null || Code === '') {
 					Code = '';
 				} else {
 					return new Response('Missing Prompt, Problem, Tree, Context, or Code in request body', {
