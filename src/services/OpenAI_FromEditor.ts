@@ -183,7 +183,7 @@ Common Mistakes to Avoid:
 
 Return Format:
 
-Return **only** the raw JSON — no extra explanation or text. And make sure to use "/" to describe a new line.  
+Return **only** the raw JSON — no extra explanation or text.
 Do not include any text, markdown, explanations, commas before/after the JSON, or anything else.
 
 {
