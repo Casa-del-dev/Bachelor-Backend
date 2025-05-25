@@ -66,7 +66,7 @@ The resulting JSON must represent a **semantically complete solution** to the Pr
 					# Step 2			->		# Step 3
 					return x					return x	'''
 
-- if a step is **missing** write **# MISSING STEP** in the code field and add a blank step in the tree, accordingly change the next comments # Step X.Y by adding 1 in the respective substep postion.
+- if a step is **missing** write **# MISSING STEP** in the code field and add a blank step in the tree.
 - If a step is **incorrect**, always write **# NOT IMPLEMENTED CORRECTLY** in the code field.
 ---
 
