@@ -183,8 +183,8 @@ Common Mistakes to Avoid:
 
 Return Format:
 
-Return **only** the raw JSON — no extra explanation or text.
-Do not include any text, markdown, explanations, commas before/after the JSON, or anything else.
+Only give as output the raw JSON file and put "/" to go onto a new line.  
+Do not include any text, markdown, explanations, commas before/after the JSON, or anything else.'
 
 {
   "code": "// Original code with added comments that describe the steps",
