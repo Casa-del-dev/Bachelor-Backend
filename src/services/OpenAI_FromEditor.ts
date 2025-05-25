@@ -60,7 +60,7 @@ The resulting JSON must represent a **semantically complete solution** to the Pr
 		Eg.'''		# Step 1			->		# Step 1
 					x = 1						x = 1
 
-												# MISSING STEP
+												# Step 2
 					x = x * x + x 		-> 		x = x * x + x
 
 					# Step 2			->		# Step 3
