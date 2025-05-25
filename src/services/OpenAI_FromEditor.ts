@@ -56,7 +56,16 @@ The resulting JSON must represent a **semantically complete solution** to the Pr
 - The code is in **Python**. Use **#** for all inline comments.
 - The **def main()** function is a standard wrapper. You must **include it in the code output**, but **do not include it in the step tree**.
 - You **must treat every comment like # Step X, # Step X.Y, or # Step X.Y.Z as defining a step or substep**. These comments are authoritative and must be reflected in the structure of the step tree.
-- If a comment’s step number does **not match** the correct logical structure, **fix the comment**. Do **not ignore** or misplace any line with a # Step comment.
+- If a comment’s step number does **not match** the correct logical structure, **fix the comment**. Do **not ignore** or misplace any line with a # Step comment. 
+		Eg.'''		# Step 1					# Step 1
+					x = 1						x = 1
+
+												# Step 2
+					x = x * x + x 		-> 		x = x * x + x
+
+					# Step 2					# Step 3
+					return x					return x	'''
+
 - if a step is **missing** write **# MISSING STEP** in the code field and add a blank step in the tree.
 - If a step is **incorrect**, always write **# NOT IMPLEMENTED CORRECTLY** in the code field.
 ---
