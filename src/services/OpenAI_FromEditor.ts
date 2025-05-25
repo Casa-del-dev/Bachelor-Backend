@@ -55,7 +55,7 @@ The resulting JSON must represent a **semantically complete solution** to the Pr
 
 - The code is in **Python**. Use **#** for all inline comments.
 - The **def main()** function is a standard wrapper. You must **include it in the code output**, but **do not include it in the step tree**.
-- You **must treat every comment like # Step X, # Step X.Y, or # Step X.Y.Z as defining a step or substep, don't add the content of the steps to the comment**. These comments are authoritative and must be reflected in the structure of the step tree.
+- You **must treat every comment like # Step X, # Step X.Y, or # Step X.Y.Z as defining a step or substep**. These comments are authoritative and must be reflected in the structure of the step tree.
 - If the step number is incorrect, missing, or violates a proper sequence, you **must** fix the comment to reflect the correct step number based on the logical structure of the code and respectively adapt the step tree accordingly.
 		Eg.'''		# Step 1			->		# Step 1
 					x = 1						x = 1
@@ -143,20 +143,20 @@ If the steps and context allow it you put the new blank steps as a substep of al
 	/*
 
 	def roman_to_int(s: str) -> int:
-		# Step 1: Define a dictionary to map Roman numerals to their corresponding integer values.
+		# Step 1
 		roman_values = {
 			'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500, 'M': 1000
 		}
 		
 		# MISSSING STEP
 
-		# Step 3: Iterate over the characters in the reversed string 's'.
+		# Step 3
 		for char in reversed(s):
-			# Step 3.1: Add the integer value of the current Roman numeral to 'total'.
+			# Step 3.1
 			# NOT IMPLEMENTED CORRECTLY
 			total += roman_values[char]
 
-		# Step 4: Return the total.
+		# Step 4
 		return total
 
 	def main():
