@@ -43,7 +43,7 @@ const service: Service = {
 					id: '2',
 					content: 'Navigate path A',
 					substeps: [
-						{ id: '2.1', content: 'Move up', substeps: [] },
+						{ id: '2.1', content: 'Move down', substeps: [] },
 						{ id: '2.2', content: 'Move right', substeps: [] },
 						{ id: '2.3', content: 'Check for wall', substeps: [] },
 						{ id: '2.4', content: 'Turn left', substeps: [] },
@@ -53,8 +53,8 @@ const service: Service = {
 					id: '3',
 					content: 'Navigate path B',
 					substeps: [
-						{ id: '3.1', content: 'Move up', substeps: [] },
-						{ id: '3.2', content: 'Move right', substeps: [] },
+						{ id: '3.1', content: 'Move left', substeps: [] },
+						{ id: '3.2', content: 'Move left', substeps: [] },
 						{ id: '3.3', content: 'Check for wall', substeps: [] },
 						{ id: '3.4', content: 'Turn right', substeps: [] },
 					],
@@ -93,6 +93,7 @@ Your goal is to detect repeated logic patterns and represent each occurrence as 
 Definitions  
 • Grouping patterns occur only among a node and its direct parent, its direct children, or among siblings. You cannot group steps that are distant or in completely different branches.  
 • Recycling patterns occur when the same logic appears in completely different branches of the tree; the first object will embed all grouping instances together.
+• Recycling patterns may include semantically equivalent or complementary moves—for example, “Move down + Move left” and “Move right + Move up” both count as one two-step movement pattern and should be grouped together.
 
 Format each result as a JSON object with these fields  
 steps: a two-dimensional array of grouping instances:  
