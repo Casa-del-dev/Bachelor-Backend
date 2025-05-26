@@ -77,7 +77,7 @@ const service: Service = {
 				},
 			];
 
-			const treeJson = typeof Tree === 'string' ? Tree : JSON.stringify(testTree, null, 2);
+			const treeJson = typeof Tree === 'string' ? Tree : JSON.stringify(Tree, null, 2);
 
 			const payload = {
 				model: 'gpt-4o',
