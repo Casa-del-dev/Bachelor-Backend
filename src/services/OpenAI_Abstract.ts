@@ -36,76 +36,44 @@ const service: Service = {
 			const testTree = [
 				{
 					id: '1',
-					content: 'Initialize total to 0',
+					content: 'Initialize total to zero',
 					substeps: [],
 				},
 				{
 					id: '2',
-					content: 'Loop over list A',
+					content: 'Loop over array A',
 					substeps: [
-						{
-							id: '2.1',
-							content: 'Get element at index i',
-							substeps: [],
-						},
-						{
-							id: '2.2',
-							content: 'Square the element',
-							substeps: [],
-						},
-						{
-							id: '2.3',
-							content: 'Add to total',
-							substeps: [],
-						},
+						{ id: '2.1', content: 'Get element at i', substeps: [] },
+						{ id: '2.2', content: 'Square element', substeps: [] },
+						{ id: '2.3', content: 'Add squared element to total', substeps: [] },
 					],
 				},
 				{
 					id: '3',
-					content: 'Loop over list B',
+					content: 'Loop over array B',
 					substeps: [
-						{
-							id: '3.1',
-							content: 'Get element at index i',
-							substeps: [],
-						},
-						{
-							id: '3.2',
-							content: 'Cube the element',
-							substeps: [],
-						},
-						{
-							id: '3.3',
-							content: 'Add to total',
-							substeps: [],
-						},
+						{ id: '3.1', content: 'Get element at i', substeps: [] },
+						{ id: '3.2', content: 'Double element', substeps: [] },
+						{ id: '3.3', content: 'Add doubled element to total', substeps: [] },
 					],
 				},
 				{
 					id: '4',
-					content: 'Loop over list C',
+					content: 'Loop over array C',
 					substeps: [
-						{
-							id: '4.1',
-							content: 'Get element at index i',
-							substeps: [],
-						},
-						{
-							id: '4.2',
-							content: 'Square the element',
-							substeps: [],
-						},
-						{
-							id: '4.3',
-							content: 'Add to total',
-							substeps: [],
-						},
+						{ id: '4.1', content: 'Get element at i', substeps: [] },
+						{ id: '4.2', content: 'Square element', substeps: [] },
+						{ id: '4.3', content: 'Add squared element to total', substeps: [] },
 					],
 				},
 				{
 					id: '5',
-					content: 'Print total',
-					substeps: [],
+					content: 'Loop over array D',
+					substeps: [
+						{ id: '5.1', content: 'Get element at i', substeps: [] },
+						{ id: '5.2', content: 'Double element', substeps: [] },
+						{ id: '5.3', content: 'Add doubled element to total', substeps: [] },
+					],
 				},
 			];
 
