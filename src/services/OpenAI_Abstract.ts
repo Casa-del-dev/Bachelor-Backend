@@ -1,3 +1,4 @@
+import { test } from '.';
 import { Service } from '..';
 
 interface Payload {
@@ -32,6 +33,69 @@ const service: Service = {
 				});
 			}
 
+			const testTree = [
+				{
+					id: '1',
+					content: 'Initialize sum to zero',
+					substeps: [],
+				},
+				{
+					id: '2',
+					content: 'Loop over array A',
+					substeps: [
+						{
+							id: '2.1',
+							content: 'Get element at index i',
+							substeps: [],
+						},
+						{
+							id: '2.2',
+							content: 'Add element to sum',
+							substeps: [],
+						},
+					],
+				},
+				{
+					id: '3',
+					content: 'Loop over array B',
+					substeps: [
+						{
+							id: '3.1',
+							content: 'Get element at index i',
+							substeps: [],
+						},
+						{
+							id: '3.2',
+							content: 'Add element to sum',
+							substeps: [],
+						},
+					],
+				},
+				{
+					id: '4',
+					content: 'Compute average',
+					substeps: [],
+				},
+				{
+					id: '5',
+					content: 'Loop over array C',
+					substeps: [
+						{
+							id: '5.1',
+							content: 'Get element at index i',
+							substeps: [],
+						},
+						{
+							id: '5.2',
+							content: 'Subtract element from total',
+							substeps: [],
+						},
+					],
+				},
+			];
+
+			const treeJson = JSON.stringify(testTree, null, 2);
+
 			const payload = {
 				model: 'gpt-4o',
 				messages: [
@@ -39,7 +103,7 @@ const service: Service = {
 						role: 'user',
 						content: `You are an analyzer. Your task is to analyze the given correct step tree:
 
-${Tree}
+${treeJson}
 
 Your goal is to detect patterns or repeated logic across the step tree. Identify:
 - Groupings: different steps that implement the same logic but in different places.
