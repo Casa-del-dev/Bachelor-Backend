@@ -107,7 +107,7 @@ Output rules
 • Do not include any text, markdown, comments, or trailing commas.  
 • All two-step movement groupings must be listed (both combined and individually).
 
-Example
+FORMAT EXAMPLE (FOR REFERENCE ONLY):
 
 [
   {
