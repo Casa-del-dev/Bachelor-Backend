@@ -105,45 +105,44 @@ const service: Service = {
 
 ${treeJson}
 
-Your goal is to detect patterns or repeated logic across the step tree. Identify:
-- Groupings: different steps that implement the same logic but in different places.
-- Reusable steps: logic that could be abstracted and reused.
+Your goal is to detect two kinds of repeated logic in this tree, and always report grouping patterns first, then recycling patterns.
 
----
+Definitions  
+Grouping patterns occur only among parent–child or sibling relationships. In other words, you group a step with its direct parent, its direct children, or its siblings. You cannot group steps that are distant or in completely different branches.  
+Recycling patterns occur anywhere else in the tree, when the same logic appears in completely different branches.
 
-Format each grouping or recycling as a JSON object with:
-- "status": either "grouping" or "recycling"
-- "steps": a list of arrays, where each array represents one instance of the repeated logic (each array contains step objects with only the "id" field)
-- "general_hint": a high-level hint describing the shared logic
-- "detailed_hint": a specific explanation of the repeated pattern
-- "correct_answer": a JSON object that represents the ideal generalized version of the logic using a full nested step tree
+Format each result as a single JSON object with these fields  
+steps: an array of exactly two arrays  
+• the first inner array holds all grouping instances together.  
+• the second inner array holds all recycling instances together.  
+After that combined entry, you must also emit one separate object for each individual grouping instance you found, where that instance appears alone in the first inner array and the second inner array is empty, so that you can provide a unique general_hint and detailed_hint for each.  
+general_hint: a brief, high-level description of this pattern  
+detailed_hint: a specific explanation of the repeated logic  
+correct_answer: a full nested step tree JSON showing the ideal generalized or reusable version of that logic
 
----
+Output rules  
+• Return only a raw JSON array.  
+• Do not include any text, markdown, comments, or trailing commas.  
+• Always list the combined grouping entry first, then each individual grouping entry, then recycling entries if any.
 
-Output Rules:
-- Output only raw JSON
-- Do not include any text, markdown, explanations, or comments
-- "steps" must be a list of arrays of step objects
-- "correct_answer" must follow the step tree structure shown below
-- Do not include trailing commas
-
----
-
-Example:
+Example
 
 [
   {
-    "status": "grouping",
     "steps": [
-      [ { "id": "1" }, { "id": "2" } ],
-      [ { "id": "5" }]
+      [
+        [ { "id": "2.2" }, { "id": "2" }, { "id": "2.1" } ],
+        [ { "id": "3.2" }, { "id": "3" }, { "id": "3.1" } ],
+        [ { "id": "5.2" }, { "id": "5" }, { "id": "5.1" } ]
+      ],
+      []
     ],
-    "general_hint": "Each group initializes a loop and a counter.",
-    "detailed_hint": "These steps all set an index and loop over an array.",
+    "general_hint": "Each group contains a parent and its direct children",
+    "detailed_hint": "These patterns show parent–child relationships grouped together",
     "correct_answer": {
       "steps": {
         "1": {
-          "content": "Initialize loop and counter",
+          "content": "Get element at index i from array",
           "correctStep": "",
           "code": "",
           "status": {
@@ -152,26 +151,39 @@ Example:
           },
           "general_hint": "",
           "detailed_hint": "",
-          "subSteps": {
-            "1": {
-              "content": "Set i = 0",
-              "correctStep": "",
-              "code": "",
-              "status": {
-                "correctness": "correct",
-                "can_be_further_divided": "cannot"
-              },
-              "general_hint": "",
-              "detailed_hint": "",
-              "subSteps": {}
-            }
-          }
+          "subSteps": {}
         }
       }
     }
+  },
+  {
+    "steps": [
+      [ [ { "id": "2.2" }, { "id": "2" }, { "id": "2.1" } ] ],
+      []
+    ],
+    "general_hint": "Group only for step 2 parent–child",
+    "detailed_hint": "Isolates the parent–child pattern in loop A",
+    "correct_answer": { /* ideal step tree for loop A */ }
+  },
+  {
+    "steps": [
+      [ [ { "id": "3.2" }, { "id": "3" }, { "id": "3.1" } ] ],
+      []
+    ],
+    "general_hint": "Group only for step 3 parent–child",
+    "detailed_hint": "Isolates the parent–child pattern in loop B",
+    "correct_answer": { /* ideal step tree for loop B */ }
+  },
+  {
+    "steps": [
+      [ [ { "id": "5.2" }, { "id": "5" }, { "id": "5.1" } ] ],
+      []
+    ],
+    "general_hint": "Group only for step 5 parent–child",
+    "detailed_hint": "Isolates the parent–child pattern in loop C",
+    "correct_answer": { /* ideal step tree for loop C */ }
   }
 ]
-
 `,
 					},
 				],
