@@ -106,79 +106,66 @@ Output rules
 • Return only a raw JSON array.  
 • Do not include any text, markdown, comments, or trailing commas.  
 • All two-step movement groupings must be listed (both combined and individually).
+• If a two‐step pattern only occurs once, only output the combined entry (do not emit a separate individual entry).
 
 FORMAT EXAMPLE (FOR REFERENCE ONLY):
+***Do not copy any IDs, contents, or substep names from the example into your output.***  
+
 
 [
   {
     "steps": [
-      [ { "id": "2.1" }, { "id": "2.2" } ],
-      [ { "id": "3.1" }, { "id": "3.2" } ],
-      [ { "id": "4.1" }, { "id": "4.2" } ]
+      [ { "id": "X.1" }, { "id": "X.2" } ],
+      [ { "id": "Y.1" }, { "id": "Y.2" } ]
     ],
-    "general_hint": "Two-step movement sequences",
-    "detailed_hint": "All these pairs move in one direction and then a perpendicular direction",
+    "general_hint": "Example pattern",
+    "detailed_hint": "Illustration of grouping structure for two instances",
     "correct_answer": {
       "steps": {
-        "M": {
-          "content": "Perform any two-step movement",
+        "Z": {
+          "content": "Generalized step",
           "substeps": {
-            "M1": { "content": "Step 1: move in primary direction", "substeps": {} },
-            "M2": { "content": "Step 2: move in secondary direction", "substeps": {} }
+            "Z1": { "content": "Action A", "substeps": {} },
+            "Z2": { "content": "Action B", "substeps": {} }
           }
         }
       }
     }
   },
   {
-    "steps": [ [ { "id": "2.1" }, { "id": "2.2" } ] ],
-    "general_hint": "Movement in Path A",
-    "detailed_hint": "Path A moves down then right",
+    "steps": [
+      [ { "id": "X.1" }, { "id": "X.2" } ]
+    ],
+    "general_hint": "Grouping instance X",
+    "detailed_hint": "Group of substeps X.1 and X.2 illustrates the first instance",
     "correct_answer": {
-      "steps": [
-        {
-          "id": "2",
-          "content": "Navigate path A",
-          "substeps": [
-            { "id": "2.1", "content": "Move down", "substeps": [] },
-            { "id": "2.2", "content": "Move right", "substeps": [] }
-          ]
+      "steps": {
+        "X": {
+          "content": "Generalized step for X grouping",
+          "substeps": {
+            "X1": { "content": "Action A", "substeps": {} },
+            "X2": { "content": "Action B", "substeps": {} }
+          }
         }
-      ]
+      }
     }
   },
   {
-    "steps": [ [ { "id": "3.1" }, { "id": "3.2" } ] ],
-    "general_hint": "Movement in Path B",
-    "detailed_hint": "Path B moves left then left (two identical moves)",
+    "steps": [
+      [ { "id": "Y.1" }, { "id": "Y.2" } ]
+    ],
+    "general_hint": "Grouping instance Y",
+    "detailed_hint": "Group of substeps Y.1 and Y.2 illustrates the second instance",
     "correct_answer": {
-      "steps": [
-        {
-          "id": "3",
-          "content": "Navigate path B",
-          "substeps": [
-            { "id": "3.1", "content": "Move left", "substeps": [] },
-            { "id": "3.2", "content": "Move left", "substeps": [] }
-          ]
+      "steps": {
+        "Y": {
+          "content": "Generalized step for Y grouping",
+          "substeps": {
+            "Y1": { "content": "Action A", "substeps": {} },
+            "Y2": { "content": "Action B", "substeps": {} }
+          }
         }
-      ]
-    }
-  },
-  {
-    "steps": [ [ { "id": "4.1" }, { "id": "4.2" } ] ],
-    "general_hint": "Movement in Path C",
-    "detailed_hint": "Path C moves up then right",
-    "correct_answer": {
-      "steps": [
-        {
-          "id": "4",
-          "content": "Navigate path C",
-          "substeps": [
-            { "id": "4.1", "content": "Move up", "substeps": [] },
-            { "id": "4.2", "content": "Move right", "substeps": [] }
-          ]
-        }
-      ]
+      }
     }
   }
 ]
