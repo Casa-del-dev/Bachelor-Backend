@@ -88,25 +88,24 @@ const service: Service = {
 
 ${treeJson}
 
-Your goal is to detect repeated logic patterns and represent each occurrence as its own group, always reporting the combined (recycling) grouping first, then each individual grouping. All grouping instances must appear in the output.
+Your goal is to detect repeated two-step movement patterns (regardless of the exact directions) and represent each occurrence as its own group, always reporting the combined recycling grouping first, then each individual grouping. All grouping instances must appear in the output.
 
 Definitions  
 • Grouping patterns occur only among a node and its direct parent, its direct children, or among siblings. You cannot group steps that are distant or in completely different branches.  
-• Recycling patterns occur when the same logic appears in completely different branches of the tree; the first object will embed all grouping instances together.
-• Recycling patterns may include semantically equivalent or complementary moves—for example, “Move down + Move left” and “Move right + Move up” both count as one two-step movement pattern and should be grouped together.
+• Recycling patterns occur when the same logic appears in completely different branches of the tree, **including semantically equivalent movement pairs**. For example “Move down + Move right,” “Move left + Move left,” and “Move up + Move right” should all recycle together as “two-step movement” even though the directions differ.
 
 Format each result as a JSON object with these fields  
 steps: a two-dimensional array of grouping instances:  
-  1. The **first object**’s steps array lists every grouping instance as its own inner array (this is the combined recycling entry).  
-  2. After that, emit one separate object per individual grouping instance, each with exactly one inner array.  
+  1. The **first object**’s steps array lists every recycled two-step movement instance as its own inner array (the combined recycling entry).  
+  2. After that, emit one separate object per individual two-step movement grouping, each with exactly one inner array.  
 general_hint: a brief, high-level description of this pattern  
 detailed_hint: a specific explanation of the repeated logic  
-correct_answer: a full nested step tree JSON showing the ideal generalized or reusable version of that logic
+correct_answer: a full nested step tree JSON showing the ideal generalized “two-step movement” version
 
 Output rules  
 • Return only a raw JSON array.  
 • Do not include any text, markdown, comments, or trailing commas.  
-• All grouping instances must be listed (both in the combined entry and individually).  
+• All two-step movement groupings must be listed (both combined and individually).
 
 Example
 
@@ -115,85 +114,68 @@ Example
     "steps": [
       [ { "id": "2.1" }, { "id": "2.2" } ],
       [ { "id": "3.1" }, { "id": "3.2" } ],
-      [ { "id": "5.1" }, { "id": "5.2" } ]
+      [ { "id": "4.1" }, { "id": "4.2" } ]
     ],
-    "general_hint": "Sibling grouping within each loop",
-    "detailed_hint": "Each inner array shows the two sibling steps (element access and addition/subtraction) in loops A, B, and C",
+    "general_hint": "Two-step movement sequences",
+    "detailed_hint": "All these pairs move in one direction and then a perpendicular direction",
     "correct_answer": {
-      "steps": [
-        {
-          "id": "1",
-          "content": "Initialize sum to zero",
-          "substeps": []
-        },
-        {
-          "id": "2",
-          "content": "Loop over arrays A, B, C",
-          "substeps": [
-            { "id": "2.1", "content": "Get element at index i", "substeps": [] },
-            { "id": "2.2", "content": "Add or subtract element to/from sum", "substeps": [] }
-          ]
-        },
-        {
-          "id": "3",
-          "content": "Compute average",
-          "substeps": []
+      "steps": {
+        "M": {
+          "content": "Perform any two-step movement",
+          "substeps": {
+            "M1": { "content": "Step 1: move in primary direction", "substeps": {} },
+            "M2": { "content": "Step 2: move in secondary direction", "substeps": {} }
+          }
         }
-      ]
+      }
     }
   },
   {
-    "steps": [
-      [ { "id": "2.1" }, { "id": "2.2" } ]
-    ],
-    "general_hint": "Grouping in loop A",
-    "detailed_hint": "The two sibling steps in loop A",
+    "steps": [ [ { "id": "2.1" }, { "id": "2.2" } ] ],
+    "general_hint": "Movement in Path A",
+    "detailed_hint": "Path A moves down then right",
     "correct_answer": {
       "steps": [
         {
           "id": "2",
-          "content": "Loop over array A",
+          "content": "Navigate path A",
           "substeps": [
-            { "id": "2.1", "content": "Get element at index i", "substeps": [] },
-            { "id": "2.2", "content": "Add element to sum", "substeps": [] }
+            { "id": "2.1", "content": "Move down", "substeps": [] },
+            { "id": "2.2", "content": "Move right", "substeps": [] }
           ]
         }
       ]
     }
   },
   {
-    "steps": [
-      [ { "id": "3.1" }, { "id": "3.2" } ]
-    ],
-    "general_hint": "Grouping in loop B",
-    "detailed_hint": "The two sibling steps in loop B",
+    "steps": [ [ { "id": "3.1" }, { "id": "3.2" } ] ],
+    "general_hint": "Movement in Path B",
+    "detailed_hint": "Path B moves left then left (two identical moves)",
     "correct_answer": {
       "steps": [
         {
           "id": "3",
-          "content": "Loop over array B",
+          "content": "Navigate path B",
           "substeps": [
-            { "id": "3.1", "content": "Get element at index i", "substeps": [] },
-            { "id": "3.2", "content": "Add element to sum", "substeps": [] }
+            { "id": "3.1", "content": "Move left", "substeps": [] },
+            { "id": "3.2", "content": "Move left", "substeps": [] }
           ]
         }
       ]
     }
   },
   {
-    "steps": [
-      [ { "id": "5.1" }, { "id": "5.2" } ]
-    ],
-    "general_hint": "Grouping in loop C",
-    "detailed_hint": "The two sibling steps in loop C",
+    "steps": [ [ { "id": "4.1" }, { "id": "4.2" } ] ],
+    "general_hint": "Movement in Path C",
+    "detailed_hint": "Path C moves up then right",
     "correct_answer": {
       "steps": [
         {
-          "id": "5",
-          "content": "Loop over array C",
+          "id": "4",
+          "content": "Navigate path C",
           "substeps": [
-            { "id": "5.1", "content": "Get element at index i", "substeps": [] },
-            { "id": "5.2", "content": "Subtract element from total", "substeps": [] }
+            { "id": "4.1", "content": "Move up", "substeps": [] },
+            { "id": "4.2", "content": "Move right", "substeps": [] }
           ]
         }
       ]
