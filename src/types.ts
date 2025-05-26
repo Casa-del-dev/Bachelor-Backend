@@ -59,3 +59,19 @@ export interface Step {
 	isHyperExpanded: boolean;
 	selected: boolean;
 }
+
+export interface AbstractionItem {
+	steps: { id: string }[][]; // array of arrays of `{ id: string }`
+	general_hint: string;
+	detailed_hint: string;
+	correct_answer: {
+		steps: {
+			[key: string]: {
+				content: string;
+				substeps: Record<string, { content: string; substeps: any }>;
+			};
+		};
+	};
+}
+
+export type Abstraction = AbstractionItem[];
