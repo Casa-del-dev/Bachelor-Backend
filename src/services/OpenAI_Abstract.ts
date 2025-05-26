@@ -106,7 +106,6 @@ Output rules
 • Return only a raw JSON array.  
 • Do not include any text, markdown, comments, or trailing commas.  
 • All two-step movement groupings must be listed (both combined and individually).
-• **Exception**: If there are **no recycling entries** (i.e. only a single grouping pattern), output **only** that grouping entry and **do not** emit separate individual entries.
 
 FORMAT EXAMPLE (FOR REFERENCE ONLY):
 ***Do not copy any IDs, contents, or substep names from the example into your output.***  
