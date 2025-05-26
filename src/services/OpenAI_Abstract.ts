@@ -77,7 +77,7 @@ const service: Service = {
 				},
 			];
 
-			const treeJson = JSON.stringify(testTree, null, 2);
+			const treeJson = JSON.stringify(Tree, null, 2);
 
 			const payload = {
 				model: 'gpt-4o',
@@ -86,7 +86,7 @@ const service: Service = {
 						role: 'user',
 						content: `You are an analyzer. Your task is to analyze the given correct step tree:
 
-${Tree}
+${treeJson}
 
 Your goal is to detect repeated two-step movement patterns (regardless of the exact directions) and represent each occurrence as its own group, always reporting the combined recycling grouping first, then each individual grouping. All grouping instances must appear in the output.
 
