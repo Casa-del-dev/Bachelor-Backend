@@ -109,9 +109,9 @@ steps: a two-dimensional array of grouping instances:
   2. After that, emit one separate object per individual two-step movement grouping, each with exactly one inner array.  
 general_hint: a brief, high-level description of this pattern  
 detailed_hint: a specific explanation of the repeated logic  
-correct_answer: a full nested step tree JSON showing the ideal generalized “two-step movement” version
+Rule: "correct_answer" must not copy the grouped steps verbatim. It should abstract their meaning into reusable logic. If no abstraction is possible, do not recycle them.
 
-Output rules  
+ Output rules  
 • Return only a raw JSON array.  
 • Do not include any text, markdown, comments, or trailing commas.  
 • All two-step movement groupings must be listed (both combined and individually).
