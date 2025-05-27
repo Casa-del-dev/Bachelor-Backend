@@ -219,6 +219,9 @@ FORMAT EXAMPLE (FOR REFERENCE ONLY):
     }
   }
 ]
+
+‼️ Do not return any result unless you have confirmed that all step IDs are unique within the "steps" array. You MUST simulate a final pass and remove any duplicates before output.
+
 `,
 					},
 				],
