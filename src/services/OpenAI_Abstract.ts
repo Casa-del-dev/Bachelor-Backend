@@ -114,7 +114,7 @@ FORMAT EXAMPLE (FOR REFERENCE ONLY):
 [
   {
     "steps": [
-      [ { "id": "X.1" }, { "id": "X.2" } ],
+      [ { "id": "X.1" }, { "id": "X.2" }, { "id": "X.3" } ],
       [ { "id": "Y.1" }, { "id": "Y.2" } ]
     ],
     "general_hint": "Example pattern",
@@ -123,9 +123,24 @@ FORMAT EXAMPLE (FOR REFERENCE ONLY):
       "steps": {
         "Z": {
           "content": "Generalized step",
+		  "general_hint": "General Hint",
+          "detailed_hint": "Detailed Hint",
+          "solution": "Solution",
           "substeps": {
-            "Z1": { "content": "Action A", "substeps": {} },
-            "Z2": { "content": "Action B", "substeps": {} }
+            "Z1": { 
+				"content": "Action A", 
+				"general_hint": "General Hint A",
+				"detailed_hint": "Detailed Hint A",
+				"solution": "Solution A",
+				"substeps": {} 
+			},
+            "Z2": { 
+				"content": "Action B",
+				"general_hint": "General Hint B",
+				"detailed_hint": "Detailed Hint B",
+				"solution": "Solution B",
+				"substeps": {} 
+			}
           }
         }
       }
@@ -133,18 +148,33 @@ FORMAT EXAMPLE (FOR REFERENCE ONLY):
   },
   {
     "steps": [
-      [ { "id": "X.1" }, { "id": "X.2" } ]
+      [ { "id": "X.1" }, { "id": "X.2" }, { "id": "X.3" } ]
     ],
     "general_hint": "Grouping instance X",
     "detailed_hint": "Group of substeps X.1 and X.2 illustrates the first instance",
     "correct_answer": {
       "steps": {
-        "X": {
+        "G": {
           "content": "Generalized step for X grouping",
+		  "general_hint": "General Hint",
+          "detailed_hint": "Detailed Hint",
+          "solution": "Solution",
           "substeps": {
-            "X1": { "content": "Action A", "substeps": {} },
-            "X2": { "content": "Action B", "substeps": {} }
-          }
+            "G1": { 
+				"content": "Action A", 
+				"general_hint": "General Hint A",
+				"detailed_hint": "Detailed Hint A",
+				"solution": "Solution A",
+				"substeps": {} 
+			},
+            "G2": { 
+				"content": "Action B",
+				"general_hint": "General Hint B",
+				"detailed_hint": "Detailed Hint B",
+				"solution": "Solution B",
+				"substeps": {} 
+			}
+		  }
         }
       }
     }
@@ -157,11 +187,26 @@ FORMAT EXAMPLE (FOR REFERENCE ONLY):
     "detailed_hint": "Group of substeps Y.1 and Y.2 illustrates the second instance",
     "correct_answer": {
       "steps": {
-        "Y": {
+        "H": {
           "content": "Generalized step for Y grouping",
+		  "general_hint": "General Hint",
+          "detailed_hint": "Detailed Hint",
+          "solution": "Solution",
           "substeps": {
-            "Y1": { "content": "Action A", "substeps": {} },
-            "Y2": { "content": "Action B", "substeps": {} }
+            "H1": { 
+				"content": "Action A", 
+				"general_hint": "General Hint A",
+				"detailed_hint": "Detailed Hint A",
+				"solution": "Solution A",
+				"substeps": {} 
+			},
+            "H2": { 
+				"content": "Action B",
+				"general_hint": "General Hint B",
+				"detailed_hint": "Detailed Hint B",
+				"solution": "Solution B",
+				"substeps": {} 
+			}
           }
         }
       }
