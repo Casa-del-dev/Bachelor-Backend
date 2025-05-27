@@ -111,6 +111,13 @@ general_hint: a brief, high-level description of this pattern
 detailed_hint: a specific explanation of the repeated logic  
 Rule: "correct_answer" must not copy the grouped steps verbatim. It should abstract their meaning into reusable logic. If no abstraction is possible, do not recycle them.
 
+🚫 NO REDUNDANT RECYCLING:
+Do not emit a recycling pattern if the original steps already represent the ideal or minimal implementation.
+The "correct_answer" must **not just repeat** the same logic already expressed in the grouped steps. Instead, it must offer a generalized, reusable abstraction — such as a named procedure, a cleaner logic version, or a simplified formulation.
+If no meaningful abstraction or optimization is possible, then:
+• Do not output a recycling entry for these steps,
+• Leave them ungrouped — they are already in correct form.
+
  Output rules  
 • Return only a raw JSON array.  
 • Do not include any text, markdown, comments, or trailing commas.  
