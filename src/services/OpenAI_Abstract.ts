@@ -117,6 +117,7 @@ The "correct_answer" must **not just repeat** the same logic already expressed i
 If no meaningful abstraction or optimization is possible, then:
 • Do not output a recycling entry for these steps,
 • Leave them ungrouped — they are already in correct form.
+• If there is absolutely no recycling and grouping to be done in the entire logic just output an empty JSON.
 
  Output rules  
 • Return only a raw JSON array.  
@@ -136,7 +137,7 @@ FORMAT EXAMPLE (FOR REFERENCE ONLY):
     "general_hint": "Example pattern",
     "detailed_hint": "Illustration of grouping structure for two instances",
     "correct_answer": {
-      "steps": {
+      "stepsTree": {
         "Z": {
           "content": "Generalized step",
 		  "general_hint": "General Hint",
@@ -168,7 +169,7 @@ FORMAT EXAMPLE (FOR REFERENCE ONLY):
     "general_hint": "Grouping instance X",
     "detailed_hint": "Group of substeps X.1 and X.2 illustrates the first instance",
     "correct_answer": {
-      "steps": {
+      "stepsTree": {
         "G": {
           "content": "Generalized step for X grouping",
 		  "general_hint": "General Hint",
@@ -200,7 +201,7 @@ FORMAT EXAMPLE (FOR REFERENCE ONLY):
     "general_hint": "Grouping instance Y",
     "detailed_hint": "Group of substeps Y.1 and Y.2 illustrates the second instance",
     "correct_answer": {
-      "steps": {
+      "stepsTree": {
         "H": {
           "content": "Generalized step for Y grouping",
 		  "general_hint": "General Hint",
