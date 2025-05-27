@@ -93,7 +93,14 @@ Your goal is to detect repeated two-step movement patterns (regardless of the ex
 Definitions  
 • Grouping patterns occur only among a node and its direct parent, its direct children, or among siblings. You cannot group steps that are distant or in completely different branches.  
 • Recycling patterns occur when the same logic appears in completely different branches of the tree, **including semantically equivalent movement sequences**. For example, “Move down + Move right,” “Move left + Move left,” and “Move up + Move right” should all recycle together as instances of a generalized “multi-step movement,” even though the directions differ.  
-❗Each step may appear in **only one** recycling group. Do not reuse the same step across multiple recycled instances. If a shared step is required between multiple occurrences, it is considered a **local grouping**, not a recycling pattern.  
+
+❗IMPORTANT RECYCLING RULE:
+- Each step ID may appear in **only one** recycling instance in the first object.
+- Do **not** reuse the same step in multiple arrays inside the recycling entry.
+- Once a step is used in one recycling instance, it is no longer eligible for any other recycling pattern.
+- If two patterns would require the same step, **choose only one** to include in recycling, and classify the other(s) as **local groupings** instead.
+- Recycling should only be applied if it **reduces** the total number of **unique steps** compared to leaving the logic ungrouped. If recycling would keep the step count the same or increase it, treat the pattern as local grouping instead.
+- If this rule is violated, the output is considered invalid.
 
 
 Format each result as a JSON object with these fields  
