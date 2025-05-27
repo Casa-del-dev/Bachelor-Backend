@@ -92,7 +92,9 @@ Your goal is to detect repeated two-step movement patterns (regardless of the ex
 
 Definitions  
 • Grouping patterns occur only among a node and its direct parent, its direct children, or among siblings. You cannot group steps that are distant or in completely different branches.  
-• Recycling patterns occur when the same logic appears in completely different branches of the tree, **including semantically equivalent movement pairs**. For example “Move down + Move right,” “Move left + Move left,” and “Move up + Move right” should all recycle together as “two-step movement” even though the directions differ.
+• Recycling patterns occur when the same logic appears in completely different branches of the tree, **including semantically equivalent movement sequences**. For example, “Move down + Move right,” “Move left + Move left,” and “Move up + Move right” should all recycle together as instances of a generalized “multi-step movement,” even though the directions differ.  
+❗Each step may appear in **only one** recycling group. Do not reuse the same step across multiple recycled instances. If a shared step is required between multiple occurrences, it is considered a **local grouping**, not a recycling pattern.  
+
 
 Format each result as a JSON object with these fields  
 steps: a two-dimensional array of grouping instances:  
@@ -125,23 +127,22 @@ FORMAT EXAMPLE (FOR REFERENCE ONLY):
           "content": "Generalized step",
 		  "general_hint": "General Hint",
           "detailed_hint": "Detailed Hint",
-          "solution": "Solution",
           "substeps": {
             "Z1": { 
 				"content": "Action A", 
 				"general_hint": "General Hint A",
 				"detailed_hint": "Detailed Hint A",
-				"solution": "Solution A",
 				"substeps": {} 
 			},
             "Z2": { 
 				"content": "Action B",
 				"general_hint": "General Hint B",
 				"detailed_hint": "Detailed Hint B",
-				"solution": "Solution B",
 				"substeps": {} 
-			}
-          }
+			},
+			// Same structure
+          },
+		  // Same structure
         }
       }
     }
@@ -158,23 +159,22 @@ FORMAT EXAMPLE (FOR REFERENCE ONLY):
           "content": "Generalized step for X grouping",
 		  "general_hint": "General Hint",
           "detailed_hint": "Detailed Hint",
-          "solution": "Solution",
           "substeps": {
             "G1": { 
 				"content": "Action A", 
 				"general_hint": "General Hint A",
 				"detailed_hint": "Detailed Hint A",
-				"solution": "Solution A",
 				"substeps": {} 
 			},
             "G2": { 
 				"content": "Action B",
 				"general_hint": "General Hint B",
 				"detailed_hint": "Detailed Hint B",
-				"solution": "Solution B",
 				"substeps": {} 
-			}
-		  }
+			},
+			// Same structure
+		  },
+		  // Same structure
         }
       }
     }
@@ -191,23 +191,22 @@ FORMAT EXAMPLE (FOR REFERENCE ONLY):
           "content": "Generalized step for Y grouping",
 		  "general_hint": "General Hint",
           "detailed_hint": "Detailed Hint",
-          "solution": "Solution",
           "substeps": {
             "H1": { 
 				"content": "Action A", 
 				"general_hint": "General Hint A",
 				"detailed_hint": "Detailed Hint A",
-				"solution": "Solution A",
 				"substeps": {} 
 			},
             "H2": { 
 				"content": "Action B",
 				"general_hint": "General Hint B",
 				"detailed_hint": "Detailed Hint B",
-				"solution": "Solution B",
 				"substeps": {} 
-			}
-          }
+			},
+			// Same structure
+          },
+		  // Same structure
         }
       }
     }
