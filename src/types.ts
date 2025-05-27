@@ -65,10 +65,12 @@ export interface AbstractionItem {
 	general_hint: string;
 	detailed_hint: string;
 	correct_answer: {
-		steps: {
+		stepsTree: {
 			[key: string]: {
 				content: string;
 				substeps: Record<string, { content: string; substeps: any }>;
+				general_hint: string;
+				detailed_hint: string;
 			};
 		};
 	};
