@@ -104,7 +104,7 @@ Definitions
 
 
 Format each result as a JSON object with these fields
-id: a unique id like this "step-{date.now()}-{unique_number}"
+id: a unique id like this "abstraction-{date.now()}-{unique_number}"
 steps: a two-dimensional array of grouping instances:  
   1. The **first object**’s steps array lists every recycled two-step movement instance as its own inner array (the combined recycling entry).  
   2. After that, emit one separate object per individual two-step movement grouping, each with exactly one inner array.  
