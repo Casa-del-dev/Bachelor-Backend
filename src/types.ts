@@ -61,6 +61,7 @@ export interface Step {
 }
 
 export interface AbstractionItem {
+	id: string;
 	steps: { id: string }[][]; // array of arrays of `{ id: string }`
 	general_hint: string;
 	detailed_hint: string;

@@ -103,7 +103,8 @@ Definitions
 - If this rule is violated, the output is considered invalid.
 
 
-Format each result as a JSON object with these fields  
+Format each result as a JSON object with these fields
+id: a unique id like this "step-{date.now()}-{unique_number}"
 steps: a two-dimensional array of grouping instances:  
   1. The **first object**’s steps array lists every recycled two-step movement instance as its own inner array (the combined recycling entry).  
   2. After that, emit one separate object per individual two-step movement grouping, each with exactly one inner array.  
@@ -130,6 +131,7 @@ FORMAT EXAMPLE (FOR REFERENCE ONLY):
 
 [
   {
+	id: "unique id as described above"
     "steps": [
       [ { "id": "X.1" }, { "id": "X.2" }, { "id": "X.3" } ],
       [ { "id": "Y.1" }, { "id": "Y.2" } ]
@@ -163,6 +165,7 @@ FORMAT EXAMPLE (FOR REFERENCE ONLY):
     }
   },
   {
+    id: "unique id as described above"
     "steps": [
       [ { "id": "X.1" }, { "id": "X.2" }, { "id": "X.3" } ]
     ],
@@ -195,6 +198,7 @@ FORMAT EXAMPLE (FOR REFERENCE ONLY):
     }
   },
   {
+    id: "unique id as described above"
     "steps": [
       [ { "id": "Y.1" }, { "id": "Y.2" } ]
     ],
