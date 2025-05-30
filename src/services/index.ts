@@ -8,3 +8,4 @@ export { default as fileExplorer } from './problem';
 export { default as stepTree } from './stepTree';
 export { default as openai5 } from './OpenAI_Abstract';
 export { default as abstraction } from './abstraction';
+export { default as abstractionInbetween } from './abstractionBetweenSave';
