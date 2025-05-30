@@ -60,6 +60,13 @@ export interface Step {
 	selected: boolean;
 }
 
+export interface AbstractionPayload {
+	steps: Step[];
+	isAvailable: boolean;
+	allIsAvailable: boolean;
+	allIsHinted: boolean;
+}
+
 export interface AbstractionItem {
 	id: string;
 	steps: { id: string }[][]; // array of arrays of `{ id: string }`
