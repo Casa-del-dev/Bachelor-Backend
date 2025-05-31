@@ -9,3 +9,4 @@ export { default as stepTree } from './stepTree';
 export { default as openai5 } from './OpenAI_Abstract';
 export { default as abstraction } from './abstraction';
 export { default as abstractionInbetween } from './abstractionBetweenSave';
+export { default as openai6 } from './OpenAI_CheckAbstraction';

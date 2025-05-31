@@ -33,50 +33,6 @@ const service: Service = {
 				});
 			}
 
-			const testTree = [
-				{
-					id: '1',
-					content: 'Start maze navigation',
-					substeps: [],
-				},
-				{
-					id: '2',
-					content: 'Navigate path A',
-					substeps: [
-						{ id: '2.1', content: 'Move down', substeps: [] },
-						{ id: '2.2', content: 'Move right', substeps: [] },
-						{ id: '2.3', content: 'Check for wall', substeps: [] },
-						{ id: '2.4', content: 'Turn left', substeps: [] },
-					],
-				},
-				{
-					id: '3',
-					content: 'Navigate path B',
-					substeps: [
-						{ id: '3.1', content: 'Move left', substeps: [] },
-						{ id: '3.2', content: 'Move left', substeps: [] },
-						{ id: '3.3', content: 'Check for wall', substeps: [] },
-						{ id: '3.4', content: 'Turn right', substeps: [] },
-					],
-				},
-				{
-					id: '4',
-					content: 'Navigate path C',
-					substeps: [
-						{ id: '4.1', content: 'Move up', substeps: [] },
-						{ id: '4.2', content: 'Move right', substeps: [] },
-					],
-				},
-				{
-					id: '5',
-					content: 'Navigate path D',
-					substeps: [
-						{ id: '5.1', content: 'Check for wall', substeps: [] },
-						{ id: '5.2', content: 'Turn left', substeps: [] },
-					],
-				},
-			];
-
 			const treeJson = typeof Tree === 'string' ? Tree : JSON.stringify(Tree, null, 2);
 
 			const payload = {
