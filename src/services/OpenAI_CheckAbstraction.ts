@@ -47,7 +47,7 @@ const service: Service = {
 						content: `You are given two step trees representing explanations of a solution.
 Each tree is a hierarchical structure where steps may have substeps (children).
 
-Compare the two trees strictly based on the content field of each step.
+Compare the two trees strictly based on the "***content***" field of each step **not** the "id" field.
 Only compare steps in corresponding positions. For example:
 
 The first step in one tree must match the first step in the other.
