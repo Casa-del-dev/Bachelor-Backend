@@ -1,7 +1,7 @@
 // src/services/abstractionInbetween.ts
 import { Service } from '..';
 import { authenticateToken } from './auth';
-import { saveAbstractionInbetween, loadAbstractionInbetween } from '../util/AbstractionStorage';
+import { saveAbstractionInbetween, loadAbstractionInbetween, deleteAbstractionInbetween } from '../util/AbstractionStorage';
 import { Step } from '../types';
 
 const service: Service = {
@@ -47,6 +47,20 @@ const service: Service = {
 					status: 200,
 					headers: { 'Content-Type': 'application/json' },
 				});
+			}
+
+			case 'DELETE deleteAbstraction': {
+				try {
+					await deleteAbstractionInbetween(env, username, problemId, abstractionId);
+					// If you prefer to return 200 instead of 204, adjust here
+					return new Response(null, { status: 204 });
+				} catch (err: any) {
+					// If your delete helper throws, send back an error response
+					console.error('Error deleting abstraction:', err);
+					return new Response(`Failed to delete abstraction: ${err.message}`, {
+						status: 500,
+					});
+				}
 			}
 
 			default:

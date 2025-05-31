@@ -24,3 +24,8 @@ export async function loadAbstractionInbetween(
 	if (!obj) return null;
 	return (await obj.json()) as AbstractionPayload;
 }
+
+export async function deleteAbstractionInbetween(env: Env, userId: string, problemId: string, abstractionId: string): Promise<void> {
+	const key = `${userId}/${problemId}/abstractionInbetween/${abstractionId}.json`;
+	await env.problemTree.delete(key);
+}
