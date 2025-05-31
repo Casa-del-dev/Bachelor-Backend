@@ -44,7 +44,20 @@ const service: Service = {
 				messages: [
 					{
 						role: 'user',
-						content: `Check if the following two step trees explain the same thing step-by-step.
+						content: `You are given two step trees representing explanations of a solution.
+Each tree is a hierarchical structure where steps may have substeps (children).
+
+Compare the two trees strictly based on the content field of each step.
+Only compare steps in corresponding positions. For example:
+
+The first step in one tree must match the first step in the other.
+
+If a step has children, their content fields must match in order and number as well.
+
+Ignore all other fields. Do not assume equivalence based on paraphrasing or semantic similarity.
+
+Respond "Yes" if and only if the two trees have exactly matching structures and content values in all corresponding positions.
+Respond "No" if there is any difference in number, position, or content of steps or substeps.
 
 Implemented solution:
 ${treeJSON1}
@@ -52,12 +65,7 @@ ${treeJSON1}
 Actual correct solution:
 ${treeJSON2}
 
-Note:
-- Both use trees with children or substeps — treat them equivalently.
-- Consider explanations semantically.
-- Only return "Yes" if all corresponding steps explain the same thing.
-- Return "No" if even one step differs.
-Only reply with "Yes" or "No".
+Answer with only "Yes" or "No". Do not add explanations.
 `,
 					},
 				],
