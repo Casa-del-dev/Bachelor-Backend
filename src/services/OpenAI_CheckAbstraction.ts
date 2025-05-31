@@ -45,19 +45,22 @@ const service: Service = {
 					{
 						role: 'user',
 						content: `You are given two step trees representing explanations of a solution.
-Each tree is a hierarchical structure where steps may have substeps (children).
+Each tree is a hierarchical structure where steps may have substeps (either named children or substeps — treat them equivalently).
 
-Compare the two trees strictly based on the "***content***" field of each step **not** the "id" field.
-Only compare steps in corresponding positions. For example:
+Each step has a content field.
+Compare the structure strictly and the content semantically:
+	Steps and substeps must appear in the same positions in both trees.
+	The number and order of steps and substeps must match.
+	The content field of each step must express the same idea, even if worded differently (e.g., paraphrased or simplified).
 
-The first step in one tree must match the first step in the other.
+✅ Respond "Yes" if:
+	All steps match in position and number
+	All corresponding content fields describe the same action, purpose, or process — even if not phrased identically
 
-If a step has children, their content fields must match in order and number as well.
-
-Ignore all other fields. Do not assume equivalence based on paraphrasing or semantic similarity.
-
-Respond "Yes" if and only if the two trees have exactly matching structures and content values in all corresponding positions.
-Respond "No" if there is any difference in number, position, or content of steps or substeps.
+❌ Respond "No" if:
+	Any step is missing, extra, or out of place
+	Any content differs significantly in meaning (not just wording)
+	Ignore all fields other than content.
 
 Implemented solution:
 ${treeJSON1}
