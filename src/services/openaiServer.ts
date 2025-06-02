@@ -85,6 +85,8 @@ Important:
 	- In the return format you will see a lot of empty fields, those are required to stay empty.
 
 ### **Return Format:** ###
+Only give as output the raw JSON file and put "/" to go onto a new line.  
+Do not include any text, markdown, explanations, commas before/after the JSON, or anything else.'
 
 {
   "code": "",
