@@ -84,15 +84,15 @@ const service: Service = {
 
 	## ✅ Mandatory Hints and Correct Step for Non-Final Steps
 
-	For every step marked as:
-	- correctness: '"incorrect"'
-	- correctness: '"missing"'
-	- can_be_further_divided: '"can"'
+	For **every step marked** as:
+	- "correctness": '"incorrect"'
+	- "correctness": '"missing"'
+	- "can_be_further_divided": '"can"'
 
-	You must provide all of the following:
-	- A general_hint explaining why the step is incorrect, incomplete, or missing.
-	- A detailed_hint explaining how to fix it or what is expected.
-	- A correctStep showing the correct action or solution.
+	You must and **have to** provide all of the following:
+	- A **general_hint** explaining why the step is incorrect, incomplete, or missing.
+	- A **detailed_hint** explaining how to fix it or what is expected.
+	- A **correctStep** showing the correct action or solution.
 
 	---
 
