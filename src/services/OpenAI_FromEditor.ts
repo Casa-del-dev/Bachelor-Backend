@@ -72,20 +72,58 @@ ${Problem}
 
 Update Only the Following Properties (when needed):
 
-- status.correctness
-- status.can_be_further_divided
-- correctStep (**Mandatory if a step is incorrect, missing, or can be further divided**)
-- general_hint (**Required if a step is incorrect, missing, or can be further divided**)
-- detailed_hint (**Required if a step is incorrect, missing, or can be further divided**)
-- Add new **blank steps or substeps only if the Problem introduces logic that is missing from the Code**
+- status.correctness  
+- status.can_be_further_divided  
+- correctStep (⚠️ **You must provide this if the step is incorrect, missing, or dividable — no exceptions**)  
+- general_hint (Required if the step is incorrect, missing, or dividable)  
+- detailed_hint (Required if the step is incorrect, missing, or dividable)  
+- You may add new **blank steps or substeps** only if the Problem introduces logic that is missing from the Code.
 
 ---
 
-Status Rules:
+⚠️ Mandatory Hint & Correction Logic Rules:
 
-- If a step is present but incorrect, mark it as **incorrect** — do **not** delete or blank it.
-- Mark a step as **missing** only if it is completely absent from the structure.
-- If status.can_be_further_divided = **can**, provide general_hint and detailed_hint to guide the breakdown.
+You MUST follow these rules for **correctStep**, **general_hint**, and **detailed_hint**:
+
+| Case                                    | Must Include correctStep | Must Include Hints |
+|----------------------------------------|---------------------------|---------------------|
+| Step is "missing"                    | ✅ YES                    | ✅ YES              |
+| Step is "incorrect"                  | ✅ YES                    | ✅ YES              |
+| Step is "correct" and "can"        | ❌ NO                     | ✅ YES              |
+| Step is "correct" and "cannot"     | ❌ NO                     | ❌ NO               |
+
+- Never omit "correctStep", "general_hint", or "detailed_hint" when they are required.
+- Never include "correctStep" for a step that is already correct and cannot be further divided.
+- Do not duplicate "correctStep" and hint explanations across steps. They must be adapted to the specific content.
+
+---
+
+Step Status Definitions:
+
+- correctness: "correct" means the step is valid as written.
+- correctness: "incorrect" means the code is wrong — do not delete it; mark it and give correction guidance.
+- correctness: "missing" means the step must be added in the correct position.
+- can_be_further_divided: "can" means this step should be split into substeps with guidance.
+- All missing steps must have "content": "" and "code": "" and be marked as "missing".
+
+---
+
+Step Insertion Rule (Strict Ordering):
+
+- Never append missing steps to the end.
+- Insert new blank steps or substeps in the exact logical location they belong.
+- Place a new substep under the correct parent step if it's a breakdown.
+- Respect and maintain the logical execution order of the code and problem.
+
+---
+
+Common Mistakes to Avoid:
+
+- ❌ Do not delete or blank out incorrect steps. Mark them.
+- ❌ Do not mark existing steps as "missing".
+- ✅ Always provide all 3: "general_hint", "detailed_hint", "correctStep" when required.
+- ✅ Add missing steps exactly where they belong, not at the end.
+- ❌ Do not leave out a "correctStep" just because the step is also "can_be_further_divided": "can" — if it is also incorrect or missing, you **must** provide one.
 
 ---
 
@@ -116,6 +154,23 @@ You **must** add blank steps or blank substeps if any part of the Code or Proble
 If the steps and context allow it you put the new blank steps as a substep of already existing steps.
 
 ---
+
+📎 Code–Step Alignment Rule (Strict Mapping)
+
+- For every step or substep in the "steps" tree, there must be a **corresponding "# Step X", "# Step X.Y", or "# Step X.Y.Z" comment** in the "code" field.
+- These step comments must appear **above the code** they represent.
+- The **step number in the comment must exactly match the path in the step tree**.
+  - Example: "steps": { "2": { "subSteps": { "1": { ... } } } } must be preceded in the code by "# Step 2.1".
+- If the code for a required step is **missing**:
+  - Leave the "code" field as an empty string or write "# MISSING STEP".
+- If the code is present but **incorrect**:
+  - Add the comment "# NOT IMPLEMENTED CORRECTLY" before the line.
+
+You must maintain **one-to-one alignment** between the "steps" object and the "# Step" comments in the "code" field.
+
+⚠️ Do not generate any step in the "steps" object without a matching "# Step" comment in the code field (unless it is a blank step).
+
+
 
 	🚨 Code Editing Restrictions — Read Carefully:
 
