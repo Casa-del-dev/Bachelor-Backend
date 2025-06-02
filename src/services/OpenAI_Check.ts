@@ -160,8 +160,9 @@ const service: Service = {
   - the **same "content"**,  
   - the same "correctStep",  
   - the same "general_hint" and "detailed_hint".  
-- If two steps would otherwise be identical, **only include one** and discard the duplicates.
-- You are not allowed to copy-paste identical reasoning across steps.
+- If two steps or substeps are **identical or near-identical in meaning**, **only keep one** and **remove the others**.
+- You are allowed to **delete duplicated steps** from the original input if they are redundant.
+- You are **not required to replace** removed steps unless a missing concept remains after removal.
 
 ---
 
