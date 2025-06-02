@@ -85,12 +85,12 @@ Update Only the Following Properties (when needed):
 
 You MUST follow these rules for **correctStep**, **general_hint**, and **detailed_hint**:
 
-| Case                                    | Must Include correctStep | Must Include Hints |
-|----------------------------------------|---------------------------|---------------------|
-| Step is "missing"                    | ✅ YES                    | ✅ YES              |
-| Step is "incorrect"                  | ✅ YES                    | ✅ YES              |
-| Step is "correct" and "can"        | ❌ NO                     | ✅ YES              |
-| Step is "correct" and "cannot"     | ❌ NO                     | ❌ NO               |
+| Case                                    	| Must Include correctStep 	| Must Include Hints |
+|------------------------------------------	|--------------------------	|--------------------|
+| Step is "missing"                    		| ✅ YES                   | ✅ YES             |
+| Step is "incorrect"                  		| ✅ YES                   | ✅ YES             |
+| Step is "correct" and "can"        		| ❌ NO                    | ✅ YES             |
+| Step is "correct" and "cannot"     		| ❌ NO                    | ❌ NO              |
 
 - Never omit "correctStep", "general_hint", or "detailed_hint" when they are required.
 - Never include "correctStep" for a step that is already correct and cannot be further divided.
@@ -126,6 +126,8 @@ Common Mistakes to Avoid:
 - ❌ Do not leave out a "correctStep" just because the step is also "can_be_further_divided": "can" — if it is also incorrect or missing, you **must** provide one.
 
 ---
+
+
 
 Definitions:
 
@@ -195,6 +197,34 @@ Special cases:
 ⚠️ You must maintain a **1-to-1 mapping** between steps/substeps and the step comment + code pair in the "code" field.
 ⚠️ The step number in the "# Step X.Y.Z" comment must match the step’s key in the JSON tree exactly.
 
+Missing Step Requirements (Strict Enforcement)
+Any step or substep that is marked as "missing" must always include the following:
+
+"correctness": "missing"
+"content": ""
+"code": ""
+
+A non-empty "correctStep" describing what the missing logic should do
+A non-empty "general_hint" explaining what is missing
+A non-empty "detailed_hint" explaining how to fix or implement it
+You must never place missing steps at the end of the "steps" object.
+Every missing step must be inserted in the correct logical and structural position in the step tree.
+If the missing logic is part of an existing step, insert it as a substep under that step.
+If the logic belongs at the top level, insert it between other top-level steps in the correct position.
+Do not create artificial step numbers like "2.5". Use proper substeps like "subSteps": { "2": { ... } } under step "2".
+Do not generate any steps with "correctness": "missing" that are missing a "correctStep", "general_hint", or "detailed_hint".
+
+A valid missing step must follow this structure:
+
+"content": ""
+"code": ""
+"status.correctness": "missing"
+"status.can_be_further_divided": ""
+A clearly written "correctStep"
+A non-empty "general_hint"
+A non-empty "detailed_hint"
+
+Failure to follow these instructions will result in an incomplete and invalid step tree. Every missing step must be treated as an essential placeholder, correctly positioned and documented.
 
 	🚨 Code Editing Restrictions — Read Carefully:
 
