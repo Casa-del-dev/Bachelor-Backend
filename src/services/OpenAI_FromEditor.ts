@@ -170,6 +170,30 @@ You must maintain **one-to-one alignment** between the "steps" object and the "#
 
 ⚠️ Do not generate any step in the "steps" object without a matching "# Step" comment in the code field (unless it is a blank step).
 
+---
+
+📎 Code–Step Alignment Rule (Strict Mapping)
+
+- For every step and substep in the "steps" object:
+  - There must be a matching "# Step X", "# Step X.Y", or "# Step X.Y.Z" comment **in the code field**.
+  - This comment must be followed by the **exact line(s) of code** that the step refers to.
+
+- Example:
+  A step like "steps": { "3": { "subSteps": { "1": { ... } } } }  
+  must have a code field like:
+  
+  "# Step 3.1  
+   total += roman_values[char]"
+
+- Do **not** provide only the "# Step" comment — the corresponding code line(s) must also be present.
+- The code in the "code" field must be taken exactly from the input "Code", preserving whitespace and indentation.
+
+Special cases:
+- If the logic is incorrect, include "# NOT IMPLEMENTED CORRECTLY" before the affected code.
+- If the logic is missing, leave the code field blank.
+
+⚠️ You must maintain a **1-to-1 mapping** between steps/substeps and the step comment + code pair in the "code" field.
+⚠️ The step number in the "# Step X.Y.Z" comment must match the step’s key in the JSON tree exactly.
 
 
 	🚨 Code Editing Restrictions — Read Carefully:
