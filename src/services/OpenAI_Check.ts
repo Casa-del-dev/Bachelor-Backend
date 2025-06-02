@@ -136,7 +136,7 @@ const service: Service = {
 	- When marking can_be_further_divided: "can", or correctness: "incorrect / missing" you **must provide**:
 	- general_hint (required)
 	- detailed_hint (required, describing how to divide it)
-	- correctStep (required only when step **not** correct or dividable, showing the correct breakdown)
+	- correctStep (required, except when can_be_further_divided: "can")
 
 	- If correct **and only and** **not** dividable too: remove all hints and the correctStep if present in the input.
 
@@ -151,28 +151,38 @@ const service: Service = {
 
 	---
 
-	---  
+## ✅ Step Uniqueness & Cleanup (Strict)
 
-## ✅ Step Uniqueness Rule (Very Important)
+You are required to **guarantee uniqueness** of every step and substep.
 
-- Every step and substep you output **must be unique**.
-- Do **not** produce two or more steps (or substeps) with:
-  - the **same "content"**,  
-  - the same "correctStep",  
-  - the same "general_hint" and "detailed_hint".  
-- If two steps or substeps are **identical or near-identical in meaning**, **only keep one** and **remove the others**.
-- If two steps have **identical or near-identical in meaning** hints, **only keep one** and **remove the others**. 
-- You are allowed to **delete duplicated steps** from the original input if they are redundant.
-- You are **not required to replace** removed steps unless a missing concept remains after removal.
+A step or substep must be considered a **duplicate** and removed if it:
+
+- Has the same "content" as another step or substep
+- Has the same "correctStep" as another step or substep
+- Has the same "general_hint" and "detailed_hint" pair as another step or substep
+- Is logically identical to another (even if worded slightly differently)
+
+### 🧹 What You Must Do:
+- **Actively delete** redundant steps or substeps from the original input.
+- Do **not** generate new steps that duplicate existing ones.
+- Do **not** merge duplicates — simply remove all but one.
+- Do **not** fill in hints or correctStep if the step is valid and not dividable.
+- You are **not** required to replace deleted duplicates unless a concept is missing after removal.
+
+You must verify that your final output contains **no duplicate logical actions**, hints, or explanations.
 
 ---
 
-## ✅ Finality of Output
+## ✅ Finality and Completeness of Output (Strict)
 
-- You must return a **final and complete** solution.
-- Do **not** leave placeholders or partially filled-out objects.
-- Every required field must be filled in according to the rules above.
-- Assume your output will be **used directly**, so it must be ready for use with no further editing or review.
+Your output must be a **complete, final result**:
+
+- All required fields (correctness, can_be_further_divided, etc.) must be filled in according to the above rules.
+- All required **hints and correctSteps must be present** for every incorrect, missing, or dividable step.
+- There must be **no TODOs, placeholders, or partial step trees**.
+- Do **not** omit valid steps unless they are redundant.
+- Your output will be **used directly by a system**—you have **one chance** to produce a correct, validated result.
+- Never rely on a second pass, fallback logic, or external checking.
 
 ---
 
