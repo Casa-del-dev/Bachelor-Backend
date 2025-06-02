@@ -153,23 +153,27 @@ const service: Service = {
 
 ## ✅ Step Uniqueness & Cleanup (Strict)
 
-You are required to **guarantee uniqueness** of every step and substep.
+Every step and substep you output must be **fully unique in logic and purpose**.
 
-A step or substep must be considered a **duplicate** and removed if it:
+A step (or substep) is considered a **duplicate** if **any** of the following are true:
 
-- Has the same "content" as another step or substep
-- Has the same "correctStep" as another step or substep
-- Has the same "general_hint" and "detailed_hint" pair as another step or substep
-- Is logically identical to another (even if worded slightly differently)
+- It has the same "content" as another step
+- It has the same "correctStep" as another step
+- It has the same "general_hint" and "detailed_hint" pair as another step
+- It serves the same function, even if worded slightly differently
+- It has the same combination of "correctStep",n "general_hint", and "detailed_hint" as another step, **regardless of content**
 
 ### 🧹 What You Must Do:
-- **Actively delete** redundant steps or substeps from the original input.
-- Do **not** generate new steps that duplicate existing ones.
-- Do **not** merge duplicates — simply remove all but one.
-- Do **not** fill in hints or correctStep if the step is valid and not dividable.
-- You are **not** required to replace deleted duplicates unless a concept is missing after removal.
 
-You must verify that your final output contains **no duplicate logical actions**, hints, or explanations.
+- You must **delete** any steps or substeps that are duplicates under the above rules.
+- Do **not** generate new steps that repeat the same reasoning, explanation, or correction as another.
+- Do **not** reuse the same hint/correction wording across multiple steps — all must be specific and adapted to their context.
+- If a duplicate is present in the input, **you must delete it.**
+- If you are adding a new step, verify that its purpose and explanation are not already present elsewhere.
+
+> ⚠ Even if two steps differ slightly in text, if they contain the **same explanation, same correctStep, and same hint**, only one is allowed.
+
+You are not required to replace removed duplicates unless a concept becomes **semantically missing**.
 
 ---
 
