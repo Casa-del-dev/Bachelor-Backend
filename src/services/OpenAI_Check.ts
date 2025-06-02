@@ -133,7 +133,7 @@ const service: Service = {
 
 	---
 ### IMPORTANT 
-	- When marking can_be_further_divided: "can", you **must provide**:
+	- When marking can_be_further_divided: "can", or correctness: "incorrect / missing" you **must provide**:
 	- general_hint (required)
 	- detailed_hint (required, describing how to divide it)
 	- correctStep (required only when step **not** correct or dividable, showing the correct breakdown)
@@ -161,6 +161,7 @@ const service: Service = {
   - the same "correctStep",  
   - the same "general_hint" and "detailed_hint".  
 - If two steps or substeps are **identical or near-identical in meaning**, **only keep one** and **remove the others**.
+- If two steps have **identical or near-identical in meaning** hints, **only keep one** and **remove the others**. 
 - You are allowed to **delete duplicated steps** from the original input if they are redundant.
 - You are **not required to replace** removed steps unless a missing concept remains after removal.
 
