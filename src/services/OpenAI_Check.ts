@@ -151,41 +151,51 @@ const service: Service = {
 
 	---
 
-	## ✅ Example JSON Output
-	Only give as output the raw JSON file and put "/" to go onto a new line.  
-	Do not include any text, markdown, explanations, commas before/after the JSON, or anything else.'
+You are to generate a JSON object following a specific format.
 
-	{
-		"steps": {
-			"1": {
-			"content": {stays the same},
-			"correctStep": "The correct step, only if not correct",
-			"code": {stays the same},
-			"status": {
-				"correctness": "correct / incorrect / missing",
-				"can_be_further_divided": "can / cannot"
-			},
-			"general_hint": "Only if not correct",
-			"detailed_hint": "Only if not correct",
-			"subSteps": {
-				"1": {
-				"content": {stays the same},
-				"correctStep": "Only if not correct",
-				"code": {stays the same},
-				"status": {
-					"correctness": "correct" / "incorrect" / "missing",
-					"can_be_further_divided": "can" / "cannot"
-				},
-				"general_hint": "Only if not correct",
-				"detailed_hint": "Only if not correct"
-				}
-			}
-			},
-			"2": {
-			"//": "Same structure as above"
-			}
-		}
-	}
+## ✅ Output Rules:
+- Output only raw JSON.
+- Do **not** wrap the output in triple backticks or markdown.
+- Do **not** escape any quotes.
+- Do **not** include any explanation or commentary before or after the JSON.
+- Do **not** use commas between JSON objects.
+- Use a single forward slash "/" to indicate a new line between top-level JSON objects, if needed.
+- This is not a JSONL file; each block is a full JSON object.
+
+## ✅ JSON Format Template:
+{
+  "steps": {
+    "1": {
+      "content": {stays the same},
+      "correctStep": "Only if not correct",
+      "code": {stays the same},
+      "status": {
+        "correctness": "correct / incorrect / missing",
+        "can_be_further_divided": "can / cannot"
+      },
+      "general_hint": "Only if not correct",
+      "detailed_hint": "Only if not correct",
+      "subSteps": {
+        "1": {
+          "content": {stays the same},
+          "correctStep": "Only if not correct",
+          "code": {stays the same},
+          "status": {
+            "correctness": "correct" / "incorrect" / "missing",
+            "can_be_further_divided": "can" / "cannot"
+          },
+          "general_hint": "Only if not correct",
+          "detailed_hint": "Only if not correct"
+        }
+      }
+    },
+    "2": {
+      "//": "Same structure as above"
+    }
+  }
+}
+
+Respond with your filled-in JSON **following these rules exactly**.
 	
 
 
