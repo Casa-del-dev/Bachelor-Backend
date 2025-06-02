@@ -151,6 +151,20 @@ const service: Service = {
 
 	---
 
+	---  
+
+## ✅ Step Uniqueness Rule (Very Important)
+
+- Every step and substep you output **must be unique**.
+- Do **not** produce two or more steps (or substeps) with:
+  - the **same "content"**,  
+  - the same "correctStep",  
+  - the same "general_hint" and "detailed_hint".  
+- If two steps would otherwise be identical, **only include one** and discard the duplicates.
+- You are not allowed to copy-paste identical reasoning across steps.
+
+---
+
 You are to generate a JSON object following a specific format.
 
 ## ✅ Output Rules:
