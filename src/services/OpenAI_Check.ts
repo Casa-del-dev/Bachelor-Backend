@@ -152,6 +152,8 @@ const service: Service = {
 	---
 
 	## ✅ Example JSON Output
+	Only give as output the raw JSON file and put "/" to go onto a new line.  
+	Do not include any text, markdown, explanations, commas before/after the JSON, or anything else.'
 
 	{
 		"steps": {
@@ -188,10 +190,6 @@ const service: Service = {
 
 
 	---
-
-	## ✅ Warning:
-	Only give as output the raw JSON file and put "/" to go onto a new line.  
-	Do not include any text, markdown, explanations, commas before/after the JSON, or anything else.'
 
 `,
 					},
