@@ -131,17 +131,32 @@ const service: Service = {
 	- correctStep (required only when step **not** correct or dividable, describing what this missing step should achieve)
 
 
-	---
-### IMPORTANT 
-	- When marking can_be_further_divided: "can", or correctness: "incorrect / missing" you **must provide**:
+---
+
+	## ✅ Hint and correctStep Rules (Strict)
+
+	- For **any step** that is either:
+	- correctness: "incorrect"
+	- correctness: "missing"
+	- or can_be_further_divided: "can"
+
+	You must provide:
 	- general_hint (required)
-	- detailed_hint (required, describing how to divide it)
-	- correctStep (required, except when can_be_further_divided: "can")
+	- detailed_hint (required)
+	- correctStep (required **unless** the step is **correct AND can_be_further_divided**)
 
-	- If correct **and only and** **not** dividable too: remove all hints and the correctStep if present in the input.
+	### ❌ Never omit correctStep when:
+	- correctness is "incorrect" (even if also can_be_further_divided)
+	- correctness is "missing"
+	- correctness is "correct" AND can_be_further_divided is "cannot"
 
+	### ✅ Omit correctStep **only** when:
+	- correctness is "correct" AND can_be_further_divided is "can"
 
-	---
+	### ✅ Omit all hints and correctStep when:
+	- correctness is "correct" AND can_be_further_divided is "cannot"
+
+---
 
 	## ✅ Do Not Use Hints or Correct Step to Evaluate Correctness
 
