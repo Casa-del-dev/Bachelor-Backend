@@ -1,4 +1,3 @@
-// service/reviewService.ts
 import { Service } from '..';
 import { authenticateToken } from './auth';
 import { saveReview, loadReview, loadAllReviews } from '../util/ReviewStorage';
