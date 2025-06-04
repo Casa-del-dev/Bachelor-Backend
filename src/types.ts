@@ -85,3 +85,8 @@ export interface AbstractionItem {
 }
 
 export type Abstraction = AbstractionItem[];
+
+export interface ReviewPayload {
+	rating: number;
+	message: string;
+}
