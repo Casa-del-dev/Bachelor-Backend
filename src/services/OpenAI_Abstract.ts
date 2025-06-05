@@ -92,8 +92,6 @@ FORMAT EXAMPLE (FOR REFERENCE ONLY):
       [ { "id": "X.1" }, { "id": "X.2" }, { "id": "X.3" } ],
       [ { "id": "Y.1" }, { "id": "Y.2" } ]
     ],
-    "general_hint": "Example pattern",
-    "detailed_hint": "Illustration of grouping structure for two instances",
     "correct_answer": {
       "stepsTree": {
         "Z": {
@@ -125,8 +123,6 @@ FORMAT EXAMPLE (FOR REFERENCE ONLY):
     "steps": [
       [ { "id": "X.1" }, { "id": "X.2" }, { "id": "X.3" } ]
     ],
-    "general_hint": "Grouping instance X",
-    "detailed_hint": "Group of substeps X.1 and X.2 illustrates the first instance",
     "correct_answer": {
       "stepsTree": {
         "G": {
@@ -158,8 +154,6 @@ FORMAT EXAMPLE (FOR REFERENCE ONLY):
     "steps": [
       [ { "id": "Y.1" }, { "id": "Y.2" } ]
     ],
-    "general_hint": "Grouping instance Y",
-    "detailed_hint": "Group of substeps Y.1 and Y.2 illustrates the second instance",
     "correct_answer": {
       "stepsTree": {
         "H": {
