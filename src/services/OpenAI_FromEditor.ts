@@ -163,6 +163,7 @@ If the steps and context allow it you put the new blank steps as a substep of al
 - These step comments must appear **above the code** they represent.
 - The **step number in the comment must exactly match the path in the step tree**.
   - Example: "steps": { "2": { "subSteps": { "1": { ... } } } } must be preceded in the code by "# Step 2.1".
+  - When the comment is generated then the step or substep in the step tree must always be generated too!
 - If the code for a required step is **missing**:
   - Leave the "code" field as an empty string or write "# MISSING STEP".
 - If the code is present but **incorrect**:
@@ -238,7 +239,7 @@ Failure to follow these instructions will result in an incomplete and invalid st
 	- Add a **blank step or substep** in the tree.
 	- **Do not add a corresponding comment or line in the code field.**
 
-	- def main() must remain at the end of the code exactly as provided, with no # Step labels and no structural changes.
+	- def main() must remain at the end (if present) of the code exactly as provided, with no # Step labels and no structural changes.
 
 	An example on how the Code should look like:
 	/*
