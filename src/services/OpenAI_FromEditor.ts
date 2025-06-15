@@ -54,7 +54,7 @@ The resulting JSON must represent a **semantically complete solution** to the Pr
 **Additional Instructions:**
 
 - The code is in **Python**. Use **#** for all inline comments.
-- The **def main()** function is a standard wrapper. You must **include it in the code output**, but **do not include it in the step tree**.
+- The **def main()** function is a standard wrapper. If present in the original code, you must **include it in the code output**, but **do not include it in the step tree**.
 - You **must treat every comment like # Step X, # Step X.Y, or # Step X.Y.Z as defining a step or substep**. These comments are authoritative and must be reflected in the structure of the step tree.
 - If the step number is incorrect, missing, or violates a proper sequence, you **must** fix the comment to reflect the correct step number based on the logical structure of the code and respectively adapt the step tree accordingly.
 
@@ -266,7 +266,7 @@ Failure to follow these instructions will result in an incomplete and invalid st
 	
 	*/
 
-	**Notice** The section that is not implemented correctly has a comment # NOT IMPLEMENTED CORRECTLY and if missing there is a # MISSING STEP
+	**Notice** The section that is not implemented correctly has a comment # NOT IMPLEMENTED CORRECTLY and if missing there is a # MISSING STEP on that missing line.
 
 ---
 
@@ -289,6 +289,7 @@ Common Mistakes to Avoid:
 - Always provide **correctStep** when a step or substep is marked **incorrect** or **missing**.
 - Add **missing** step in the correct order place in the step tree
 - Do not add missing steps to the end — always insert them in logical order.
+- Always check that the comments align with the step tree!
 
 ---
 
