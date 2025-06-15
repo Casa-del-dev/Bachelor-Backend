@@ -73,6 +73,11 @@ Each output entry must include:
 • id: a unique ID using this format: abstraction-[timestamp]-[index]  
 • steps: a 2D array of step ID sequences  
 • correct_answer: an abstracted reusable representation in the same hierarchical format (named steps and substeps)
+	Each Step and Substep in correct_answer:
+	• content: "What the abstraction does"
+	• general_hint: "What kind of logic is being unified"
+	• detailed_hint: "Explain the sequence being replaced and its intention"
+
 
 ---
 
