@@ -290,6 +290,7 @@ Common Mistakes to Avoid:
 - Add **missing** step in the correct order place in the step tree
 - Do not add missing steps to the end — always insert them in logical order.
 - Always check that the comments align with the step tree!
+*** Check that the code's commented substep are substep's in the step Tree ***
 
 ---
 
