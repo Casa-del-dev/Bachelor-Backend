@@ -305,7 +305,7 @@ Do not include any text, markdown, explanations, commas before/after the JSON, o
     "1": {
       "content": "Same as input",
       "correctStep": "**Mandatory if incorrect or missing**",
-      "code": "// Code segment for this step with a comment",
+      "code": "# Step 1 ...",
       "status": {
         "correctness": "correct / incorrect / missing",
         "can_be_further_divided": "can / cannot"
@@ -316,7 +316,7 @@ Do not include any text, markdown, explanations, commas before/after the JSON, o
         "1": {
           "content": "Same as input",
           "correctStep": "**Mandatory if incorrect or missing**",
-          "code": "// Code segment for this substep with a comment",
+          "code": "# Step 1.1 ...",
           "status": {
             "correctness": "correct / incorrect / missing",
             "can_be_further_divided": "can / cannot"
