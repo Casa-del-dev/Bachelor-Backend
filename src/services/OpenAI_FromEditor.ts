@@ -260,9 +260,6 @@ Failure to follow these instructions will result in an incomplete and invalid st
 
 		# Step 4
 		return total
-
-	def main():
-		print(roman_to_int('MCMXCIV'))
 	
 	*/
 
