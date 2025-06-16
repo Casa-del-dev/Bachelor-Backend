@@ -94,7 +94,7 @@ Do not include any text, markdown, explanations, commas before/after the JSON, o
 
 [
   {
-    "id": "abstraction-<timestamp>-1",
+    "id": "abstraction-<timestamp>-randomNumber",
     "steps": [
       [ { "id": "A.1" }, { "id": "A.2" } ],
       [ { "id": "B.1" }, { "id": "B.2" } ]
@@ -124,7 +124,7 @@ Do not include any text, markdown, explanations, commas before/after the JSON, o
     }
   },
   {
-    "id": "abstraction-<timestamp>-2",
+    "id": "abstraction-<timestamp>-randomNumber",
     "steps": [
       [ { "id": "C.1" }, { "id": "C.2" } ]
     ],
