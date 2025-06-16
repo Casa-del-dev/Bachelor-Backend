@@ -137,10 +137,14 @@ Do not include any text, markdown, explanations, commas before/after the JSON, o
           "substeps": {
             "AnotherFunction1": {
               "content": "Step 1",
+			  "general_hint": "Hint C",
+              "detailed_hint": "Explanation C",
               "substeps": {}
             },
             "AnotherFunction2": {
               "content": "Step 2",
+			  "general_hint": "Hint D",
+              "detailed_hint": "Explanation D",
               "substeps": {}
             }
           }
