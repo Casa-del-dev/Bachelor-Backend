@@ -21,6 +21,7 @@ const service: Service = {
 		const problemId = url.searchParams.get('problemId');
 		const abstractionId = url.searchParams.get('abstractionId');
 
+		console.log('➡️ Incoming subPath:', subPath);
 		// Fail early if problemId is missing — always required
 		if (!problemId) {
 			return new Response('Missing problemId', { status: 400 });
