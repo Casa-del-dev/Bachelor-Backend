@@ -20,9 +20,26 @@ const service: Service = {
 		const url = new URL(request.url);
 		const problemId = url.searchParams.get('problemId');
 		const abstractionId = url.searchParams.get('abstractionId');
-		if (!problemId || !abstractionId) {
-			return new Response('Missing problemId or abstractionId', { status: 400 });
+
+		// Fail early if problemId is missing — always required
+		if (!problemId) {
+			return new Response('Missing problemId', { status: 400 });
 		}
+
+		// Only require abstractionId for routes that use it
+		const action = subPath.split('/')[0];
+		const method = request.method;
+
+		if (
+			(method === 'POST' && action === 'saveAbstraction') ||
+			(method === 'GET' && action === 'loadAbstraction') ||
+			(method === 'DELETE' && action === 'deleteAbstraction')
+		) {
+			if (!abstractionId) {
+				return new Response('Missing abstractionId', { status: 400 });
+			}
+		}
+		const safeAbstractionId = abstractionId!;
 
 		switch (request.method + ' ' + subPath.split('/')[0]) {
 			case 'POST saveAbstraction': {
@@ -34,7 +51,7 @@ const service: Service = {
 					allIsHinted: boolean;
 				};
 
-				await saveAbstractionInbetween(env, username, problemId, abstractionId, {
+				await saveAbstractionInbetween(env, username, problemId, safeAbstractionId, {
 					steps,
 					isAvailable,
 					allIsAvailable,
@@ -45,7 +62,7 @@ const service: Service = {
 			}
 
 			case 'GET loadAbstraction': {
-				const data = await loadAbstractionInbetween(env, username, problemId, abstractionId);
+				const data = await loadAbstractionInbetween(env, username, problemId, safeAbstractionId);
 				if (!data) return new Response(null, { status: 204 }); // no content
 
 				return new Response(JSON.stringify(data), {
@@ -56,7 +73,7 @@ const service: Service = {
 
 			case 'DELETE deleteAbstraction': {
 				try {
-					await deleteAbstractionInbetween(env, username, problemId, abstractionId);
+					await deleteAbstractionInbetween(env, username, problemId, safeAbstractionId);
 					// If you prefer to return 200 instead of 204, adjust here
 					return new Response(null, { status: 204 });
 				} catch (err: any) {
