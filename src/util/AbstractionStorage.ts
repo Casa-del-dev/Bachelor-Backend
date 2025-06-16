@@ -29,3 +29,27 @@ export async function deleteAbstractionInbetween(env: Env, userId: string, probl
 	const key = `${userId}/${problemId}/abstractionInbetween/${abstractionId}.json`;
 	await env.problemTree.delete(key);
 }
+
+export async function deleteAllAbstractionInbetween(env: Env, userId: string, problemId: string): Promise<void> {
+	const bucket = env.problemTree;
+	const prefix = `${userId}/${problemId}/abstractionInbetween/`;
+	let cursor: string | undefined = undefined;
+
+	do {
+		const listResult = await bucket.list({
+			prefix,
+			cursor,
+			limit: 100,
+		});
+
+		const { objects, truncated } = listResult;
+
+		if (objects.length === 0) {
+			return;
+		}
+
+		await Promise.all(objects.map((obj) => bucket.delete(obj.key)));
+
+		cursor = truncated ? listResult.cursor : undefined;
+	} while (cursor);
+}
