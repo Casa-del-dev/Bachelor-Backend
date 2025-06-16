@@ -42,7 +42,7 @@ const service: Service = {
 						role: 'user',
 						content: `You are a step tree abstraction engine.
 
-Your task is to analyze the given procedural step tree and identify logical patterns that can be generalized into reusable abstractions. These abstractions must be represented as groupings (local logic) or recyclings (cross-tree structural or semantic repetition).
+Your task is to analyze the given procedural step tree and identify logical patterns that can be generalized into reusable abstractions. These abstractions must be represented as groupings (local logic), recyclings (cross-tree structural or semantic repetition), or general-purpose parameterizations.
 
 ---
 
@@ -52,12 +52,20 @@ PART 1: RECYCLING (Cross-Tree Logic Abstraction)
 • Identify repeated multi-step logic patterns that appear in different parts of the tree, even if the IDs or exact tokens differ.  
 • These are functionally equivalent steps (e.g., "pop two numbers and an operator" → should become a reusable apply_operator() abstraction).  
 • Only include a step ID in one recycling instance. Once a step is recycled, it cannot appear in another group.  
-• Include at most one recycling entry grouping all matched instances.
+• Include at most one recycling entry grouping all matched instances.  
+• Detect structurally or semantically similar logic (e.g., repeated conditionals or duplicated function bodies) and merge them into a single reusable abstraction.
 
 PART 2: GROUPING (Local Logic Abstraction)  
 • Identify sequences of steps that are logically cohesive (e.g., "if token is number → do X; else → do Y") and group them into conceptual units.  
 • These groups typically reflect functions like handle_token(), tokenize(), etc.  
-• Unlike recycling, each grouping entry contains only one instance of locally connected steps.
+• Unlike recycling, each grouping entry contains only one instance of locally connected steps.  
+• When steps represent clearly separable functional units (e.g., a function that collects data, followed by one that formats it), treat them as distinct groupings.  
+• If steps collectively match the behavior of a standalone function, prefer abstracting them as one grouped logical unit named after the action performed.  
+• Consider separating concerns like input parsing, string formatting, or print statements into distinct abstraction steps if they are mixed with logic.
+
+PART 3: PARAMETERIZATION (Reusability Enhancements)  
+• Identify hardcoded values, operators, or conditionals that could be made configurable via parameters.  
+• Suggest how to abstract these parts to make logic more general-purpose.
 
 ---
 
@@ -72,12 +80,11 @@ OUTPUT REQUIREMENTS:
 Each output entry must include:  
 • id: a unique ID using this format: abstraction-[timestamp]-[index]  
 • steps: a 2D array of step ID sequences  
-• correct_answer: an abstracted reusable representation in the same hierarchical format (named steps and substeps)
-	Each Step and Substep in correct_answer:
-	• content: "What the abstraction does"
-	• general_hint: "What kind of logic is being unified"
+• correct_answer: an abstracted reusable representation in the same hierarchical format (named steps and substeps)  
+	Each Step and Substep in correct_answer:  
+	• content: "What the abstraction does"  
+	• general_hint: "What kind of logic is being unified"  
 	• detailed_hint: "Explain the sequence being replaced and its intention"
-
 
 ---
 
