@@ -13,6 +13,12 @@ const service: Service = {
 	path: '/abstractionInbetween/v1/',
 
 	fetch: async (request: Request, env: Env, ctx: ExecutionContext, subPath: string) => {
+		console.log('➡️ Incoming subPath:', subPath);
+
+		const raw = subPath.replace(/^\/+/, '');
+		const action = raw.split('/')[0];
+		console.log('🔍 Normalized action:', action);
+
 		const authContext = await authenticateToken(request.headers, env);
 		if (authContext instanceof Response) return authContext;
 		const username = authContext.username;
@@ -21,14 +27,10 @@ const service: Service = {
 		const problemId = url.searchParams.get('problemId');
 		const abstractionId = url.searchParams.get('abstractionId');
 
-		console.log('➡️ Incoming subPath:', subPath);
-		// Fail early if problemId is missing — always required
 		if (!problemId) {
 			return new Response('Missing problemId', { status: 400 });
 		}
 
-		// Only require abstractionId for routes that use it
-		const action = subPath.split('/')[0];
 		const method = request.method;
 
 		if (
@@ -40,6 +42,7 @@ const service: Service = {
 				return new Response('Missing abstractionId', { status: 400 });
 			}
 		}
+
 		const safeAbstractionId = abstractionId!;
 
 		switch (request.method + ' ' + subPath.split('/')[0]) {
