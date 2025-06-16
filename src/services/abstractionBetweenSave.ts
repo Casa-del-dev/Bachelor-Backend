@@ -13,11 +13,8 @@ const service: Service = {
 	path: '/abstractionInbetween/v1/',
 
 	fetch: async (request: Request, env: Env, ctx: ExecutionContext, subPath: string) => {
-		console.log('➡️ Incoming subPath:', subPath);
-
 		const raw = subPath.replace(/^\/+/, '');
 		const action = raw.split('/')[0];
-		console.log('🔍 Normalized action:', action);
 
 		const authContext = await authenticateToken(request.headers, env);
 		if (authContext instanceof Response) return authContext;
