@@ -11,3 +11,4 @@ export { default as abstraction } from './abstraction';
 export { default as abstractionInbetween } from './abstractionBetweenSave';
 export { default as openai6 } from './OpenAI_CheckAbstraction';
 export { default as reviews } from './Reviews';
+export { default as customProblems } from './CustomExercises';
