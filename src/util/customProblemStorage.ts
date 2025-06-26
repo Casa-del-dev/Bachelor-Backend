@@ -64,12 +64,15 @@ export async function loadAllProblems(env: EnvR2, username: string): Promise<Pic
 
 // Delete a problem
 export async function deleteProblem(env: EnvR2, username: string, id: string): Promise<void> {
-	const prefix = `${username}/${id}/insides/`;
 	const bucket = env.problemTree;
+	const prefix = `${username}/${id}/`; // everything under that folder
 	let cursor: string | undefined = undefined;
+
 	do {
 		const listResp = await bucket.list({ prefix, cursor });
 		cursor = listResp.truncated ? listResp.cursor : undefined;
+
+		// delete each object one by one (or in parallel)
 		await Promise.all(listResp.objects.map((obj) => bucket.delete(obj.key)));
 	} while (cursor);
 }

@@ -110,9 +110,10 @@ const problemService: Service = {
 
 			case 'DELETE': {
 				try {
-					await deleteProblem(env, username, id);
-					return new Response('Deleted', { status: 204 });
-				} catch {
+					await deleteProblem(env, auth.username, id);
+					return new Response(null, { status: 204 });
+				} catch (err) {
+					console.error('Delete failed:', err);
 					return new Response('Failed to delete problem', { status: 500 });
 				}
 			}
