@@ -88,3 +88,11 @@ export interface ReviewPayload {
 	rating: number;
 	message: string;
 }
+
+export interface ProblemPayload {
+	id: string;
+	name: string;
+	description: string;
+	defaultText: string;
+	tests: string;
+}
