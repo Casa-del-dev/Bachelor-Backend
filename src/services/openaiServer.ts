@@ -35,7 +35,6 @@ const service: Service = {
 			}
 
 			const payload = {
-				model: 'gpt-4o',
 				messages: [
 					{
 						role: 'user',
@@ -143,25 +142,8 @@ Do not include any text, markdown, explanations, commas before/after the JSON, o
 				temperature: 0,
 			};
 
-			const openaiResponse = await fetch('https://api.openai.com/v1/chat/completions', {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${env.OPENAI_API_KEY}`,
-				},
-				body: JSON.stringify(payload),
-			});
-
-			if (!openaiResponse.ok) {
-				const errorText = await openaiResponse.text();
-				return new Response(`OpenAI API Error: ${errorText}`, {
-					status: openaiResponse.status,
-					headers: { 'Access-Control-Allow-Origin': '*' },
-				});
-			}
-
-			const result = await openaiResponse.json();
-			return new Response(JSON.stringify(result), {
+			const result = await env.AI.run('@cf/qwen/qwen2.5-coder-32b-instruct', payload);
+			return new Response(JSON.stringify({ choices: [{ message: { content: result.response } }], usage: result.usage }), {
 				status: 200,
 				headers: {
 					'Content-Type': 'application/json',

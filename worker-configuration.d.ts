@@ -3,6 +3,7 @@
 interface Env {
 	users: KVNamespace;
 	problemTree: R2Bucket;
+	AI: Ai;
 	JWT_SECRET: string;
 	OPENAI_API_KEY: string;
 	GITHUB_CLIENT_ID: string;

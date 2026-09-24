@@ -21,5 +21,8 @@
 			"binding": "problemTree",
 			"bucket_name": "problem-tree"
 		}
-	]
+	],
+	"ai": {
+		"binding": "AI"
+	}
 }
