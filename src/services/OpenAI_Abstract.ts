@@ -164,6 +164,7 @@ ${treeJson}
 					},
 				],
 				temperature: 0,
+				max_tokens: 4096,
 			};
 
 			const result = await env.AI.run('@cf/qwen/qwen2.5-coder-32b-instruct', payload);
